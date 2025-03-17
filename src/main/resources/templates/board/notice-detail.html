@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/board/notice-detail.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="content-head">
+            <div class="first-category">
+                <span>홈 / 게시판 / 공지사항</span>
+            </div>
+
+            <div class="titleArea">
+                <h1>공지사항</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <header>
+        <h1>물 오픈을 축하합니다.</h1>
+        <div class="post-info">
+            <span class="author">FC Hosting(cafe24)</span>
+            <span class="date">2025-03-01 13:42:17</span>
+            <span class="views">조회 1</span>
+        </div>
+    </header>
+    <div class="content">
+        <p>물 오픈을 축하합니다.</p>
+    </div>
+    <div class="button-group">
+        <button class="btn">수정</button>
+        <button class="btn">삭제</button>
+        <a href="/noticeList" class="btn right-btn">목록</a>
+    </div>
+</div>
+
+
+
+
+
+<div class="comment-container">
+    <div class="comment">
+        <div class="comment-header">
+            <label for="comment1" class="comment-author">쇼핑몰 프로젝트(blackstar55)</label>
+            <span class="comment-date">2025-03-14 20:59:22</span>
+        </div>
+        <div class="comment-content">
+            <p>첫 댓글입니다.</p>
+        </div>
+        <div class="comment-actions">
+            <button class="btn-action">수정</button>
+            <button class="btn-action">삭제</button>
+        </div>
+    </div>
+    <div class="comment">
+        <div class="comment-header">
+            <label for="comment2" class="comment-author">소핑몰 프로젝트(blackstar55)</label>
+            <span class="comment-date">2025-03-14 20:59:33</span>
+        </div>
+        <div class="comment-content">
+            <p>두 번째 댓글입니다.</p>
+        </div>
+        <div class="comment-actions">
+            <button class="btn-action">수정</button>
+            <button class="btn-action">삭제</button>
+        </div>
+    </div>
+    <div class="comment-form">
+        <h3>댓글달기</h3>
+        <textarea placeholder="댓글을 입력하세요"></textarea>
+        <div class="form-inputs">
+            <button class="btn-submit">등록</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

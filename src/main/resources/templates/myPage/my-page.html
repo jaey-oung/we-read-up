@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/sidebar.css">
+    <link rel="stylesheet" href="/css/myPage/my-page.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="content-head">
+            <div class="first-category">
+                <span>홈 / 마이쇼핑</span>
+            </div>
+
+            <div class="titleArea">
+                <h1>마이 쇼핑</h1>
+            </div>
+
+            <div class="dashboard">
+                <div class="dashboard-item">
+                    <div class="icon"><img src="/img/money-icon.png" alt="적립금"></div>
+                    <p class="amount">0원</p>
+                    <p class="label">적립금</p>
+                </div>
+                <a href="/myPage/couponList" class="dashboard-item">
+                    <div class="icon"><img src="/img/coupon-icon.png" alt="쿠폰"></div>
+                    <p class="amount">0개</p>
+                    <p class="label">쿠폰</p>
+                </a>
+                <a href="/myPage/orderList" class="dashboard-item">
+                    <div class="icon"><img src="/img/order-icon.png" alt="주문"></div>
+                    <p class="amount">0원 (0회)</p>
+                    <p class="label">주문</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <h2>나의 주문처리 현황 <span>(최근 3개월 기준)</span></h2>
+
+        <div class="order-status">
+            <a href="#" class="status">
+                <p class="count">0</p>
+                <p class="label">입금전</p>
+            </a>
+            <span class="arrow">→</span>
+            <a href="#" class="status">
+                <p class="count">0</p>
+                <p class="label">배송준비중</p>
+            </a>
+            <span class="arrow">→</span>
+            <a href="#" class="status">
+                <p class="count">0</p>
+                <p class="label">배송중</p>
+            </a>
+            <span class="arrow">→</span>
+            <a href="#" class="status">
+                <p class="count">0</p>
+                <p class="label">배송완료</p>
+            </a>
+        </div>
+
+        <div class="order-details">
+            <a href="#">취소: <strong>0</strong></a>
+            <a href="#">교환: <strong>0</strong></a>
+            <a href="#">반품: <strong>0</strong></a>
+        </div>
+
+        <h3>주문내역 조회</h3>
+        <div class="order-history">
+            <div class="no-orders">
+                <img src="icons/empty.png" alt="주문 없음">
+                <p>주문 내역이 없습니다.</p>
+            </div>
+        </div>
+
+        <div>
+            <form class="howtopag" action="/board/list" method="get">
+                <button type="submit" name="page">❮❮</button>
+                <button type="submit" name="page">❮</button>
+                <button type="submit" name="page">num</button>
+                <button type="submit" name="page">❯</button>
+                <button type="submit" name="page">❯❯</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

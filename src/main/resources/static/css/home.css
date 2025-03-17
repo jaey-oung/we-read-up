@@ -1,0 +1,157 @@
+body {
+    margin: 0;
+}
+
+.sale-section {
+    padding: 40px;
+}
+
+.sale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sale-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.sale-subtitle {
+    font-size: 14px;
+    color: #777;
+}
+
+.category-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.category-nav a {
+    text-decoration: none;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.category-nav a.active {
+    color: black;
+    font-weight: bold;
+    border-bottom: 2px solid black;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.product {
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+}
+
+.product-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.product-price {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.discount {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 12px;
+}
+
+.sale-badge {
+    position: absolute;
+    background: black;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 10px;
+    right: 10px;
+}
+
+.product-container {
+    position: relative;
+}
+
+
+
+
+
+.offline-shop {
+    display: flex;
+    align-items: center;
+    background-color: #777; /* 배경색 */
+    padding: 40px;
+    color: #fff;
+}
+
+.image-container {
+    position: relative;
+    width: 50%;
+}
+
+.image-container img {
+    width: 100%;
+    display: block;
+}
+
+.text-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.view-more {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: white;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.view-more:hover {
+    background: #ddd;
+}
+
+.info-container {
+    width: 50%;
+    padding-left: 180px;
+}
+
+.info-container h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.info-container p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #ddd;
+}

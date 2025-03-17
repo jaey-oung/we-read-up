@@ -1,0 +1,309 @@
+body {
+    margin: 0;
+}
+
+.container {
+    padding: 0;
+    width: 100%;
+    zoom: 1;
+    position: relative;
+    margin: 0 auto;
+}
+
+.container .content {
+    margin: 0 60px;
+}
+
+.content-head {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.first-category {
+    padding-top: 20px;
+    align-self: flex-end;
+}
+
+.first-category span {
+    font-size: 13px;
+    color: gray;
+}
+
+.second-category {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+}
+
+/* 상품 이미지 영역 */
+.product-image {
+    flex: 1;
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* 상품 정보 영역 */
+.product-info {
+    flex: 1;
+    padding-left: 100px;
+}
+
+.product-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-detail {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+    margin: 10px 0 40px;
+}
+
+.addtional-info {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.shipping-info {
+    font-size: 14px;
+    color: #777;
+    margin: 20px 0;
+}
+
+.product-detail {
+    margin: 20px 0;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.quantity-selector input {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.quantity-selector button {
+    width: 40px;
+    height: 44px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0;
+}
+
+.total-price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 버튼 영역 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 20px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.buy-now {
+    flex: 3;
+    background-color: #000;
+    color: #fff;
+}
+
+.cart {
+    flex: 2;
+    background-color: #fff;
+    color: #000;
+}
+
+.wishlist {
+    background-color: #fff;
+    color: #000;
+}
+
+.button-group button:hover {
+    border: 1px solid black;
+}
+
+
+
+
+
+.third-category {
+    padding: 30px;
+}
+
+.info-container {
+    display: flex;
+    padding: 50px 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 왼쪽 기본 정보 타이틀 */
+.info-title {
+    width: 200px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 오른쪽 상세 정보 */
+.info-details {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 책 기본 정보 스타일 */
+.book-info {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.book-info span {
+    margin-right: 15px;
+}
+
+/* 주제 분류 스타일 */
+.category {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #000;
+}
+
+
+
+
+
+.qna-container {
+    padding: 50px 0;
+    width: 100%;
+}
+
+/* 탭 스타일 */
+.tab-menu {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.tab.active {
+    background-color: #000;
+    color: #fff;
+}
+
+/* 버튼 그룹 */
+.qna-container .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 40px 0;
+}
+
+.qna-container .button-group a {
+    padding: 15px 20px;
+    font-size: 11px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    color: black;
+    background-color: #fff;
+}
+
+.qna-container .button-group a:hover {
+    border: 1px solid black;
+}
+
+/* Q&A 리스트 */
+.qna-list {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.qna-list .qna-item {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.qna-item div {
+    padding: 5px;
+}
+
+.qna-item .qna-index {
+    width: 50px;
+    text-align: center;
+}
+
+.qna-item .qna-user {
+    width: 120px;
+    text-align: center;
+    color: #555;
+}
+
+.qna-item .qna-date {
+    width: 150px;
+    text-align: center;
+    color: #777;
+}
+
+.qna-item .qna-views {
+    width: 50px;
+    text-align: center;
+    color: #777;
+}

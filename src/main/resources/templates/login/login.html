@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/login/login.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+  <div class="content">
+    <div class="content-head">
+      <div class="first-category">
+        <span>홈 / 로그인</span>
+      </div>
+
+      <form action="/login" method="post">
+        <h1>로그인</h1>
+        <input type="text" class="input-box" name="id" placeholder="아이디">
+        <input type="password" class="input-box" name="pw" placeholder="비밀번호">
+        <div class="checkbox-container">
+          <input type="checkbox" id="secure-login">
+          <label for="secure-login">아이디 기억</label>
+        </div>
+        <input type="submit" value="로그인" class="login-btn">
+        <div class="links">
+          <a href="/findId">아이디 찾기</a> | <a href="/findPw">비밀번호 찾기</a>
+        </div>
+        <div class="register-box">
+          <p><strong>아직 회원이 아니신가요?</strong><br>지금 회원가입을 하시면 다양한 혜택이 준비되어 있습니다.</p>
+          <a href="/register" class="register-btn">회원가입</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

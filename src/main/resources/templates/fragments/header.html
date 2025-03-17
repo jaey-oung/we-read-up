@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header th:fragment="header">
+    <div class="inner">
+        <div class="toparea">
+
+            <div class="toparea_logo">
+                <a href="/">We Read Up</a>
+            </div>
+
+            <div class="toparea_state">
+                <a href="/register">회원가입</a>
+                <a href="/login">로그인</a>
+                <a href="/myPage">마이페이지</a>
+
+                <div class="toparea_state_board">
+                    <a href="" class="dropbtn">고객센터</a>
+                    <!-- <ul id="myDropbtn" class="dropdown-content">
+                        <li><a href="#>공지사항</a></li>
+                        <li><a href="#">상품 사용후기</a></li>
+                        <li><a href="#">상품 Q&amp;A</a></li>
+                        <li><a href="#">자유게시판</a></li>
+                        <li><a href="#">갤러리</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="top_nav_box">
+            <div class="top_category">
+                <ul>
+                    <li><a href="/bookList">아우터</a></li>
+                    <li><a href="">상의</a></li>
+                    <li><a href="">하의</a></li>
+                    <li><a href="">신발</a></li>
+                    <li><a href="">악세사리</a></li>
+                </ul>
+            </div>
+
+            <form action="" method="get" class="search-container">
+                <select>
+                    <option value="all">통합검색</option>
+                    <option value="title">도서명</option>
+                    <option value="author">저자명</option>
+                </select>
+                <input type="text" placeholder="검색어를 입력하세요">
+                <button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="검색">
+                </button>
+            </form>
+
+            <div class="top_mypage">
+                <a href="/myPage">회원</a>
+                <a href="">장바구니</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

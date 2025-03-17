@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/sidebar.css">
+    <link rel="stylesheet" href="/css/myPage/coupon-list.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="content-head">
+            <div class="first-category">
+                <span>홈 / 마이쇼핑 / 마이쿠폰</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <h3>쿠폰내역</h3>
+        <hr>
+
+        <!-- 주문 내역 없음 이미지 -->
+        <div class="order-empty">
+            <img src="image.png" alt="쿠폰 없음">
+            <p>보유하고 계신 쿠폰이 없습니다.</p>
+        </div>
+
+        <div>
+            <form class="howtopag" action="/board/list" method="get">
+                <button type="submit" name="page">❮❮</button>
+                <button type="submit" name="page">❮</button>
+                <button type="submit" name="page">num</button>
+                <button type="submit" name="page">❯</button>
+                <button type="submit" name="page">❯❯</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

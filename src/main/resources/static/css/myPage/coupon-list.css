@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.content-head {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px 60px;
+}
+
+.first-category {
+    padding-top: 20px;
+    align-self: flex-end;
+}
+
+.first-category span {
+    font-size: 13px;
+    color: gray;
+}
+
+/* 메인 컨테이너 */
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+}
+
+.main-content hr {
+    margin: 20px 0 0;
+    border: 1px solid black;
+}
+
+/* 주문 내역 없음 */
+.order-empty {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.order-empty img {
+    width: 80px;
+    height: 80px;
+    opacity: 0.5;
+}
+
+.order-empty p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+form.howtopag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+form.howtopag button {
+    padding: 0 15px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: white;
+}
+
+form.howtopag button.howtopag_item_pagdisabled {
+    pointer-events: none;
+    color: #ddd;
+}
+
+form.howtopag button.howtopag_item_pagactive {
+    border: 1px solid black;
+}
+
+form.howtopag button:hover {
+    background-color: #ddd;
+}

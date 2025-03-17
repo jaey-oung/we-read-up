@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/sidebar.css">
+    <link rel="stylesheet" href="/css/myPage/like-list.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="content-head">
+            <div class="first-category">
+                <span>홈 / 마이쇼핑 / 좋아요</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <h3>좋아요</h3>
+        <hr>
+
+        <div class="wishlist-box">
+            <div class="wishlist-item">
+                <div class="left">
+                    <input type="checkbox">
+                    <div class="image-placeholder">
+                        <img src="https://via.placeholder.com/50" alt="이미지 없음">
+                    </div>
+                    <div class="product-info">
+                        <p><strong>샘플상품 1</strong></p>
+                        <p>5,000원</p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a class="btn">장바구니</a>
+                    <a class="btn black">주문하기</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-actions">
+            <div class="delete-actions">
+                <a class="btn">전체삭제</a>
+                <a class="btn">선택삭제</a>
+            </div>
+        </div>
+
+        <div class="full-order">
+            <a class="btn black">전체상품주문</a>
+        </div>
+
+        <div>
+            <form class="howtopag" action="/board/list" method="get">
+                <button type="submit" name="page">❮❮</button>
+                <button type="submit" name="page">❮</button>
+                <button type="submit" name="page">num</button>
+                <button type="submit" name="page">❯</button>
+                <button type="submit" name="page">❯❯</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

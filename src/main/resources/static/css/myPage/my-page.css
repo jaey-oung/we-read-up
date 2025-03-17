@@ -1,0 +1,209 @@
+body {
+    margin: 0;
+}
+
+.container {
+    padding: 0;
+    width: 100%;
+    zoom: 1;
+    position: relative;
+    margin: 0 auto;
+}
+
+.container .content {
+    margin: 0 60px;
+}
+
+.content-head {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.first-category {
+    padding-top: 20px;
+    align-self: flex-end;
+}
+
+.first-category span {
+    font-size: 13px;
+    color: gray;
+}
+
+.titleArea {
+    margin: 55px 0 55px;
+    text-align: center;
+}
+
+
+
+
+
+.dashboard {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.dashboard-item {
+    text-align: center;
+    text-decoration: none;
+    flex: 1;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    color: black;
+}
+
+.dashboard-item:last-child {
+    border-right: none;
+}
+
+.icon img {
+    width: 40px;
+    height: 40px;
+}
+
+.amount {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.label {
+    font-size: 14px;
+    color: #666;
+}
+
+
+
+
+
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+}
+
+.main-content h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.main-content h2 span {
+    font-size: 14px;
+    color: #888;
+}
+
+.order-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+.status {
+    text-align: center;
+    text-decoration: none;
+    flex: 1;
+    color: black;
+}
+
+.count {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.label {
+    font-size: 14px;
+    color: #666;
+}
+
+.arrow {
+    font-size: 18px;
+    color: #999;
+}
+
+/* 주문 취소, 교환, 반품 정보 */
+.order-details {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.order-details a {
+    margin: 16px 0;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+}
+
+.order-details strong {
+    font-weight: bold;
+}
+
+/* 주문 내역 조회 */
+.order-history {
+    border-top: 1px solid #000;
+    padding: 20px;
+    text-align: center;
+}
+
+.no-orders img {
+    width: 50px;
+    height: 50px;
+    opacity: 0.5;
+}
+
+.no-orders p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+form.howtopag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+form.howtopag button {
+    padding: 0 15px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: white;
+}
+
+form.howtopag button.howtopag_item_pagdisabled {
+    pointer-events: none;
+    color: #ddd;
+}
+
+form.howtopag button.howtopag_item_pagactive {
+    border: 1px solid black;
+}
+
+form.howtopag button:hover {
+    background-color: #ddd;
+}

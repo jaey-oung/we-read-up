@@ -1,0 +1,96 @@
+.footer_margin {
+    margin: 0;
+    padding: 0;
+    margin-top: 100px;
+}
+
+hr {
+    margin-bottom: 50px;
+}
+
+.footer {
+    padding: 40px 20px;
+    color: #333;
+    background-color: #eee;
+}
+
+.footer-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.footer-section {
+    margin-bottom: 30px;
+}
+
+.footer-section h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-text {
+    color: #888;
+    line-height: 1.6;
+}
+
+.sns-links {
+    margin-top: 20px;
+}
+
+.sns-links a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 10px;
+}
+
+.copyright {
+    margin-top: 20px;
+    color: #aaa;
+    font-size: 12px;
+}
+
+
+
+
+
+.bt_util {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 70px;
+    background-color: #000;
+}
+
+.bt_util ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.bt_util ul li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.bt_util ul li a {
+    display: block;
+    list-style: none;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #999;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.bt_util ul li a:hover {
+    color: white;
+}

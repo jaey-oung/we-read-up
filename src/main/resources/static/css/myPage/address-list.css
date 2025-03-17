@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.content-head {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px 60px;
+}
+
+.first-category {
+    padding-top: 20px;
+    align-self: flex-end;
+}
+
+.first-category span {
+    font-size: 13px;
+    color: gray;
+}
+
+/* 메인 컨테이너 */
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+}
+
+th {
+    background-color: #F4F4F4;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 40px;
+}
+
+.empty-icon {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 버튼 스타일 */
+.register-button {
+    display: block;
+    width: 110px;
+    margin: 20px auto;
+    padding: 15px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* 유의사항 스타일 */
+.notice h3 {
+    margin: 20px 0;
+}
+
+.notice p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
