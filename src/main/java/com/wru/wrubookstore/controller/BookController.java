@@ -22,7 +22,7 @@ public class BookController {
     BookController(BookRepository bookRepo) {this.bookRepo = bookRepo;}
 
     @GetMapping("/bookList")
-    public String bookList(String category, Integer page, Integer pageSize, Integer viewBookCnt,Model m) {
+    public String bookList(Integer page, String category, Integer viewBookCnt,Model m) {
         // 홈페이지에서 카테고리를 눌러서 들어온다.
         // 카테고리 id가 넘어오고
         // 카테고리 id로 해당 카테고리의 bookList를 보여준다.
@@ -31,15 +31,12 @@ public class BookController {
         // page가 null 이면 기본값추가
         if(page==null)
             page=1;
-//        // pageSize가 null 이면 기본값추가
-//        if(pageSize==null)
-//            pageSize=10;
         // viewBookCnt가 null 이면 기본값추가
         if(viewBookCnt==null)
             viewBookCnt=8;
         // category가 null 이면 기본값추가
         if(category==null)
-            category="cs_2";
+            category="cs_1";
 
         try{
             // 카테고리 id에 있는 책의 수를 가져온다.
@@ -61,6 +58,7 @@ public class BookController {
             // 3. Model 에 담아서 view 로 넘기기
             m.addAttribute("bph", bookPageHandler);
             m.addAttribute("list", list);
+            m.addAttribute("category", category);
         } catch(Exception e) {
             e.printStackTrace();
         }

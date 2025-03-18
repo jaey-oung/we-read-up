@@ -24,4 +24,8 @@ public class BookRepository{
     public List<BookDto> selectRegList(Map map) throws Exception{ return session.selectList(namespace + "selectRegList", map);}
     // 카테고리에 있는 책 수 조회
     public int sCategoryCnt(String category) throws Exception{ return session.selectOne(namespace + "sCategoryCnt", category);}
+    // 테스트용 insert
+    public void insert(BookDto book)  throws Exception{
+        session.insert(namespace + "insert", book);
+    }
 }

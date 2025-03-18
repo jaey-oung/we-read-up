@@ -32,4 +32,25 @@ public class BookDto {
     private String image;               // 도서의 이미지
 
     public BookDto(){}
+
+    public BookDto(String publisherId, String categorySmallId, String name, String translator, int originalPrice, BigDecimal discountPercent, int discountPrice, int salePrice, Date releaseDate, Date regDate, String tableOfContent, String description, long isbn, int stockQuantity, String size, int weight, int page, String image) {
+        this.publisherId = publisherId;
+        this.categorySmallId = categorySmallId;
+        this.name = name;
+        this.translator = translator;
+        this.originalPrice = originalPrice;
+        this.discountPercent = discountPercent;
+        this.discountPrice = discountPrice;
+        this.salePrice = salePrice;
+        this.releaseDate = releaseDate;
+        this.regDate = regDate;
+        this.tableOfContent = tableOfContent;
+        this.description = description;
+        this.isbn = isbn;
+        this.stockQuantity = stockQuantity;
+        this.size = size;
+        this.weight = weight;
+        this.page = page;
+        this.image = image;
+    }
 }
