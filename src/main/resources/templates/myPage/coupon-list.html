@@ -35,11 +35,28 @@
         <h3>쿠폰내역</h3>
         <hr>
 
-        <!-- 주문 내역 없음 이미지 -->
-        <div class="order-empty">
-            <img src="image.png" alt="쿠폰 없음">
-            <p>보유하고 계신 쿠폰이 없습니다.</p>
-        </div>
+        <table class="board-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>쿠폰명</th>
+                <th>할인</th>
+                <th>최대 할인 금액</th>
+                <th>최소 주문 금액</th>
+                <th>쿠폰 유효 기간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="coupon : ${couponList}">
+                <td th:text="${coupon.couponId}">1</td>
+                <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
+                <td th:text="${coupon.discount}">2,000</td>
+                <td th:text="${coupon.maxDiscountAmount}">0</td>
+                <td th:text="${coupon.minDiscountAmount}">15,000</td>
+                <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
+            </tr>
+            </tbody>
+        </table>
 
         <div>
             <form class="howtopag" action="/board/list" method="get">
