@@ -18,8 +18,14 @@ public class PageHandler {
     private boolean showNext;   // 다음 페이지 있는지
 
     public PageHandler(int totalCnt, int page) {
+        this(totalCnt, page, 10);
+    }
+
+    public PageHandler(int totalCnt, int page, int pageSize){
         this.totalCnt = totalCnt;
         this.page = page;
+        this.pageSize = pageSize;
+
         totalPage = (int) Math.ceil((double)totalCnt / pageSize);
         beginPage = (page - 1) / naviSize * naviSize + 1;
         endPage = Math.min(beginPage + naviSize - 1, totalPage);
