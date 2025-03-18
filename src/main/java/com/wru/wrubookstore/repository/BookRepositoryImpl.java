@@ -10,7 +10,7 @@ import java.util.Map;
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private final SqlSessionTemplate session;
-    private final String namespace = "com.wru.wrubookstore.mapper.AddressMapper.";
+    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
     public BookRepositoryImpl(SqlSessionTemplate session) {
         this.session = session;

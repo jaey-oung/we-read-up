@@ -15,4 +15,5 @@ public class AddressDto {
     private String mainAddress;
     private String detailAddress;
     private int isDefault;
+
 }

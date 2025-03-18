@@ -10,7 +10,7 @@ public class PageHandler {
     private int totalCnt;       // 게시물 수
     private int totalPage;      // 총 페이지 수
     private int page;           // 현재 페이지
-    private int pageSize;  // 페이지 크기
+    private int pageSize;       // 페이지 크기
     private int naviSize = 10;  // 페이지 바 크기
     private int beginPage;      // 첫 페이지
     private int endPage;        // 마지막 페이지
