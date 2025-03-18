@@ -2,26 +2,97 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WE READ UP 홈페이지</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/home.css">
+    <style>
+        #table {
+            margin: 0 38.784px;
+            display: none;
+        }
+        .categoryAll {
+            width: 100%;
+            text-align: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .categoryAll > td {
+            background-color: #aaaaaa;
+        }
+        .categoryHeader {
+            background-color: #333333;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
-
-
-
-
-
-<div class="container">
-    <img src="/img/main.jpg" alt="메인 이미지" height="1200px">
+<div id="table">
+    <table class="categoryAll">
+        <tr class="categoryHeader">
+            <th>분류</th>
+            <th>국내도서</th>
+            <th>해외도서</th>
+            <th>eBook</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>건강</td>
+            <td>건강</td>
+            <td>건강</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>골프</td>
+            <td>골프</td>
+            <td>골프</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>야구</td>
+            <td>야구</td>
+            <td>야구</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>여행</td>
+            <td>여행</td>
+            <td>여행</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>아시아</td>
+            <td>아시아</td>
+            <td>아시아</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>유럽</td>
+            <td>유럽</td>
+            <td>유럽</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>컴퓨터</td>
+            <td>컴퓨터</td>
+            <td>컴퓨터</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>프로그래밍 언어</td>
+            <td>프로그래밍 언어</td>
+            <td>프로그래밍 언어</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>컴퓨터 공학</td>
+            <td>컴퓨터 공학</td>
+            <td>컴퓨터 공학</td>
+        </tr>
+    </table>
 </div>
-
-
-
-
 
 <section class="sale-section">
     <div class="sale-header">
@@ -104,6 +175,21 @@
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script>
+    const navIcon = document.getElementById('nav-icon');
+    const table = document.getElementById('table');
 
+    navIcon.addEventListener('mouseover', function() {
+        table.style.display = 'block';
+    })
+
+    navIcon.addEventListener('mousedown', function() {
+        table.style.display = 'block';
+    })
+
+    navIcon.addEventListener('mouseout', function() {
+        table.style.display = 'none';
+    })
+</script>
 </body>
 </html>
