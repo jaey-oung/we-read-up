@@ -4,8 +4,25 @@
 
 <mapper namespace="com.wru.wrubookstore.mapper.AddressMapper">
     <select id="selectList" parameterType="Integer" resultType="AddressDto">
-        SELECT a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.is_default
+        SELECT a.address_id, m.member_id, a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.default_address
         FROM member m, address a
         WHERE m.member_id = a.member_id AND m.member_id = 1
     </select>
+
+    <select id="selectOne" parameterType="Integer" resultType="AddressDto">
+        SELECT *
+        FROM address
+        WHERE address_id = #{addressId}
+    </select>
+
+    <insert id="insert" parameterType="AddressDto">
+        INSERT INTO address(member_id, name, recipient, phone_num, zip_code, main_address, detail_address, default_address)
+        VALUES(#{memberId}, #{name}, #{recipient}, #{phoneNum}, #{zipCode},#{mainAddress}, #{detailAddress}, #{defaultAddress})
+    </insert>
+
+    <update id="update" parameterType="AddressDto">
+        UPDATE address
+        SET name = #{name}, recipient = #{recipient}, zip_code = #{zipCode}, main_address = #{mainAddress}, detail_address = #{detailAddress}, phone_num = #{phoneNum}, default_address = #{defaultAddress}
+        WHERE address_id = #{addressId}
+    </update>
 </mapper>
