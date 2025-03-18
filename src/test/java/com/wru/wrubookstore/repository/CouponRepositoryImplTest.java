@@ -23,4 +23,13 @@ class CouponRepositoryImplTest {
 
         assertEquals(couponDtoList.size(), 3);
     }
+
+    @Test
+    public void selectCountTest() throws Exception {
+        Integer memberId = 1;
+
+        int couponCount = couponRepository.selectCount(memberId);
+
+        assertEquals(couponCount, 3);
+    }
 }
