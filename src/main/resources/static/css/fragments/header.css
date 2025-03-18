@@ -46,40 +46,10 @@ header {
 
  .top_category {
      display: flex;
-     align-items: center;
-     gap: 30px;
+     align-items: flex-end;
+     gap: 40px;
 }
 
- #nav-icon:hover, #nav-icon:active {
-     #table {
-         display: block;
-     }
- }
-
-.top_category > ul {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-    gap: 15px;
-}
-
-.top_category > ul > li {
-    list-style: none;
-    height: 20px;
-    position: relative;
-}
-
-.top_category > ul > li > a{
-    display: block;
-    line-height: 20px;
-    list-style: none;
-    text-decoration: none;
-    color: black
-}
-
-.top_category > ul > li > a:hover{
-    color: #777;
-}
 
 .search-container {
     display: flex;
