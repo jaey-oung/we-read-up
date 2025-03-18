@@ -7,4 +7,5 @@ import java.util.List;
 public interface AddressService {
 
     List<AddressDto> selectList(Integer memberId) throws Exception;
+    int insert(AddressDto addressDto) throws Exception;
 }

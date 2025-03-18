@@ -4,12 +4,13 @@
 
 <mapper namespace="com.wru.wrubookstore.mapper.AddressMapper">
     <select id="selectList" parameterType="Integer" resultType="AddressDto">
-        SELECT a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.is_default
+        SELECT m.member_id, a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.default_address
         FROM member m, address a
         WHERE m.member_id = a.member_id AND m.member_id = 1
     </select>
 
     <insert id="insert" parameterType="AddressDto">
-
+        INSERT INTO address(member_id, name, recipient, phone_num, zip_code, main_address, detail_address, default_address)
+        VALUES(#{memberId}, #{name}, #{recipient}, #{phoneNum}, #{zipCode},#{mainAddress}, #{detailAddress}, #{defaultAddress})
     </insert>
 </mapper>

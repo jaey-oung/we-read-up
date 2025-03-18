@@ -4,8 +4,7 @@ import com.wru.wrubookstore.dto.AddressDto;
 import com.wru.wrubookstore.service.AddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,7 +38,15 @@ public class AddressController {
     }
 
     @PostMapping("/myPage/addAddress")
-    public String addAddress() {
+    public String addAddress(@ModelAttribute AddressDto addressDto) {
+        // 임의의 회원 값 입력(수정 필요)
+        addressDto.setMemberId(1);
+
+        try {
+            addressService.insert(addressDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/myPage/addressList";
     }

@@ -19,4 +19,9 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressDto> selectList(Integer memberId) throws Exception {
         return addressRepository.selectList(memberId);
     }
+
+    @Override
+    public int insert(AddressDto addressDto) throws Exception {
+        return addressRepository.insert(addressDto);
+    }
 }
