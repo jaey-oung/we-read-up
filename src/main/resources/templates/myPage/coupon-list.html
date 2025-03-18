@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/fragments/sidebar.css">
     <link rel="stylesheet" href="/css/myPage/coupon-list.css">
 </head>
@@ -59,12 +60,16 @@
         </table>
 
         <div>
-            <form class="howtopag" action="/board/list" method="get">
-                <button type="submit" name="page">❮❮</button>
-                <button type="submit" name="page">❮</button>
-                <button type="submit" name="page">num</button>
-                <button type="submit" name="page">❯</button>
-                <button type="submit" name="page">❯❯</button>
+            <form class="howtopag" action="/myPage/couponList" method="get">
+                <button type="submit" name="page" th:value="${ph.page}-10" th:class="'howtopag_item' + (${ph.page >= 1 and ph.page <= 10} ? '_pagdisabled' : '')">❮❮</button>
+                <button type="submit" name="page" th:value="${ph.page}-1" th:class="'howtopag_item' + (${ph.showPrev} ? '' : '_pagdisabled')">❮</button>
+                <th:block th:unless="${ph.endPage == 0}">
+                    <th:block th:each="num : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                        <button type="submit" name="page" th:value="${num}" th:text="${num}" th:class="'howtopag_item' + (${ph.page == num} ? '_pagactive' : '')">num</button>
+                    </th:block>
+                </th:block>
+                <button type="submit" name="page" th:value="${ph.page}+1" th:class="'howtopag_item' + (${ph.showNext} ? '' : '_pagdisabled')">❯</button>
+                <button type="submit" name="page" th:value="${ph.page}+10" th:class="'howtopag_item' + (${ph.totalPage - 10 < ph.page} ? '_pagdisabled' : '')">❯❯</button>
             </form>
         </div>
     </main>

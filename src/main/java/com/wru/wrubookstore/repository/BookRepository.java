@@ -1,19 +1,20 @@
 package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.BookDto;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class BookRepository {
-    private final SqlSessionTemplate session;
-    private final String namespace = "hello.board.board.mapper.BookMapper.";
+import java.util.List;
+import java.util.Map;
 
-    public BookRepository(SqlSessionTemplate session) {
-        this.session = session;
-    }
+public interface BookRepository {
+    // 책 번호로 한개 조회
+    BookDto select(Integer bookId) throws Exception;
 
-    public BookDto select(int book_id) {
-        return session.selectOne(namespace + "select", book_id);
-    }
+    // LIMIT로 N개 조회 category(카테고리 소), offset, limit
+    List<BookDto> selectRegList(Map map) throws Exception;
+
+    // 카테고리에 있는 책 수 조회
+    int sCategoryCnt(String category) throws Exception;
+
+    // 테스트용 insert
+    void insert(BookDto book) throws Exception;
 }

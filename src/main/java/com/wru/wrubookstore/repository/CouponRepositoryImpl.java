@@ -20,4 +20,9 @@ public class CouponRepositoryImpl implements CouponRepository {
     public List<CouponDto> selectList(Integer memberId) throws Exception {
         return session.selectList(namespace + "selectList", memberId);
     }
+
+    @Override
+    public int selectCount(Integer memberId) throws Exception {
+        return session.selectOne(namespace + "selectCount", memberId);
+    }
 }

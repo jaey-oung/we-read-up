@@ -2,11 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="hello.board.board.mapper.BookMapper">
+<mapper namespace="com.wru.wrubookstore.mapper.AddressMapper">
+    <!--  카테고리에 속한 책 들의 수  -->
+    <select id="sCategoryCnt" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM book
+        WHERE category_small_id=#{category}
+    </select>
     <!--  책 한권의 정보 조회  -->
     <select id="select" parameterType="int" resultType="BookDto">
         SELECT *
         FROM book
-        WHERE book_id=#{book_id}
+        WHERE book_id=#{bookId}
     </select>
+    <!--  책 여러권의 정보 조회 (등록순) -->
+    <select id="selectRegList" parameterType="map" resultType="BookDto">
+        SELECT *
+        FROM book
+        WHERE category_small_id=#{category}
+        ORDER BY reg_date desc
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 테스트용 -->
+    <insert id="insert" parameterType="BookDto">
+        INSERT INTO book (publisher_id, category_small_id, name, translator, original_price, discount_percent,
+                          discount_price, sale_price, release_date, reg_date, table_of_content, description, isbn,
+                          stock_quantity, size, weight, page, image)
+        VALUES (#{publisherId},#{categorySmallId},#{name},#{translator},#{originalPrice},#{discountPercent},
+                #{discountPrice},#{salePrice},#{releaseDate},#{regDate},#{tableOfContent},#{description},#{isbn},
+                #{stockQuantity},#{size},#{weight},#{page},#{image});
+    </insert>
+
 </mapper>
