@@ -36,7 +36,7 @@ public class BookController {
             viewBookCnt=8;
         // category가 null 이면 기본값추가
         if(category==null)
-            category="cs_1";
+            category="cs_2";
 
         try{
             // 카테고리 id에 있는 책의 수를 가져온다.
