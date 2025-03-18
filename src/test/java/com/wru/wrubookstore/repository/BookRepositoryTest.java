@@ -21,10 +21,10 @@ public class BookRepositoryTest {
     BookRepository book;
 
     @Test
-    public void select() {
+    public void select() throws Exception {
         BookDto b = book.select(1);
         System.out.println("b = " + b);
-        PageHandler page = new PageHandler(251, 21, 5);
+        PageHandler page = new PageHandler(251, 21, 5, 8);
         assertTrue(b.getBookId() == 1);
 
         System.out.println("page.toString() = " + page.toString());

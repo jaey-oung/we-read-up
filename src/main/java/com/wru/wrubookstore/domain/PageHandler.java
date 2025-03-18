@@ -14,13 +14,13 @@ public class PageHandler {
 
     private int bookCnt;            // 총 게시물 수
     private int totalPage;          // 총 페이지 수
-    private int nav = 5;            // 페이지바 크기
+    private int nav = 10;            // 페이지바 크기
     private int beginPage;          // 시작 페이지
     private int endPage;            // 끝 페이지
     private boolean nextPage;       // 다음 페이지가 있는지
     private boolean prevPage;       // 이전 페이지가 있는지
 
-    public PageHandler(){}      // 기본 생성자
+    public PageHandler(){}          // 기본 생성자
 
     public PageHandler(int bookCnt, int page, int pageSize, int viewBookCnt){
         this.bookCnt = bookCnt;
