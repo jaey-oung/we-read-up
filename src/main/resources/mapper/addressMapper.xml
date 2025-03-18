@@ -8,4 +8,8 @@
         FROM member m, address a
         WHERE m.member_id = a.member_id AND m.member_id = 1
     </select>
+
+    <insert id="insert" parameterType="AddressDto">
+
+    </insert>
 </mapper>

@@ -45,12 +45,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="coupon : ${couponList}">
-                <td th:text="${coupon.couponId}">1</td>
-                <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
-                <td th:text="${coupon.discount}">2,000</td>
-                <td th:text="${coupon.maxDiscountAmount}">0</td>
-                <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
+            <tr th:each="address : ${addressList}">
+                <td th:text="${address.name}"></td>
+                <td th:text="${address.recipient}"></td>
+                <td th:text="${address.phoneNum}"></td>
+                <td>([[${address.zipcode}]])[[${address.mainAddress}]] [[${address.detailAddress}]]</td>
+                <td><a href="/myPage/updateAddress">수정</a></td>
             </tr>
             </tbody>
         </table>
