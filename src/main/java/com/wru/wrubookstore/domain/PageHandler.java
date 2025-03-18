@@ -4,34 +4,27 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Getter @Setter
 @ToString
-@Getter
-@Setter
 public class PageHandler {
-    private Integer page;           // 현재 페이지
-    private Integer pageSize;       // 페이지 크기
-    private Integer viewBookCnt;    // 보여줄 책의 수
 
-    private int bookCnt;            // 총 게시물 수
-    private int totalPage;          // 총 페이지 수
-    private int nav = 10;            // 페이지바 크기
-    private int beginPage;          // 시작 페이지
-    private int endPage;            // 끝 페이지
-    private boolean nextPage;       // 다음 페이지가 있는지
-    private boolean prevPage;       // 이전 페이지가 있는지
+    private int totalCnt;
+    private int totalPage;
+    private int page;
+    private int pageSize = 10;
+    private int naviSize = 10;
+    private int beginPage;
+    private int endPage;
+    private boolean showPrev;
+    private boolean showNext;
 
-    public PageHandler(){}          // 기본 생성자
-
-    public PageHandler(int bookCnt, int page, int pageSize, int viewBookCnt){
-        this.bookCnt = bookCnt;
+    public PageHandler(int totalCnt, int page) {
+        this.totalCnt = totalCnt;
         this.page = page;
-        this.pageSize = pageSize;
-        this.viewBookCnt = viewBookCnt;
-
-        totalPage = (int)Math.ceil(bookCnt/(double)pageSize);
-        beginPage = (page-1)/pageSize*pageSize+1;
-        endPage = Math.min(beginPage+pageSize-1,totalPage);
-        nextPage = endPage < totalPage;
-        prevPage = beginPage > 1;
+        totalPage = (int) Math.ceil((double)totalCnt / pageSize);
+        beginPage = (page - 1) / naviSize * naviSize + 1;
+        endPage = Math.min(beginPage + naviSize - 1, totalPage);
+        showPrev = page != 1;
+        showNext = page != totalPage && totalPage != 0;
     }
 }
