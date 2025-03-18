@@ -16,7 +16,7 @@ class CouponRepositoryImplTest {
     CouponRepository couponRepository;
 
     @Test
-    public void selectListTest() {
+    public void selectListTest() throws Exception {
         Integer memberId = 1;
 
         List<CouponDto> couponDtoList = couponRepository.selectList(memberId);

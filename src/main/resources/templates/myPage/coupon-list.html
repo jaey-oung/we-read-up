@@ -47,13 +47,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>회원가입 축하 쿠폰</td>
-                <td>2,000</td>
-                <td>0</td>
-                <td>15,000</td>
-                <td>2025-03-12 ~ 2025-03-21</td>
+            <tr th:each="coupon : ${couponList}">
+                <td th:text="${coupon.couponId}">1</td>
+                <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
+                <td th:text="${coupon.discount}">2,000</td>
+                <td th:text="${coupon.maxDiscountAmount}">0</td>
+                <td th:text="${coupon.minDiscountAmount}">15,000</td>
+                <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
             </tr>
             </tbody>
         </table>
