@@ -20,4 +20,19 @@ public class AddressRepositoryImpl implements AddressRepository {
     public List<AddressDto> selectList(Integer memberId) throws Exception {
         return session.selectList(namespace + "selectList", memberId);
     }
+
+    @Override
+    public AddressDto selectOne(Integer addressId) throws Exception {
+        return session.selectOne(namespace + "selectOne", addressId);
+    }
+
+    @Override
+    public int insert(AddressDto addressDto) throws Exception {
+        return session.insert(namespace + "insert", addressDto);
+    }
+
+    @Override
+    public int update(AddressDto addressDto) throws Exception {
+        return session.update(namespace + "update", addressDto);
+    }
 }
