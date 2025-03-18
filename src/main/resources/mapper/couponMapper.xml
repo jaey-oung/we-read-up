@@ -8,4 +8,10 @@
         FROM member m, coupon c, member_coupon mc
         WHERE m.member_id = mc.member_id AND c.coupon_id = mc.coupon_id AND m.member_id = #{memberId}
     </select>
+
+    <select id="selectCount" parameterType="Integer" resultType="int">
+        SELECT count(*)
+        FROM member m, coupon c, member_coupon mc
+        WHERE m.member_id = mc.member_id AND c.coupon_id = mc.coupon_id AND m.member_id = #{memberId}
+    </select>
 </mapper>

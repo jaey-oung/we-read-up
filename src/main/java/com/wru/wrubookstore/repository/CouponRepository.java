@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CouponRepository {
     List<CouponDto> selectList(Integer memberId) throws Exception;
+    int selectCount(Integer memberId) throws Exception;
 }

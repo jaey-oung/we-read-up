@@ -19,4 +19,9 @@ public class CouponServiceImpl implements CouponService {
     public List<CouponDto> selectList(Integer memberId) throws Exception {
         return couponRepository.selectList(memberId);
     }
+
+    @Override
+    public int selectCount(Integer memberId) throws Exception {
+        return couponRepository.selectCount(memberId);
+    }
 }
