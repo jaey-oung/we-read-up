@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wru.wrubookstore.mapper.CouponMapper">
+    <select id="selectList" parameterType="Integer" resultType="CouponDto">
+        SELECT c.coupon_id, c.name, c.discount, c.max_discount_amount, c.min_purchase_amount, mc.reg_date, mc.end_date
+        FROM member m, coupon c, member_coupon mc
+        WHERE m.member_id = mc.member_id AND c.coupon_id = mc.coupon_id AND m.member_id = #{memberId}
+    </select>
+</mapper>
