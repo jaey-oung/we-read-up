@@ -34,22 +34,23 @@
     <main class="main-content">
         <h3>배송 주소록 관리</h3>
 
-        <table>
+        <table class="board-table">
             <thead>
             <tr>
                 <th>배송지명</th>
                 <th>수령인</th>
-                <th>휴대전화</th>
+                <th>전화번호</th>
                 <th>주소</th>
                 <th>수정</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td colspan="7" class="empty-message">
-                    <div class="empty-icon">!</div>
-                    등록된 주소가 없습니다.
-                </td>
+            <tr th:each="coupon : ${couponList}">
+                <td th:text="${coupon.couponId}">1</td>
+                <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
+                <td th:text="${coupon.discount}">2,000</td>
+                <td th:text="${coupon.maxDiscountAmount}">0</td>
+                <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
             </tr>
             </tbody>
         </table>
