@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PageHandlerTest {
 
     @Test
-    public void phTest() {
+    public void phTest1() {
         PageHandler ph = new PageHandler(101, 11);
 
         assertEquals(ph.getTotalCnt(), 101);
