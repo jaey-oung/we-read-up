@@ -28,7 +28,7 @@ public class BookController {
         if(page==null)
             page=1;
         // viewBookCnt가 null 이면 기본값추가
-        if(pageSize==null)
+        if(pageSize==null || pageSize==10)
             pageSize=8;
         // category가 null 이면 기본값추가
         if(category==null)
@@ -63,7 +63,15 @@ public class BookController {
     }
 
     @GetMapping("/bookDetail")
-    public String bookDetail() {
+    public String bookDetail(Integer bookId, Integer page, String category, Integer pageSize,Model m) {
+
+        try{
+            BookDto bookDto = bookService.select(bookId);
+            m.addAttribute("bookDto", bookDto);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
 
         return "book/book-detail";
     }

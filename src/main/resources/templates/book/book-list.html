@@ -39,7 +39,8 @@
             </div>
 
             <div class="product-grid">
-                <a th:each="item : ${list}" href="/bookDetail" class="product">
+                <!-- 쿼리 스트링으로 값 넘겨주기 -->
+                <a th:each="item : ${list}" th:href="@{'/bookDetail?bookId='+${item.bookId}+'&page='+${ph.page}+'&category='+${category}+'&pageSize='+${ph.pageSize}}" class="product">
                     <img th:src="${item.image}" th:alt="${item.name}">
                     <div class="hover-buttons">
                         <!-- 장바구니 추가 -->
@@ -76,7 +77,7 @@
         </th:block>
         <!-- 요청 넘겨주기용 input -->
         <input type="hidden" id="category" name="category" th:value="${category}"/>
-        <input type="hidden" id="viewBookCnt" name="viewBookCnt" th:value="${ph.pageSize}"/>
+        <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
     </form>
 </div>
 
