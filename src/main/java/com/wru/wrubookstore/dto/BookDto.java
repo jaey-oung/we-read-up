@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @ToString
 public class BookDto {
-    private int bookId;                 // 책 코드 PK Auto_Increment
+    private Integer bookId;             // 책 코드 PK Auto_Increment
     private String publisherId;         // 출판사 코드
     private String categorySmallId;     // 소_카테고리 코드
     private String name;                // 책 이름
