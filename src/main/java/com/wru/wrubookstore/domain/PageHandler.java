@@ -7,16 +7,15 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class PageHandler {
-
-    private int totalCnt;
-    private int totalPage;
-    private int page;
-    private int pageSize = 10;
-    private int naviSize = 10;
-    private int beginPage;
-    private int endPage;
-    private boolean showPrev;
-    private boolean showNext;
+    private int totalCnt;       // 게시물 수
+    private int totalPage;      // 총 페이지 수
+    private int page;           // 현재 페이지
+    private int pageSize = 10;  // 페이지 크기
+    private int naviSize = 10;  // 페이지 바 크기
+    private int beginPage;      // 첫 페이지
+    private int endPage;        // 마지막 페이지
+    private boolean showPrev;   // 이전 페이지 있는지
+    private boolean showNext;   // 다음 페이지 있는지
 
     public PageHandler(int totalCnt, int page) {
         this.totalCnt = totalCnt;

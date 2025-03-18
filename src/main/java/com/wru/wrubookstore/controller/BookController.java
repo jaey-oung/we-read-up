@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.domain.BookPageHandler;
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.repository.BookRepository;
@@ -30,12 +31,13 @@ public class BookController {
         // page가 null 이면 기본값추가
         if(page==null)
             page=1;
-        // pageSize가 null 이면 기본값추가
-        if(pageSize==null)
-            pageSize=10;
+//        // pageSize가 null 이면 기본값추가
+//        if(pageSize==null)
+//            pageSize=10;
         // viewBookCnt가 null 이면 기본값추가
         if(viewBookCnt==null)
             viewBookCnt=8;
+        // category가 null 이면 기본값추가
         if(category==null)
             category="cs_2";
 
@@ -43,7 +45,7 @@ public class BookController {
             // 카테고리 id에 있는 책의 수를 가져온다.
             int bookCnt = bookRepo.sCategoryCnt(category);
             // 페이지 만듬
-            PageHandler pageHandler = new PageHandler(bookCnt, page, pageSize, viewBookCnt);
+            BookPageHandler bookPageHandler = new BookPageHandler(bookCnt, page, viewBookCnt);
 
             // 2. 책 정보 날려주기
             // Map에 category, offset, limit를 put
@@ -57,7 +59,7 @@ public class BookController {
             List<BookDto> list = bookRepo.selectRegList(map);
 
             // 3. Model 에 담아서 view 로 넘기기
-            m.addAttribute("ph", pageHandler);
+            m.addAttribute("bph", bookPageHandler);
             m.addAttribute("list", list);
         } catch(Exception e) {
             e.printStackTrace();
