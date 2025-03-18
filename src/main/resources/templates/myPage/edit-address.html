@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/fragments/header.css">
+    <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/sidebar.css">
+    <link rel="stylesheet" href="/css/myPage/edit-address.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+
+
+
+
+<div class="container">
+    <div class="content">
+        <div class="content-head">
+            <div class="first-category">
+                <span>홈 / 마이쇼핑 / 배송 주소록 관리</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <!-- 사이드바 -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <form th:action="@{/myPage/editAddress/{addressId}(addressId = ${address.addressId})}" method="post">
+            <h3>배송 주소록 관리</h3>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="name">* 배송지명</label>
+                    <input type="text" id="name" name="name" th:value="${address.name}">
+                </div>
+                <div class="form-group">
+                    <label for="recipient">* 수령인 이름</label>
+                    <input type="text" id="recipient" name="recipient" th:value="${address.recipient}">
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">* 주소</label>
+                    <div class="address-group">
+                        <input type="text" id="zipCode" name="zipCode" placeholder="우편번호" th:value="${address.zipCode}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label></label>
+                    <input type="text" name="mainAddress" placeholder="기본주소" th:value="${address.mainAddress}">
+                </div>
+                <div class="form-group">
+                    <label></label>
+                    <input type="text" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)" th:value="${address.detailAddress}">
+                </div>
+                <div class="form-group">
+                    <label for="phoneNum">* 휴대전화</label>
+                    <input type="tel" id="phoneNum" name="phoneNum" th:value="${address.phoneNum}">
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="defaultAddress" name="defaultAddress" th:checked="${address.defaultAddress}">
+                    <label for="defaultAddress">기본 배송지로 저장</label>
+                </div>
+            </div>
+            <div class="btn-container">
+                <input type="submit" value="등록" class="btn black">
+                <input type="reset" value="취소" class="btn">
+            </div>
+        </form>
+    </main>
+</div>
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

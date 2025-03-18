@@ -50,7 +50,7 @@
                 <td th:text="${address.recipient}"></td>
                 <td th:text="${address.phoneNum}"></td>
                 <td>([[${address.zipCode}]])[[${address.mainAddress}]] [[${address.detailAddress}]]</td>
-                <td><a href="/myPage/updateAddress">수정</a></td>
+                <td><a th:href="@{/myPage/editAddress/{addressId}(addressId=${address.addressId})}">수정</a></td>
             </tr>
             </tbody>
         </table>

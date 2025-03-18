@@ -21,7 +21,17 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public AddressDto selectOne(Integer addressId) throws Exception {
+        return addressRepository.selectOne(addressId);
+    }
+
+    @Override
     public int insert(AddressDto addressDto) throws Exception {
         return addressRepository.insert(addressDto);
+    }
+
+    @Override
+    public int update(AddressDto addressDto) throws Exception {
+        return addressRepository.update(addressDto);
     }
 }

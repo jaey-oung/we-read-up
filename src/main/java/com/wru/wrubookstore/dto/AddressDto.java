@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 public class AddressDto {
 
+    private Integer addressId;
     private Integer memberId;
     private String name;
     private String recipient;

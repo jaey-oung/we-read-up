@@ -50,4 +50,28 @@ public class AddressController {
 
         return "redirect:/myPage/addressList";
     }
+
+    @GetMapping("/myPage/editAddress/{addressId}")
+    public String updateAddressForm(@PathVariable Integer addressId, Model model) {
+        try {
+            AddressDto addressDto = addressService.selectOne(addressId);
+
+            model.addAttribute("address", addressDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "myPage/edit-address";
+    }
+
+    @PostMapping("/myPage/editAddress/{addressId}")
+    public String updateAddress(@ModelAttribute AddressDto addressDto) {
+        try {
+            addressService.update(addressDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/myPage/addressList";
+    }
 }
