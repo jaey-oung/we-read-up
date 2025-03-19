@@ -34,8 +34,23 @@
                 <!-- 상품 정보 -->
                 <div class="product-info">
                     <h1 class="product-title" th:text="${bookDto.name}">캐시미어 베이직 니트</h1>
-                    <!-- 지은이 추가, 출판사 조인-->
-                    <p th:text="' (지은이), '+${bookDto.translator}+' (역자), '+${bookDto.publisherId}+' (출판), '+${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}">500,000원</p>
+                    <!-- 지은이 (여러명가능)추가, 출판사 조인-->
+                    <p>
+                        <!-- 지은이 -->
+                        <!-- stat.size = 전체 항목 수, stat.count 현재 항목이 몇번째인지(1부터시작) -->
+                        <span th:each="i, stat: ${writer}" style="display:inline-block">
+                            <span th:if="${stat.size != stat.count}" th:text="${i}+','"></span>
+                            <span th:if="${stat.size == stat.count}" th:text="${i}+' (지은이) |'"></span>
+                        </span>
+                        <!-- 역자 -->
+                        <span th:text="${bookDto.translator}+' (역자) |'"></span>
+                        <!-- 출판사 -->
+                        <span
+                              th:text="${publisher}+' (출판) |'">
+                        </span>
+                        <!-- 출판일 -->
+                        <span th:text="${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}"></span>
+                    </p>
 
                     <div class="addtional-info">
                         <p><strong>정가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> <span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'"></span></p>
@@ -74,14 +89,26 @@
                                 $('#total-price').text(totalPrice.toLocaleString()+"원");
                             }
 
-                            $('#quantity').change(function(){
-                               quantity = parseInt($('#quantity').val());
-                                if(quantity > 1){
-                                    updateTotal();
-                                    // 새로고침 시키기, 문자열 못들어오게 만들기
-                                    return;
+                            $('#quantity').on('input', function(){
+                                let value = $(this).val().replace(/[^0-9]/g,'');
+                                $(this).val(value);
+
+                                if(value === '' || value[0] === '0'){
+                                    value = 1;
                                 }
-                                alert("1개 이상만 주문이 가능합니다.")
+
+                                 $(this).val(value);
+
+                                quantity = parseInt(value);
+
+                                if(quantity < 1){
+                                    quantity = 1;
+                                    $(this).val(quantity);
+                                    alert("1개 이상만 주문이 가능합니다.")
+                                    // location.reload();
+                                }
+
+                                updateTotal();
                             });
 
                            $('#decrease').click(function(){
@@ -93,7 +120,7 @@
                            });
 
                            $('#increase').click(function(){
-                               if(quantity < 500){
+                               if(quantity < 1000){
                                    quantity++;
                                    $('#quantity').val(quantity);
                                    updateTotal();
