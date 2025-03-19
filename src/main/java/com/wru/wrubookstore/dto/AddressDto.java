@@ -19,7 +19,6 @@ public class AddressDto {
     private boolean defaultAddress;
 
     public AddressDto() {
-
     }
 
     public AddressDto(Integer memberId, String name, String recipient, String phoneNum, int zipCode, String mainAddress, String detailAddress, boolean defaultAddress) {

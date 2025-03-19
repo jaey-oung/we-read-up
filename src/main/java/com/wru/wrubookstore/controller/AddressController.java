@@ -43,7 +43,7 @@ public class AddressController {
         addressDto.setMemberId(1);
 
         try {
-            addressService.insert(addressDto);
+            addressService.insertAddress(addressDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
