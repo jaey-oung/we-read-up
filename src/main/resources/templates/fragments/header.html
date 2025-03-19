@@ -5,44 +5,23 @@
     <title>Title</title>
 </head>
 <body>
-
 <header th:fragment="header">
     <div class="inner">
         <div class="toparea">
-
-            <div class="toparea_logo">
-                <a href="/">We Read Up</a>
-            </div>
-
             <div class="toparea_state">
                 <a href="/register/form">회원가입</a>
                 <a href="/login">로그인</a>
                 <a href="/myPage">마이페이지</a>
-
-                <div class="toparea_state_board">
-                    <a href="" class="dropbtn">고객센터</a>
-                    <!-- <ul id="myDropbtn" class="dropdown-content">
-                        <li><a href="#>공지사항</a></li>
-                        <li><a href="#">상품 사용후기</a></li>
-                        <li><a href="#">상품 Q&amp;A</a></li>
-                        <li><a href="#">자유게시판</a></li>
-                        <li><a href="#">갤러리</a></li>
-                    </ul> -->
-                </div>
+                <a href="/customerService">고객센터</a>
             </div>
         </div>
-
         <div class="top_nav_box">
             <div class="top_category">
-                <ul>
-                    <li><a href="/bookList">아우터</a></li>
-                    <li><a href="">상의</a></li>
-                    <li><a href="">하의</a></li>
-                    <li><a href="">신발</a></li>
-                    <li><a href="">악세사리</a></li>
-                </ul>
+                <img id="nav-icon" src="img/nav-icon.png" alt="카테고리 분류" height="30px">
+                <a href="/">
+                    <img src="img/read-up-logo.png" alt="로고" height="100px">
+                </a>
             </div>
-
             <form action="" method="get" class="search-container">
                 <select>
                     <option value="all">통합검색</option>
@@ -54,14 +33,79 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="검색">
                 </button>
             </form>
-
             <div class="top_mypage">
                 <a href="/myPage">회원</a>
                 <a href="">장바구니</a>
             </div>
         </div>
     </div>
+    <div id="parent-table">
+        <div id="table">
+            <table class="categoryAll">
+                <tr class="categoryHeader">
+                    <th>분류</th>
+                    <th>국내도서</th>
+                    <th>해외도서</th>
+                    <th>eBook</th>
+                </tr>
+                <tr class="categoryMedium">
+                    <td></td>
+                    <td>건강</td>
+                    <td>건강</td>
+                    <td>건강</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>골프</td>
+                    <td>골프</td>
+                    <td>골프</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>야구</td>
+                    <td>야구</td>
+                    <td>야구</td>
+                </tr>
+                <tr class="categoryMedium">
+                    <td></td>
+                    <td>여행</td>
+                    <td>여행</td>
+                    <td>여행</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>아시아</td>
+                    <td>아시아</td>
+                    <td>아시아</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>유럽</td>
+                    <td>유럽</td>
+                    <td>유럽</td>
+                </tr>
+                <tr class="categoryMedium">
+                    <td></td>
+                    <td>컴퓨터</td>
+                    <td>컴퓨터</td>
+                    <td>컴퓨터</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>프로그래밍 언어</td>
+                    <td>프로그래밍 언어</td>
+                    <td>프로그래밍 언어</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>컴퓨터 공학</td>
+                    <td>컴퓨터 공학</td>
+                    <td>컴퓨터 공학</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="js/home.js"></script>
 </header>
-
 </body>
 </html>

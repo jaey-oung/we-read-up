@@ -2,9 +2,10 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WE READ UP 홈페이지</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/home.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
@@ -20,20 +21,73 @@
     </script>
 </head>
 <body>
-
 <div th:replace="~{fragments/header :: header}"></div>
-
-
-
-
-
-<div class="container">
-    <img src="/img/main.jpg" alt="메인 이미지" height="1200px">
+<div id="parent-table">
+    <div id="table">
+        <table class="categoryAll">
+            <tr class="categoryHeader">
+                <th>분류</th>
+                <th>국내도서</th>
+                <th>해외도서</th>
+                <th>eBook</th>
+            </tr>
+            <tr class="categoryMedium">
+                <td></td>
+                <td>건강</td>
+                <td>건강</td>
+                <td>건강</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>골프</td>
+                <td>골프</td>
+                <td>골프</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>야구</td>
+                <td>야구</td>
+                <td>야구</td>
+            </tr>
+            <tr class="categoryMedium">
+                <td></td>
+                <td>여행</td>
+                <td>여행</td>
+                <td>여행</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>아시아</td>
+                <td>아시아</td>
+                <td>아시아</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>유럽</td>
+                <td>유럽</td>
+                <td>유럽</td>
+            </tr>
+            <tr class="categoryMedium">
+                <td></td>
+                <td>컴퓨터</td>
+                <td>컴퓨터</td>
+                <td>컴퓨터</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>프로그래밍 언어</td>
+                <td>프로그래밍 언어</td>
+                <td>프로그래밍 언어</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>컴퓨터 공학</td>
+                <td>컴퓨터 공학</td>
+                <td>컴퓨터 공학</td>
+            </tr>
+        </table>
+    </div>
 </div>
-
-
-
-
 
 <section class="sale-section">
     <div class="sale-header">
@@ -87,10 +141,6 @@
     </div>
 </section>
 
-
-
-
-
 <section class="offline-shop">
     <div class="image-container">
         <img src="/img/offline-shop.png" alt="Offline Shop">
@@ -112,10 +162,7 @@
 </section>
 
 
-
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-
+<script src="js/home.js"></script>
 </body>
 </html>

@@ -5,7 +5,10 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/book/book-detail.css">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -25,39 +28,118 @@
             <div class="second-category">
                 <!-- 상품 이미지 -->
                 <div class="product-image">
-                    <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/5b1b33bf3a2c534946ba8851a67a4315.png" alt="캐시미어 베이직 니트">
+                    <img th:src="${bookDto.image}" th:alt="${bookDto.name}">
                 </div>
 
                 <!-- 상품 정보 -->
                 <div class="product-info">
-                    <h1 class="product-title">캐시미어 베이직 니트</h1>
-                    <p class="price">500,000원</p>
+                    <h1 class="product-title" th:text="${bookDto.name}">캐시미어 베이직 니트</h1>
+                    <!-- 지은이 (여러명가능)추가, 출판사 조인-->
+                    <p>
+                        <!-- 지은이 -->
+                        <!-- stat.size = 전체 항목 수, stat.count 현재 항목이 몇번째인지(1부터시작) -->
+                        <span th:each="i, stat: ${writer}" style="display:inline-block">
+                            <span th:if="${stat.size != stat.count}" th:text="${i}+','"></span>
+                            <span th:if="${stat.size == stat.count}" th:text="${i}+' (지은이) |'"></span>
+                        </span>
+                        <!-- 역자 -->
+                        <span th:text="${bookDto.translator}+' (역자) |'"></span>
+                        <!-- 출판사 -->
+                        <span
+                              th:text="${publisher}+' (출판) |'">
+                        </span>
+                        <!-- 출판일 -->
+                        <span th:text="${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}"></span>
+                    </p>
 
                     <div class="addtional-info">
-                        <p class="shipping-info"><strong>배송방법 :</strong> 택배</p>
-                        <p class="shipping-info"><strong>배송비 :</strong> 무료</p>
+                        <p><strong>정가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> <span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'"></span></p>
+                        <p><strong>판매가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <span th:text="${#numbers.formatInteger(bookDto.salePrice,3,'COMMA')}+'원'" style="font-size:23px; vertical-align: -3px;"></span>
+                            <span th:text="'('+${#numbers.formatInteger(bookDto.discountPercent*100, 0)}+'%, '+${bookDto.discountPrice}+'원 할인)'"></span>
+                        </p>
+                        <p><strong>마일리지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <span th:text="${#numbers.formatInteger(#numbers.formatInteger(bookDto.originalPrice*0.05,0),3,'COMMA')}+'원(5%) + 멤버십(최대6%)'"></span>
+                        </p>
+                        <p><strong>배송방법&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 택배</p>
+                        <p><strong>배송비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 무료</p>
+                    </div>
+
+                    <div class="addtional-info">
+<!--                        <p class="shipping-info"><strong>배송방법 :</strong> 택배</p>-->
+<!--                        <p class="shipping-info"><strong>배송비 :</strong> 무료</p>-->
 
                         <p class="product-detail">(최소 주문 수량 1개 이상)</p>
 
                         <!-- 수량 선택 -->
                         <div class="quantity-selector">
-                            <button onclick="decreaseQuantity()">-</button>
-                            <input type="text" id="quantity" value="1" readonly>
-                            <button onclick="increaseQuantity()">+</button>
+                            <button id="decrease">-</button>
+                            <input type="text" id="quantity" value="1" maxlength="3" max="100">
+                            <button id="increase">+</button>
                         </div>
                     </div>
+                    <script>
+                        $(document).ready(function (){
+                            let quantity = $("#quantity").val();
+                            parseInt(quantity);
+                            let price = parseInt($("#total-price").text().replace('원','').replace(/,/g,''));
+
+                            function updateTotal(){
+                                let totalPrice = quantity * price;
+                                $('#total-price').text(totalPrice.toLocaleString()+"원");
+                            }
+
+                            $('#quantity').on('input', function(){
+                                let value = $(this).val().replace(/[^0-9]/g,'');
+                                $(this).val(value);
+
+                                if(value === '' || value[0] === '0'){
+                                    value = 1;
+                                }
+
+                                 $(this).val(value);
+
+                                quantity = parseInt(value);
+
+                                if(quantity < 1){
+                                    quantity = 1;
+                                    $(this).val(quantity);
+                                    alert("1개 이상만 주문이 가능합니다.")
+                                    // location.reload();
+                                }
+
+                                updateTotal();
+                            });
+
+                           $('#decrease').click(function(){
+                               if(quantity > 1){
+                                   quantity--;
+                                   $('#quantity').val(quantity);
+                                   updateTotal();
+                               }
+                           });
+
+                           $('#increase').click(function(){
+                               if(quantity < 1000){
+                                   quantity++;
+                                   $('#quantity').val(quantity);
+                                   updateTotal();
+                               }
+                           });
+                           updateTotal();
+                        });
+                    </script>
 
                     <!-- 총 가격 -->
-                    <div class="total">
+                    <div class="total" id="total">
                         TOTAL (Quantity)
-                        <span class="total-price">500,000원 (1개)</span>
+                        <span class="total-price" id="total-price" th:text="${#numbers.formatInteger(bookDto.getSalePrice(), 3, 'COMMA')}+'원'">500,000원 (1개)</span>
                     </div>
-
                     <!-- 구매, 장바구니, 위시리스트 버튼 -->
                     <div class="button-group">
                         <button class="buy-now">BUY IT NOW</button>
                         <button class="cart">CART</button>
-                        <button class="wishlist">WISH LIST</button>
+                        <button class="wishlist">LIKE</button>
                     </div>
                 </div>
             </div>
@@ -165,6 +247,5 @@
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
 </html>
