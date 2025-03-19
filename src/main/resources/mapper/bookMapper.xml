@@ -15,13 +15,25 @@
         FROM book
         WHERE book_id=#{bookId}
     </select>
-    <!--  책 여러권의 정보 조회 (등록순) -->
+    <!--  책 여러권의 정보 조회 (카테고리별 등록순) -->
     <select id="selectRegList" parameterType="map" resultType="BookDto">
         SELECT *
         FROM book
         WHERE category_small_id=#{category}
-        ORDER BY reg_date desc
+        ORDER BY category_small_id desc, reg_date desc
         LIMIT #{offset}, #{limit}
+    </select>
+    <!--  책 하나의 지은이들 조회 (bookId별 지은이 -->
+    <select id="selectWriter" parameterType="int" resultType="String">
+        SELECT w.name
+        FROM writer AS w, (SELECT writer_id FROM writer_book WHERE book_id=#{bookId} ORDER BY book_id desc) AS wb
+        WHERE wb.writer_id = w.writer_id
+        ORDER BY name;
+    </select>
+    <select id="selectPublisher" parameterType="int" resultType="String">
+        SELECT p.name
+        FROM publisher AS p, (SELECT publisher_id FROM book WHERE book_id=3) AS bp
+        WHERE p.publisher_id = bp.publisher_id;
     </select>
     <!-- 테스트용 -->
     <insert id="insert" parameterType="BookDto">
