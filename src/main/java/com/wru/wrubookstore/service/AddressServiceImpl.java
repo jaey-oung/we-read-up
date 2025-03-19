@@ -38,7 +38,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public int update(AddressDto addressDto) throws Exception {
+    @Transactional
+    public int updateAddress(AddressDto addressDto) throws Exception {
+        if (addressDto.isDefaultAddress()) {
+            addressRepository.unsetDefaultAddress(addressDto.getMemberId());
+        }
+
         return addressRepository.update(addressDto);
     }
 }
