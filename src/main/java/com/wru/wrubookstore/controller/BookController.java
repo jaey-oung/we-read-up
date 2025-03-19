@@ -67,7 +67,12 @@ public class BookController {
 
         try{
             BookDto bookDto = bookService.select(bookId);
+            List<String> writer = bookService.selectWriter(bookId);
+            String publisher = bookService.selectPublisher(bookId);
+
             m.addAttribute("bookDto", bookDto);
+            m.addAttribute("writer", writer);
+            m.addAttribute("publisher", publisher);
         } catch(Exception e){
             e.printStackTrace();
         }
