@@ -43,7 +43,7 @@ public class AddressController {
         addressDto.setMemberId(1);
 
         try {
-            addressService.insert(addressDto);
+            addressService.insertAddress(addressDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +67,10 @@ public class AddressController {
     @PostMapping("/myPage/editAddress/{addressId}")
     public String updateAddress(@ModelAttribute AddressDto addressDto) {
         try {
-            addressService.update(addressDto);
+            // 임의의 회원 값 입력(로그인 구현 후 수정 필요)
+            addressDto.setMemberId(1);
+
+            addressService.updateAddress(addressDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
