@@ -47,21 +47,25 @@ public class BookServiceImpl implements BookService {
         return bookRepository.selectPublisher(bookId);
     }
 
+    //  도서 제목과 저자 이름으로 통합 검색
     @Override
     public List<BookDto> selectByAll(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByAll(sc);
     }
 
+    // 도서 제목으로 검색
     @Override
     public List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByTitle(sc);
     }
 
+    // 저자 이름으로 검색
     @Override
     public List<BookDto> selectByWriter(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByWriter(sc);
     }
 
+    // 검색 결과 개수 조회
     @Override
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return bookRepository.selectSearchCnt(sc);

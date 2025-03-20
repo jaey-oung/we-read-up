@@ -44,18 +44,22 @@ public class BookRepositoryImpl implements BookRepository {
         return session.selectOne(namespace + "selectPublisher", bookId);
     }
 
+    //  도서 제목과 저자 이름으로 통합 검색
     public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
         return session.selectList(namespace + "searchByAll", sc);
     }
 
+    // 도서 제목으로 검색
     public List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception {
         return session.selectList(namespace + "searchByTitle", sc);
     }
 
+    // 저자 이름으로 검색
     public List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception {
         return session.selectList(namespace + "searchByWriter", sc);
     }
 
+    // 검색 결과 개수 조회
     @Override
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return session.selectOne(namespace + "selectSearchCnt", sc);

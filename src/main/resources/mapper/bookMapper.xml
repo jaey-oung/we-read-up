@@ -86,17 +86,21 @@
             </otherwise>
         </choose>
     </sql>
+    <!-- 도서 제목과 저자 이름으로 통합 검색 -->
     <select id="searchByAll" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByTitle" />
         UNION
         <include refid="sql-searchByWriter" />
     </select>
+    <!-- 도서 제목으로 검색 -->
     <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByTitle" />
     </select>
+    <!-- 저자 이름으로 검색 -->
     <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByWriter" />
     </select>
+    <!-- 검색 결과 개수 조회 -->
     <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
         SELECT count(DISTINCT b.book_id)
         <include refid="sql-option-cnt" />
