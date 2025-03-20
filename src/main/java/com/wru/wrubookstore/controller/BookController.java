@@ -101,7 +101,6 @@ public class BookController {
             if(reviewCnt!=0){
                 // 리뷰들 조회
                 List<ReviewListResponse> review = reviewService.selectReview(bookId);
-                System.out.println("review = " + review);
                 m.addAttribute("review", review);
             }
 

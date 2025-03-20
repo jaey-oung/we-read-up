@@ -126,7 +126,7 @@
                 <div class="review-section">
                     <div class="info-title2" style="color:#007BFF;">리뷰</div>
 
-                    <input type="hidden" id="rating">
+                    <input type="hidden" id="rating" th:value="0">
 
                     <!-- 리뷰 작성 창 -->
                     <div class="custom-review" id="review">
@@ -244,10 +244,10 @@
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
             if (isLikeUser === 0) {
-                text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
+                $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
                 $('#isLikeUser').val(1);
             } else{
-                text('LIKE').css('background-color', '#fff');     // LIKE로 변경
+                $(this).text('LIKE').css('background-color', '#fff');     // LIKE로 변경
                 $('#isLikeUser').val(0);
             }
 
@@ -336,10 +336,6 @@
             let bookId = $('#bookId').val();
             let content = $('#content').val();
             let rating = $('#rating').val();
-            console.log(rating);
-            console.log(memberId);
-            console.log(bookId);
-            console.log(content);
 
             axios.post('/reviewInsert', {memberId, bookId, content, rating},{
                 headers: { "content-type": "application/json" }

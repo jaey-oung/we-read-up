@@ -35,7 +35,7 @@ public class ReviewController {
         System.out.println("reviewDto = " + reviewDto);
         try{
             // 내용이 없거나, 별점을 안눌렀으면 에러
-            if (reviewDto.getContent().isEmpty() || reviewDto.getRating() == null) {
+            if (reviewDto.getContent().isEmpty() || reviewDto.getRating() == 0) {
                 throw new Exception("등록 실패");
             }
             reviewService.insertReview(reviewDto);
