@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,22 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void insert(BookDto book)  throws Exception{
         session.insert(namespace + "insert", book);
+    }
+
+    public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByAll", sc);
+    }
+
+    public List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByTitle", sc);
+    }
+
+    public List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByWriter", sc);
+    }
+
+    @Override
+    public int selectSearchCnt(MainSearchCondition sc) throws Exception {
+        return session.selectOne(namespace + "selectSearchCnt", sc);
     }
 }
