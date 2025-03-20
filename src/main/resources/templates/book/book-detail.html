@@ -34,11 +34,11 @@
                     <!-- 지은이 (여러명가능)추가, 출판사 조인-->
                     <p>
                         <span th:each="i, stat: ${writer}" style="display:inline-block">
-                            <span th:if="${stat.size != stat.count}" th:text="${i}+','"></span>
+                            <span th:if="${stat.size != stat.count}" th:text="${i}+',&nbsp;'"></span>
                             <span th:if="${stat.size == stat.count}" th:text="${i}+' (지은이) |'"></span>
                         </span>
                         <span th:text="${bookDto.translator}+' (역자) |'"></span>
-                        <span th:text="${publisher}+' (출판) |'"></span>
+                        <span th:text="${publisher}+' |'"></span>
                         <span th:text="${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}"></span>
                     </p>
 
@@ -61,7 +61,7 @@
                         <!-- 수량 선택 -->
                         <div class="quantity-selector">
                             <button id="decrease">-</button>
-                            <input type="text" id="quantity" value="1" maxlength="3" max="100">
+                            <input type="text" id="quantity" value="1" maxlength="3">
                             <button id="increase">+</button>
                         </div>
                     </div>
@@ -88,39 +88,70 @@
                 <div class="info-title">기본정보</div>
                 <div class="info-details">
                     <div class="book-info">
-                        <span>216쪽</span>
-                        <span>145*210mm</span>
-                        <span>300g</span>
-                        <span>ISBN : 9788936434120</span>
+                        <span th:text="${bookDto.page}+'쪽'">216쪽</span>
+                        <span th:text="${bookDto.size}+'mm'">145*210mm</span>
+                        <span th:text="${bookDto.weight}+'g'">300g</span>
+                        <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
                     </div>
 
                     <div class="category">
-                        <p>
-                            국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                        </p>
+                        <div><span class="highlight">주제 분류</span></div>
+                        <!-- 추가 예정 -->
+                        <div >카테고리</div>
                     </div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">목차</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="book-info">
+                    <!-- 목차 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">책소개</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="book-info">
+                    <!-- 책소개 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.description}" style="color:#000000"></div>
                 </div>
             </div>
+
+            <div class="info-container">
+                <div class="info-title" style="color:#007BFF">리뷰</div>
+                <!-- 리뷰 작성 창 추가 -->
+
+                <div th:if="${reviewCnt != 0}">
+                    <div class="review-container">
+                        <div class="review" th:each="i : ${review}">
+                            <div class="review-left">
+                                <div class="rating">
+                                    <div th:each="j : ${#numbers.sequence(1, 5)}">
+                                        <div th:if="${i.rating >= j}" class="star">★</div>
+                                        <div th:if="${i.rating < j}" class="star empty">☆</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-right">
+                                <div class="review-content" th:text="${i.content}">
+                                    책 내용이 너무 알차요!
+                                </div>
+                                <div class="review-info">
+                                    <span class="review-author" th:text="${i.nickname}">이훈</span>
+                                    <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-info" th:if="${reviewCnt == 0}">
+                    <div>리뷰가 없습니다!</div>
+                </div>
+            </div>
+
+
         </div>
-    </div>
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
