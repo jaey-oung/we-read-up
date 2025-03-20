@@ -15,8 +15,8 @@ public class ReviewDto {
     private Integer memberId;   // 회원 ID
     private String content;     // 내용
     private Integer rating;     // 별점
-    private Date regDate;      // 등록일
-    private Date modDate;      // 수정일
+    private Date regDate;       // 등록일
+    private Date modDate;       // 수정일
 
     ReviewDto(){}
 
