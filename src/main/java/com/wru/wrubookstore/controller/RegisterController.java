@@ -32,7 +32,7 @@ public class RegisterController {
             int rowCnt = userService.insert(userDto);
 
             if(rowCnt != 1)
-                throw new Exception("비회원 계정이 생성 실패.");
+                throw new Exception("비회원 계정 생성 실패.");
 
             rattr.addFlashAttribute("msg", "USER_SIGNUP_OK");
         } catch (Exception e) {

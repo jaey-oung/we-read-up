@@ -26,20 +26,20 @@ class UserRepositoryImplTest {
     @Transactional
     public void insertAndSelectTest() throws Exception {
         // 모든 비회원 삭제
-        userRepository.deleteAll(0);
-        assertEquals(0, userRepository.selectAll(0).size());
-        assertEquals(0, userRepository.count(0));
+        userRepository.deleteAll();
+        assertEquals(0, userRepository.selectAll().size());
+        assertEquals(0, userRepository.count());
 
         // 비회원이 존재하지 않음
-        assertNull(userRepository.select("tester@gmail.com", 0));
+        assertNull(userRepository.select("tester@gmail.com"));
 
         // 새로운 비회원 추가
         assertEquals(1, userRepository.insert(userDto));
-        assertEquals(1, userRepository.selectAll(0).size());
-        assertEquals(1, userRepository.count(0));
+        assertEquals(1, userRepository.selectAll().size());
+        assertEquals(1, userRepository.count());
 
         // 데이터가 정상적으로 조회되는지 확인
-        UserDto selectedUser = userRepository.select("tester@gmail.com", 0);
+        UserDto selectedUser = userRepository.select("tester@gmail.com");
 
         assertNotNull(selectedUser);
         assertEquals("tester@gmail.com", selectedUser.getEmail());
@@ -52,20 +52,20 @@ class UserRepositoryImplTest {
     @Transactional
     public void updateTest() throws Exception {
         // 모든 비회원 삭제
-        userRepository.deleteAll(0);
-        assertEquals(0, userRepository.selectAll(0).size());
-        assertEquals(0, userRepository.count(0));
+        userRepository.deleteAll();
+        assertEquals(0, userRepository.selectAll().size());
+        assertEquals(0, userRepository.count());
 
         // 비회원이 존재하지 않음
-        assertNull(userRepository.select("tester@gmail.com", 0));
+        assertNull(userRepository.select("tester@gmail.com"));
 
         // 새로운 비회원 추가
         assertEquals(1, userRepository.insert(userDto));
-        assertEquals(1, userRepository.selectAll(0).size());
-        assertEquals(1, userRepository.count(0));
+        assertEquals(1, userRepository.selectAll().size());
+        assertEquals(1, userRepository.count());
 
         // 데이터가 정상적으로 조회되는지 확인
-        UserDto selectedUser = userRepository.select("tester@gmail.com", 0);
+        UserDto selectedUser = userRepository.select("tester@gmail.com");
 
         assertNotNull(selectedUser);
 
@@ -79,7 +79,7 @@ class UserRepositoryImplTest {
         assertEquals(1, userRepository.update(selectedUser));
 
         // 수정된 정보 확인
-        UserDto updatedUser = userRepository.select("tester@gmail.com", 0);
+        UserDto updatedUser = userRepository.select("tester@gmail.com");
         assertEquals("pwd2", updatedUser.getPassword());
     }
 
@@ -88,28 +88,29 @@ class UserRepositoryImplTest {
     @Transactional
     public void deleteTest() throws Exception {
         // 모든 비회원 삭제
-        userRepository.deleteAll(0);
-        assertEquals(0, userRepository.selectAll(0).size());
-        assertEquals(0, userRepository.count(0));
+        userRepository.deleteAll();
+        assertEquals(0, userRepository.selectAll().size());
+        assertEquals(0, userRepository.count());
 
         // 비회원 데이터가 존재하지 않음
-        assertNull(userRepository.select("tester@gmail.com", 0));
+        assertNull(userRepository.select("tester@gmail.com"));
 
         // 새로운 비회원 추가
         assertEquals(1, userRepository.insert(userDto));
-        assertEquals(1, userRepository.selectAll(0).size());
-        assertEquals(1, userRepository.count(0));
+        assertEquals(1, userRepository.selectAll().size());
+        assertEquals(1, userRepository.count());
 
         // 데이터가 정상적으로 조회되는지 확인
-        UserDto selectedUser = userRepository.select("tester@gmail.com", 0);
+        UserDto selectedUser = userRepository.select("tester@gmail.com");
 
         assertNotNull(selectedUser);
 
         // 해당 비회원 삭제
-        assertEquals(1, userRepository.delete("tester@gmail.com", 0));
+        assertEquals(1, userRepository.delete("tester@gmail.com"));
 
         // 삭제 결과 확인
-        selectedUser = userRepository.select("tester@gmail.com", 0);
+        selectedUser = userRepository.select("tester@gmail.com");
         assertNull(selectedUser);
     }
+
 }

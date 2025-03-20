@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>\
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <div class="content">
         <div class="content-head">
@@ -103,6 +103,6 @@
     });
 
     function displayMsg(msg) {
-        if(msg === "USER_SIGNUP_ERR") alert("비회원 계정이 생성 오류");
+        if(msg === "USER_SIGNUP_ERR") alert("비회원 계정 생성 실패");
     }
 </script>
