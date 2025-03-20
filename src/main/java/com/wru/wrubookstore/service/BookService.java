@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.service;
 
+import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 
 import java.util.List;
@@ -17,4 +18,12 @@ public interface BookService {
 
     // 테스트용 insert
     void insert(BookDto book) throws Exception;
+
+    List<BookDto> selectByAll(MainSearchCondition sc) throws Exception;
+
+    List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception;
+
+    List<BookDto> selectByWriter(MainSearchCondition sc) throws Exception;
+
+    int selectSearchCnt(MainSearchCondition sc) throws Exception;
 }
