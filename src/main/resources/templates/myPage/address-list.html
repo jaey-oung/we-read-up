@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/fragments/sidebar.css">
     <link rel="stylesheet" href="/css/myPage/address-list.css">
 </head>
@@ -34,27 +35,28 @@
     <main class="main-content">
         <h3>배송 주소록 관리</h3>
 
-        <table>
+        <table class="board-table">
             <thead>
             <tr>
                 <th>배송지명</th>
                 <th>수령인</th>
-                <th>휴대전화</th>
+                <th>전화번호</th>
                 <th>주소</th>
                 <th>수정</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td colspan="7" class="empty-message">
-                    <div class="empty-icon">!</div>
-                    등록된 주소가 없습니다.
-                </td>
+            <tr th:each="address : ${addressList}">
+                <td th:text="${address.name}"></td>
+                <td th:text="${address.recipient}"></td>
+                <td th:text="${address.phoneNum}"></td>
+                <td>([[${address.zipCode}]])[[${address.mainAddress}]] [[${address.detailAddress}]]</td>
+                <td><a th:href="@{/myPage/editAddress/{addressId}(addressId=${address.addressId})}">수정</a></td>
             </tr>
             </tbody>
         </table>
         <!-- 배송지 등록 버튼 -->
-        <a href="/myPage/addAddress" class="register-button">배송지등록</a>
+        <a href="/myPage/addAddress" class="register-button">배송지 등록</a>
         <!-- 유의사항 -->
         <div class="notice">
             <h3>배송주소록 유의사항</h3>
