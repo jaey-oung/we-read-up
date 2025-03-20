@@ -45,5 +45,64 @@
                 #{discountPrice},#{salePrice},#{releaseDate},#{regDate},#{tableOfContent},#{description},#{isbn},
                 #{stockQuantity},#{size},#{weight},#{page},#{image});
     </insert>
-
+    <sql id="sql-part-searchByTitle">
+        FROM book b
+        WHERE name LIKE concat('%', #{keyword}, '%')
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+    <sql id="sql-part-searchByWriter">
+        FROM
+            (SELECT w.*, wb.book_id
+            FROM
+                (SELECT *
+                FROM writer
+                WHERE name LIKE concat('%', #{keyword}, '%')) w, writer_book wb
+        WHERE w.writer_id = wb.writer_id) wwb, book b
+        WHERE wwb.book_id = b.book_id
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+    <sql id="sql-searchByTitle">
+        (SELECT *
+        <include refid="sql-part-searchByTitle" />)
+    </sql>
+    <sql id="sql-searchByWriter">
+        (SELECT DISTINCT b.*
+        <include refid="sql-part-searchByWriter" />)
+    </sql>
+    <sql id="sql-option-cnt">
+        <choose>
+            <when test='option=="title"'>
+                <include refid="sql-part-searchByTitle" />
+            </when>
+            <when test='option=="writer"'>
+                <include refid="sql-part-searchByWriter" />
+            </when>
+            <otherwise>
+                FROM (
+                <include refid="sql-searchByTitle"/>
+                UNION
+                <include refid="sql-searchByWriter"/>
+                ) b
+            </otherwise>
+        </choose>
+    </sql>
+    <!-- 도서 제목과 저자 이름으로 통합 검색 -->
+    <select id="searchByAll" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        UNION
+        <include refid="sql-searchByWriter" />
+    </select>
+    <!-- 도서 제목으로 검색 -->
+    <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+    </select>
+    <!-- 저자 이름으로 검색 -->
+    <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByWriter" />
+    </select>
+    <!-- 검색 결과 개수 조회 -->
+    <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
+        SELECT count(DISTINCT b.book_id)
+        <include refid="sql-option-cnt" />
+    </select>
 </mapper>
