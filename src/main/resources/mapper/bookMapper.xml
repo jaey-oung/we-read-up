@@ -23,13 +23,14 @@
         ORDER BY category_small_id desc, reg_date desc
         LIMIT #{offset}, #{limit}
     </select>
-    <!--  책 하나의 지은이들 조회 (bookId별 지은이 -->
+    <!--  책 하나의 지은이들 조회 (bookId별 지은이) -->
     <select id="selectWriter" parameterType="int" resultType="String">
         SELECT w.name
         FROM writer AS w, (SELECT writer_id FROM writer_book WHERE book_id=#{bookId} ORDER BY book_id desc) AS wb
         WHERE wb.writer_id = w.writer_id
         ORDER BY name;
     </select>
+    <!--  책 하나의 출판사 이름 -->
     <select id="selectPublisher" parameterType="int" resultType="String">
         SELECT p.name
         FROM publisher AS p, (SELECT publisher_id FROM book WHERE book_id=3) AS bp

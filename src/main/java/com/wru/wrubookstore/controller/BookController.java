@@ -3,6 +3,7 @@ package com.wru.wrubookstore.controller;
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.service.BookService;
+import com.wru.wrubookstore.service.LikeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,12 @@ import java.util.Map;
 @Controller
 public class BookController {
     private final BookService bookService;
+    private final LikeService likeService;
 
-    BookController(BookService bookService) { this.bookService = bookService; }
+    BookController(BookService bookService, LikeService likeService) {
+        this.bookService = bookService;
+        this.likeService = likeService;
+    }
 
     @GetMapping("/bookList")
     public String bookList(Integer page, String category, Integer pageSize,Model m) {
@@ -66,13 +71,29 @@ public class BookController {
     public String bookDetail(Integer bookId, Integer page, String category, Integer pageSize,Model m) {
 
         try{
+            // String id = (String)session.getAttribute("userId");
+            // User - email로 교체 예정
+            String id = "gildong@naver.com";
+
+            Map map = new HashMap();
+            map.put("bookId", bookId);
+            // member_id UserDto or MemberDto 생성 후 추가 예정
+            map.put("memberId", 1);
+
             BookDto bookDto = bookService.select(bookId);
             List<String> writer = bookService.selectWriter(bookId);
             String publisher = bookService.selectPublisher(bookId);
 
+            // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
+            int isLikeUser = likeService.selectLikeMember(map);
+
             m.addAttribute("bookDto", bookDto);
             m.addAttribute("writer", writer);
             m.addAttribute("publisher", publisher);
+            m.addAttribute("isLikeUser", isLikeUser);
+
+            System.out.println("isLikeUser = " + isLikeUser);
+            System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         } catch(Exception e){
             e.printStackTrace();
         }
