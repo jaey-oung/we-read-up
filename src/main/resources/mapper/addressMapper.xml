@@ -25,4 +25,10 @@
         SET name = #{name}, recipient = #{recipient}, zip_code = #{zipCode}, main_address = #{mainAddress}, detail_address = #{detailAddress}, phone_num = #{phoneNum}, default_address = #{defaultAddress}
         WHERE address_id = #{addressId}
     </update>
+
+    <update id="unsetDefaultAddress" parameterType="Integer">
+        UPDATE address
+        SET default_address = 0
+        WHERE member_id = #{memberId}
+    </update>
 </mapper>

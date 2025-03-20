@@ -18,26 +18,33 @@ public class BookServiceImpl implements BookService {
 
     // 책 번호로 한개 조회
     @Override
-    public BookDto select(Integer bookId) throws Exception {
+    public BookDto select(Integer bookId) throws Exception{
         return bookRepository.select(bookId);
     }
-
     // LIMIT로 N개 조회 category(카테고리 소), offset, limit
     @Override
-    public List<BookDto> selectRegList(Map map) throws Exception {
+    public List<BookDto> selectRegList(Map map) throws Exception{
         return bookRepository.selectRegList(map);
     }
-
     // 카테고리에 있는 책 수 조회
     @Override
-    public int sCategoryCnt(String category) throws Exception {
+    public int sCategoryCnt(String category) throws Exception{
         return bookRepository.sCategoryCnt(category);
     }
-
     // 테스트용 insert
     @Override
-    public void insert(BookDto book) throws Exception {
+    public void insert(BookDto book) throws Exception{
         bookRepository.insert(book);
+    }
+    // 각 책의 지은이들을 조회
+    @Override
+    public List<String> selectWriter(Integer bookId) throws Exception{
+        return bookRepository.selectWriter(bookId);
+    }
+    // 각 책의 출판사를 조회
+    @Override
+    public String selectPublisher(Integer bookId) throws Exception{
+        return bookRepository.selectPublisher(bookId);
     }
 
     @Override

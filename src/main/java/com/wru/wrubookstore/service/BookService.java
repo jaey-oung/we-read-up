@@ -19,6 +19,12 @@ public interface BookService {
     // 테스트용 insert
     void insert(BookDto book) throws Exception;
 
+    // 각 책의 지은이들을 조회
+    List<String> selectWriter(Integer bookId) throws Exception;
+
+    // 각 책의 출판사를 조회
+    String selectPublisher(Integer bookId) throws Exception;
+
     List<BookDto> selectByAll(MainSearchCondition sc) throws Exception;
 
     List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception;

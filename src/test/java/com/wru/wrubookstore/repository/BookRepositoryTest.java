@@ -30,4 +30,10 @@ public class BookRepositoryTest {
             book.insert(bookDto);
         }
     }
+
+    @Test
+    public void select2() throws Exception {
+        List<String> writer = book.selectWriter(3);
+        System.out.println("writer = " + writer);
+    }
 }

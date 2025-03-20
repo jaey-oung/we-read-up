@@ -2,29 +2,27 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원가입</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/login/register.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-
-<div th:replace="~{fragments/header :: header}"></div>
-
-
-
-
-
+<div th:replace="~{fragments/header :: header}"></div>\
 <div class="container">
     <div class="content">
         <div class="content-head">
             <div class="first-category">
                 <span>홈 / 회원가입</span>
             </div>
-
-            <form action="/register" method="post" class="second-category">
-                <h1>회원 가입</h1>
+            <div class="second-category">
+                <div class="signup-tab active" id="user-tab">비회원가입</div>
+                <div class="signup-tab" id="member-tab">회원가입</div>
+            </div>
+            <form action="/register" method="post" class="third-category">
+                <h1 id="signup-title">비회원가입</h1>
                 <div class="form-container">
                     <div class="form-group">
                         <label for="email">* 이메일</label>
@@ -42,19 +40,19 @@
                         <label for="name">* 이름</label>
                         <input type="text" id="name" name="name">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group member-field">
                         <label for="nickname">* 닉네임</label>
                         <input type="text" id="nickname" name="nickname">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group member-field">
                         <label for="phone">* 휴대전화</label>
                         <input type="tel" id="phone" name="phoneNum">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group member-field">
                         <label for="birth">* 생년월일</label>
                         <input type="date" id="birth" name="birthdate">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group member-field">
                         <label>* 성별</label>
                         <div class="radio-group">
                             <input type="radio" id="male" name="gender" value="M" checked>
@@ -73,11 +71,38 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
+<script>
+    const msg = "[[${msg}]]";
+
+    $(document).ready(function () {
+        // 초기 상태는 비회원가입 모드 (회원 관련 입력 필드 숨김)
+        $(".member-field").hide();
+        $("form").attr("action", "/register/user");
+
+        // 회원가입 유형에서 선택한 탭에만 active 클래스 추가
+        $(".signup-tab").click(function () {
+            $(".signup-tab").removeClass("active");
+            $(this).addClass("active");
+
+            // 비회원가입 탭이 선택 시
+            if ($(this).attr("id") === "user-tab") {
+                $(".member-field").hide(); // 회원 전용 입력 필드 숨김
+                $("#signup-title").text("비회원가입"); // 제목 변경
+                $("form").attr("action", "/register/user");
+            } else { // 회원가입 탭 선택 시
+                $(".member-field").show(); // 회원 전용 입력 필드 표시
+                $("#signup-title").text("회원가입"); // 제목 변경
+                $("form").attr("action", "/register/member");
+            }
+        });
+
+        displayMsg(msg);
+    });
+
+    function displayMsg(msg) {
+        if(msg === "USER_SIGNUP_ERR") alert("비회원 계정이 생성 오류");
+    }
+</script>

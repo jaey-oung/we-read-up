@@ -70,4 +70,17 @@ class AddressRepositoryImplTest {
         assertEquals(updateAddressDto.getMemberId(), 1);
         assertEquals(updateAddressDto.getName(), "학원");
     }
+
+    @Test
+    @Transactional
+    public void unsetDefaultAddressTest() throws Exception {
+        Integer memberId = 1;
+
+        int updateCnt = addressRepository.unsetDefaultAddress(memberId);
+        List<AddressDto> addressDtoList = addressRepository.selectList(memberId);
+        AddressDto addressDto = addressDtoList.getFirst();
+
+        assertEquals(updateCnt, 1);
+        assertFalse(addressDto.isDefaultAddress());
+    }
 }

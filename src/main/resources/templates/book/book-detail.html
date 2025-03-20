@@ -9,14 +9,11 @@
     <link rel="stylesheet" href="/css/book/book-detail.css">
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
-
-
-
-
 
 <div class="container">
     <div class="content">
@@ -34,8 +31,16 @@
                 <!-- 상품 정보 -->
                 <div class="product-info">
                     <h1 class="product-title" th:text="${bookDto.name}">캐시미어 베이직 니트</h1>
-                    <!-- 지은이 추가, 출판사 조인-->
-                    <p th:text="' (지은이), '+${bookDto.translator}+' (역자), '+${bookDto.publisherId}+' (출판), '+${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}">500,000원</p>
+                    <!-- 지은이 (여러명가능)추가, 출판사 조인-->
+                    <p>
+                        <span th:each="i, stat: ${writer}" style="display:inline-block">
+                            <span th:if="${stat.size != stat.count}" th:text="${i}+',&nbsp;'"></span>
+                            <span th:if="${stat.size == stat.count}" th:text="${i}+' (지은이) |'"></span>
+                        </span>
+                        <span th:text="${bookDto.translator}+' (역자) |'"></span>
+                        <span th:text="${publisher}+' |'"></span>
+                        <span th:text="${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}"></span>
+                    </p>
 
                     <div class="addtional-info">
                         <p><strong>정가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> <span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'"></span></p>
@@ -51,57 +56,15 @@
                     </div>
 
                     <div class="addtional-info">
-<!--                        <p class="shipping-info"><strong>배송방법 :</strong> 택배</p>-->
-<!--                        <p class="shipping-info"><strong>배송비 :</strong> 무료</p>-->
-
                         <p class="product-detail">(최소 주문 수량 1개 이상)</p>
 
                         <!-- 수량 선택 -->
                         <div class="quantity-selector">
                             <button id="decrease">-</button>
-                            <input type="text" id="quantity" value="1" maxlength="3" max="100">
+                            <input type="text" id="quantity" value="1" maxlength="3">
                             <button id="increase">+</button>
                         </div>
                     </div>
-                    <script>
-                        $(document).ready(function (){
-                            let quantity = $("#quantity").val();
-                            parseInt(quantity);
-                            let price = parseInt($("#total-price").text().replace('원','').replace(/,/g,''));
-
-                            function updateTotal(){
-                                let totalPrice = quantity * price;
-                                $('#total-price').text(totalPrice.toLocaleString()+"원");
-                            }
-
-                            $('#quantity').change(function(){
-                               quantity = parseInt($('#quantity').val());
-                                if(quantity > 1){
-                                    updateTotal();
-                                    // 새로고침 시키기, 문자열 못들어오게 만들기
-                                    return;
-                                }
-                                alert("1개 이상만 주문이 가능합니다.")
-                            });
-
-                           $('#decrease').click(function(){
-                               if(quantity > 1){
-                                   quantity--;
-                                   $('#quantity').val(quantity);
-                                   updateTotal();
-                               }
-                           });
-
-                           $('#increase').click(function(){
-                               if(quantity < 500){
-                                   quantity++;
-                                   $('#quantity').val(quantity);
-                                   updateTotal();
-                               }
-                           });
-                           updateTotal();
-                        });
-                    </script>
 
                     <!-- 총 가격 -->
                     <div class="total" id="total">
@@ -109,116 +72,207 @@
                         <span class="total-price" id="total-price" th:text="${#numbers.formatInteger(bookDto.getSalePrice(), 3, 'COMMA')}+'원'">500,000원 (1개)</span>
                     </div>
                     <!-- 구매, 장바구니, 위시리스트 버튼 -->
-                    <div class="button-group">
+                    <form class="button-group" id="btnForm">
                         <button class="buy-now">BUY IT NOW</button>
                         <button class="cart">CART</button>
-                        <button class="wishlist">LIKE</button>
-                    </div>
+                        <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
+                        <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
+                        <input type="hidden" id="memberId" th:value="${bookDto.bookId}"/>
+                        <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
+                    </form>
                 </div>
             </div>
         </div>
-
-
-
-
-
         <div class="third-category">
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">기본정보</div>
-
-                <!-- 오른쪽 상세 내용 -->
                 <div class="info-details">
                     <div class="book-info">
-                        <span>216쪽</span>
-                        <span>145*210mm</span>
-                        <span>300g</span>
-                        <span>ISBN : 9788936434120</span>
+                        <span th:text="${bookDto.page}+'쪽'">216쪽</span>
+                        <span th:text="${bookDto.size}+'mm'">145*210mm</span>
+                        <span th:text="${bookDto.weight}+'g'">300g</span>
+                        <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
                     </div>
 
                     <div class="category">
-                        <p>
-                            국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                        </p>
+                        <div><span class="highlight">주제 분류</span></div>
+                        <!-- 추가 예정 -->
+                        <div >카테고리</div>
                     </div>
                 </div>
             </div>
 
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">목차</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="book-info">
+                    <!-- 목차 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
                 </div>
             </div>
 
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">책소개</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="book-info">
+                    <!-- 책소개 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.description}" style="color:#000000"></div>
                 </div>
             </div>
 
-            <div class="qna-container">
-                <!-- 탭 메뉴 -->
-                <div class="tab-menu">
-                    <div class="tab active">상품후기</div>
-                    <div class="tab">상품문의</div>
-                </div>
+            <div class="info-container">
+                <div class="info-title" style="color:#007BFF">리뷰</div>
+                <!-- 리뷰 작성 창 추가 -->
 
-                <!-- 버튼 그룹 -->
-                <div class="button-group">
-                    <a href="/reviewList">LIST</a>
-                    <a href="">WRITE</a>
-                </div>
-
-                <!-- Q&A 리스트 -->
-                <div class="qna-list">
-                    <div class="qna-item">
-                        <div class="qna-index">1</div>
-                        <div class="qna-title">문의</div>
-                        <div class="qna-user">홍****</div>
-                        <div class="qna-date">2025-03-16<br>16:00:03</div>
+                <div th:if="${reviewCnt != 0}">
+                    <div class="review-container">
+                        <div class="review" th:each="i : ${review}">
+                            <div class="review-left">
+                                <div class="rating">
+                                    <div th:each="j : ${#numbers.sequence(1, 5)}">
+                                        <div th:if="${i.rating >= j}" class="star">★</div>
+                                        <div th:if="${i.rating < j}" class="star empty">☆</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-right">
+                                <div class="review-content" th:text="${i.content}">
+                                    책 내용이 너무 알차요!
+                                </div>
+                                <div class="review-info">
+                                    <span class="review-author" th:text="${i.nickname}">이훈</span>
+                                    <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="qna-container">
-                <!-- 탭 메뉴 -->
-                <div class="tab-menu">
-                    <div class="tab">상품후기</div>
-                    <div class="tab active">상품문의</div>
-                </div>
-
-                <!-- 버튼 그룹 -->
-                <div class="button-group">
-                    <a href="">LIST</a>
-                    <a href="">WRITE</a>
-                </div>
-
-                <!-- Q&A 리스트 -->
-                <div class="qna-list">
-                    <div class="qna-item">
-                        <div class="qna-index">1</div>
-                        <div class="qna-title">문의</div>
-                        <div class="qna-user">홍****</div>
-                        <div class="qna-date">2025-03-16<br>16:00:03</div>
-                    </div>
+                <div class="book-info" th:if="${reviewCnt == 0}">
+                    <div>리뷰가 없습니다!</div>
                 </div>
             </div>
+
+
         </div>
-    </div>
 </div>
 
-
-
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+    $(document).ready(function () {
+        let quantity = $("#quantity").val();
+        let price = parseInt($("#total-price").text().replace('원','').replace(/,/g,''));
+
+        function updateTotal(){
+            let totalPrice = quantity * price;
+            $('#total-price').text(totalPrice.toLocaleString()+"원");
+        }
+
+        $('#quantity').on('input', function(){
+            let value = $(this).val().replace(/[^0-9]/g,'');
+            $(this).val(value);
+
+            if(value === '' || value[0] === '0'){
+                value = 1;
+            }
+
+            $(this).val(value);
+
+            quantity = parseInt(value);
+
+            if(quantity < 1){
+                quantity = 1;
+                $(this).val(quantity);
+                alert("1개 이상만 주문이 가능합니다.")
+            }
+
+            updateTotal();
+        });
+
+        $('#decrease').click(function(){
+            if(quantity > 1){
+                quantity--;
+                $('#quantity').val(quantity);
+                updateTotal();
+            }
+        });
+
+        $('#increase').click(function(){
+            if(quantity < 999){
+                quantity++;
+                $('#quantity').val(quantity);
+                updateTotal();
+            }
+        });
+        updateTotal();
+
+        // 좋아요 버튼
+        $('#likeButton').click(function(event) {
+            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+            let bookId = $('#bookId').val();
+            let currentButton = $(this); // 현재 클릭된 버튼
+            let isLikeUser = parseInt($('#isLikeUser').val());
+            console.log(isLikeUser);
+
+            // 버튼 텍스트와 배경 색상을 즉시 변경
+            if (isLikeUser === 0) {
+                currentButton.text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
+                $('#isLikeUser').val(1);
+            } else{
+                currentButton.text('LIKE').css('background-color', '#fff');     // LIKE로 변경
+                $('#isLikeUser').val(0);
+            }
+
+            // 서버에 bookId만 전송
+            axios.post('/book/like', bookId, {
+                headers: { "content-type": "application/json" }
+            })
+                .then(function(response) {
+                    if (response.data === 'success') {
+                        // 성공 시 아무런 추가 작업 필요
+                    } else {
+                        alert('Error: ' + response.data);
+                        // 오류 발생 시 버튼을 원래 상태로 복원
+                        currentButton.text('LIKE').css('background-color', '#fff');
+                    }
+                })
+                .catch(function(error) {
+                    alert('Error: ' + error);
+                    // 오류 발생 시 버튼을 원래 상태로 복원
+                    currentButton.text('LIKE').css('background-color', '#fff');
+                });
+        });
+
+        // // 좋아요 취소 버튼
+        // $('#unlike').click(function(event) {
+        //     event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+        //     let bookId = $('#bookId').val();
+        //     let currentButton = $(this); // 현재 클릭된 버튼
+        //
+        //     // 버튼 텍스트와 배경 색상을 즉시 변경
+        //     currentButton.text('LIKE').css('background-color', '#fff');  // LIKE로 변경
+        //
+        //     // 서버에 bookId만 전송
+        //     axios.post('/book/like', bookId, {
+        //         headers: { "content-type": "application/json" }
+        //     })
+        //         .then(function(response) {
+        //             if (response.data === 'success') {
+        //                 // 성공 시 아무런 추가 작업 필요
+        //             } else {
+        //                 alert('Error: ' + response.data);
+        //                 // 오류 발생 시 버튼을 원래 상태로 복원
+        //                 currentButton.text('UNLIKE').css('background-color', 'red');
+        //             }
+        //         })
+        //         .catch(function(error) {
+        //             alert('Error: ' + error);
+        //             // 오류 발생 시 버튼을 원래 상태로 복원
+        //             currentButton.text('UNLIKE').css('background-color', 'red');
+        //         });
+        // });
+
+
+    });
+</script>
+
 </body>
 </html>

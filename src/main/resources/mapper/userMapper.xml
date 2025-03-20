@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wru.wrubookstore.mapper.UserMapper">
+    <!-- 전체 비회원 수 조회 -->
+    <select id="count" parameterType="int" resultType="int">
+        SELECT count(*)
+        FROM user
+        WHERE is_member = #{isMember}
+    </select>
+
+    <!-- 전체 비회원 목록 조회 -->
+    <select id="selectAll" parameterType="int" resultType="UserDto">
+        SELECT user_id, user_status_id, email, password, name, is_member
+        FROM user
+        WHERE is_member = #{isMember}
+    </select>
+
+    <!-- 모든 비회원 삭제 -->
+    <delete id="deleteAll" parameterType="int">
+        DELETE FROM user
+        WHERE is_member = #{isMember}
+    </delete>
+
+    <!-- 비회원 등록 -->
+    <insert id="insert" parameterType="UserDto">
+        INSERT INTO user (email, password, name)
+        VALUES (#{email}, #{password}, #{name})
+    </insert>
+
+    <!-- 특정 비회원 조회 -->
+    <select id="select" parameterType="map" resultType="UserDto">
+        SELECT user_id, user_status_id, email, password, name, is_member
+        FROM user
+        WHERE email = #{email} AND is_member = #{isMember}
+    </select>
+
+    <!-- 특정 비회원의 비밀번호 변경 -->
+    <update id="update" parameterType="UserDto">
+        UPDATE user
+        SET password = #{password}
+        WHERE email = #{email} AND is_member = #{isMember}
+    </update>
+
+    <!-- 특정 비회원 해지 -->
+    <delete id="delete" parameterType="map">
+        DELETE FROM user
+        WHERE email = #{email} AND is_member = #{isMember}
+    </delete>
+
+</mapper>

@@ -33,6 +33,16 @@ public class BookRepositoryImpl implements BookRepository {
     public void insert(BookDto book)  throws Exception{
         session.insert(namespace + "insert", book);
     }
+    // 각 책의 지은이들을 조회
+    @Override
+    public List<String> selectWriter(Integer bookId) throws Exception{
+        return session.selectList(namespace + "selectWriter", bookId);
+    }
+    // 각 책의 출판사를 조회
+    @Override
+    public String selectPublisher(Integer bookId) throws Exception{
+        return session.selectOne(namespace + "selectPublisher", bookId);
+    }
 
     public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
         return session.selectList(namespace + "searchByAll", sc);
