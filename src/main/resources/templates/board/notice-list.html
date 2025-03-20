@@ -11,10 +11,6 @@
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-
-
-
-
 <div class="container">
   <div class="content">
     <div class="content-head">
@@ -25,41 +21,66 @@
       <div class="titleArea">
         <h1>공지사항</h1>
       </div>
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        let msg = [[${msg}]];
+        if (msg === "LIST_ERR") alert("게시물 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.");
+        if (msg === "READ_ERR") alert("삭제되었거나 없는 게시물입니다.");
+        if (msg === "DEL_ERR")  alert("삭제되었거나 없는 게시물입니다.");
+
+        if (msg === "DEL_OK")   alert("성공적으로 삭제되었습니다.");
+        if (msg === "WRT_OK")   alert("성공적으로 등록되었습니다.");
+        if (msg === "MOD_OK")   alert("성공적으로 수정되었습니다.");
+        /*]]>*/
+      </script>
+
 
       <div class="board-container">
         <table class="board-table">
           <thead>
           <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회</th>
+            <th class="noticeId">번호</th>
+            <th class="title">제목</th>
+            <th class="employeeId">이름</th>
+            <th class="regDate">등록일</th>
+            <th class="viewCnt">조회수</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1</td>
-            <td><a href="/noticeDetail">몰 오픈을 축하합니다.</a></td>
-            <td>E****</td>
-            <td>2023-04-13<br>15:49:35</td>
-            <td>28</td>
+          <tr th:each="noticeDto : ${list}">
+            <td class="noticeId" th:text="${noticeDto.noticeId}"></td>
+            <td class="title">
+              <a th:href="@{/board/notice-detail(notice_id=${noticeDto.noticeId}, page=${ph.sc.page}, pageSize=${ph.sc.pageSize})}" th:text="${noticeDto.title}"></a>
+            </td>
+            <td class="employeeId" th:text="${noticeDto.employeeId}"></td>
+            <td class="regdate" th:if="${noticeDto.regDate != null and noticeDto.regDate.time >= startOfToday}">
+              <span th:text="${#dates.format(noticeDto.regDate, 'HH:mm')}"></span>
+            </td>
+            <td class="regdate" th:unless="${noticeDto.regDate != null and noticeDto.regDate.time >= startOfToday}">
+              <span th:text="${#dates.format(noticeDto.regDate, 'yyyy-MM-dd')}"></span>
+            </td>
+            <td class="viewcnt" th:text="${noticeDto.viewCnt}"></td>
           </tr>
           </tbody>
         </table>
 
         <div class="board-search">
-          <select>
-            <option>일주일</option>
-            <option>한 달</option>
-            <option>세 달</option>
-          </select>
-          <select>
-            <option>제목</option>
-            <option>작성자</option>
-          </select>
-          <input type="text" placeholder="검색어를 입력하세요">
-          <button>찾기</button>
+          <form th:action="@{/board/notice-list}" class="search-form" method="get">
+            <select class="search-option" name="option">
+              <option value="A" th:selected="${ph.sc.option == 'A' or ph.sc.option == null}">제목+내용</option>
+              <option value="T" th:selected="${ph.sc.option == 'T'}">제목만</option>
+              <option value="W" th:selected="${ph.sc.option == 'W'}">작성자</option>
+            </select>
+
+            <input type="text" name="keyword" class="search-input" th:value="${ph.sc.keyword}" placeholder="검색어를 입력해주세요">
+            <input type="submit" class="search-button" value="검색">
+          </form>
+          <button id="writeBtn" class="btn-write" onclick="location.href='/board/write'"><i class="fa fa-pencil"></i> 글쓰기</button>
+<!--          <form th:action="@{/board/write}" method="post">-->
+<!--            <button type="submit" class="btn-write">-->
+<!--              <i class="fa fa-pencil"></i> 글쓰기-->
+<!--            </button>-->
+<!--          </form>-->
         </div>
       </div>
     </div>
@@ -67,14 +88,15 @@
 </div>
 
 <div>
-  <form class="howtopag" action="/board/list" method="get">
-    <button type="submit" name="page">❮❮</button>
-    <button type="submit" name="page">❮</button>
-    <button type="submit" name="page">num</button>
-    <button type="submit" name="page">❯</button>
-    <button type="submit" name="page">❯❯</button>
+  <form class="howtopag" action="/board/notice-list" method="get">
+    <button type="submit" name="page" value="1">❮❮</button>
+    <button type="submit" name="page" th:value="${ph.sc.page - 1}" th:disabled="${ph.sc.page <= 1}">❮</button>
+    <button type="submit" name="page" th:value="${ph.sc.page}" th:text="${ph.sc.page}"></button>
+    <button type="submit" name="page" th:value="${ph.sc.page + 1}" th:disabled="${ph.sc.page >= ph.totalPage}">❯</button>
+    <button type="submit" name="page" th:value="${ph.totalPage}">❯❯</button>
   </form>
 </div>
+
 
 
 

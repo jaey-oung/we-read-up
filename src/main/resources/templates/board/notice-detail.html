@@ -6,14 +6,21 @@
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/board/notice-detail.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-
-
-
+<script>
+    let msg = [[${msg}]];
+    if(msg == "WRT_ERR") {
+        alert("게시물 등록에 실패하였습니다. 다시 시도해 주세요.");
+    }
+    if(msg == "MOD_ERR") {
+        alert("게시물 수정에 실패하였습니다. 다시 시도해 주세요.");
+    }
+</script>
 
 <div class="container">
     <div class="content">
@@ -29,27 +36,134 @@
     </div>
 </div>
 
-<div class="main-container">
-    <header>
-        <h1>물 오픈을 축하합니다.</h1>
-        <div class="post-info">
-            <span class="author">FC Hosting(cafe24)</span>
-            <span class="date">2025-03-01 13:42:17</span>
-            <span class="views">조회 1</span>
-        </div>
-    </header>
-    <div class="content">
-        <p>물 오픈을 축하합니다.</p>
-    </div>
-    <div class="button-group">
-        <button class="btn">수정</button>
-        <button class="btn">삭제</button>
-        <a href="/noticeList" class="btn right-btn">목록</a>
-    </div>
-</div>
+<div class="container">
+    <div class="main-container"><h2 class="writing-header">게시판 [[${mode == 'new' ? '글쓰기' : '읽기'}]]</h2>
+        <form id="form" class="frm" action="" method="post">
+            <input type="hidden" name="noticeId" th:value="${noticeDto != null ? noticeDto.noticeId : ''}">
 
+            <input name="title" cols="100" type="text" th:value="${noticeDto != null ? noticeDto.title : ''}"
+                   placeholder="제목을 입력해 주세요."
+                   th:readonly="${mode != 'new'}"><br>
 
+            <textarea name="content" rows="20" cols="100" placeholder="내용을 입력해 주세요."
+                      th:readonly="${mode != 'new'}"
+                      th:text="${noticeDto != null ? noticeDto.content : ''}"></textarea><br>
 
+            <!-- 글쓰기 모드일 때만 등록 버튼 보이기 -->
+            <div th:if="${mode == 'new'}">
+                <button type="button" id="writeBtn" class="btn btn-write">
+                    <i class="fa fa-pencil"></i> 등록
+                </button>
+            </div>
+
+            <!-- 글쓰기 모드가 아닐 때만 수정/삭제 버튼 보이기 -->
+            <div th:if="${mode != 'new'}">
+                <button type="button" id="modifyBtn" class="btn btn-modify">
+                    <i class="fa fa-edit"></i> 수정
+                </button>
+                <button type="button" id="removeBtn" class="btn btn-remove">
+                    <i class="fa fa-trash"></i> 삭제
+                </button>
+            </div>
+
+            <!-- 목록 버튼은 항상 보이게 -->
+            <button type="button" id="listBtn" class="btn btn-list">
+                <i class="fa fa-bars"></i> 목록
+            </button>
+        </form>
+
+        <!--    <form id="form" class="frm" action="" method="post" th:if="${noticeDto != null}">-->
+<!--        <input type="hidden" name="notice_id" th:value="${noticeDto.noticeId}">-->
+
+<!--        <input name="title" cols="100" type="text" th:value="${noticeDto.title}"  placeholder="제목을 입력해 주세요."-->
+<!--               th:readonly="${mode != 'new'}"><br>-->
+<!--        <textarea name="content" rows="20" cols="100"  placeholder=" 내용을 입력해 주세요."-->
+<!--                  th:readonly="${mode != 'new'}" th:text="${noticeDto.content}"></textarea><br>-->
+
+<!--        <div th:if="${mode == 'new'}">-->
+<!--            <button type="button" id="writeBtn" class="btn btn-write"><i class="fa fa-pencil"></i> 등록</button>-->
+<!--        </div>-->
+<!--&lt;!&ndash;        <div th:if="${mode != 'new'}">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button type="button" id="writeNewBtn" class="btn btn-write"><i class="fa fa-pencil"></i> 글쓰기</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div th:if="${noticeDto.employeeId == loginId}">&ndash;&gt;-->
+<!--            <div>-->
+<!--            <button type="button" id="modifyBtn" class="btn btn-modify"><i class="fa fa-edit"></i> 수정</button>-->
+<!--            <button type="button" id="removeBtn" class="btn btn-remove"><i class="fa fa-trash"></i> 삭제</button>-->
+<!--        </div>-->
+<!--        <button type="button" id="listBtn" class="btn btn-list"><i class="fa fa-bars"></i> 목록</button>-->
+<!--    </form>-->
+</div></div>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        let formCheck = function() {
+            let form = document.getElementById("form");
+            if(form.title.value === "") {
+                alert("제목을 입력해 주세요.");
+                form.title.focus();
+                return false;
+            }
+
+            if(form.content.value === "") {
+                alert("내용을 입력해 주세요.");
+                form.content.focus();
+                return false;
+            }
+            return true;
+        }
+
+        // searchCondition에서 queryString 추출 (Thymeleaf 인라인 사용)
+        let queryString = [[${searchCondition != null ? searchCondition.queryString : ''}]];
+
+        $("#writeNewBtn").on("click", function(){
+            location.href = '/board/write';
+        });
+
+        $("#writeBtn").on("click", function(){
+            let form = $("#form");
+            form.attr("action", '/board/write');
+            form.attr("method", "post");
+
+            if(formCheck())
+                form.submit();
+        });
+
+        $("#modifyBtn").on("click", function(){
+            let form = $("#form");
+            let isReadonly = $("input[name=title]").attr('readonly');
+
+            // 1. 읽기 상태이면, 수정 상태로 변경
+            if(isReadonly === 'readonly') {
+                $(".writing-header").html("게시판 수정");
+                $("input[name=title]").attr('readonly', false);
+                $("textarea").attr('readonly', false);
+                $("#modifyBtn").html("<i class='fa fa-pencil'></i> 등록");
+                return;
+            }
+
+            // 2. 수정 상태이면, 수정된 내용을 서버로 전송
+            form.attr("action", '/board/modify' + queryString);
+            form.attr("method", "post");
+            if(formCheck())
+                form.submit();
+        });
+
+        $("#removeBtn").on("click", function(){
+            console.log("removeBtn clicked");
+            if(!confirm("정말로 삭제하시겠습니까?")) return;
+
+            let form = $("#form");
+            form.attr("action", '/board/remove' + queryString);
+            form.attr("method", "post");
+            form.submit();
+        });
+
+        $("#listBtn").on("click", function(){
+            console.log("listBtn clicked");
+            location.href = '/board/notice-list' + queryString;
+        });
+    });
+</script>
 
 
 <div class="comment-container">
