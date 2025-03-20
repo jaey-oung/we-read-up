@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wru.wrubookstore.mapper.OrderMapper">
+    <select id="selectOrderHistory" parameterType="Map" resultType="OrderHistoryDto">
+        SELECT o.reg_date, o.order_id, u.name 'user_name', min(b.name) 'book_name', count(*) 'book_type_count', sum(ob.quantity) 'total_book_count', sum(ob.price) 'total_price'
+        FROM orders o, book b, user u, order_book ob
+        WHERE o.order_id = ob.order_id AND b.book_id = ob.book_id AND o.user_id = u.user_id
+        AND u.user_id = #{userId}
+        AND o.reg_date BETWEEN DATE_FORMAT(#{osc.startDate}, '%Y.%m.%d') AND DATE_FORMAT(#{osc.endDate}, '%Y.%m.%d')
+        <if test='osc.statusId != "A"'>
+            AND o.status_id = #{osc.statusId}
+        </if>
+        GROUP BY o.order_id
+    </select>
+</mapper>
