@@ -33,6 +33,28 @@ body {
 }
 
 .second-category {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.signup-tab {
+    flex: 1;
+    width: 120px;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.signup-tab.active {
+    background-color: #007BFF;
+    color: white;
+}
+
+.third-category {
     width: 600px;
     text-align: center;
 }

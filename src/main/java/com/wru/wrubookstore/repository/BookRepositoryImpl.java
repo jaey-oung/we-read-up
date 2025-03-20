@@ -10,7 +10,7 @@ import java.util.Map;
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private final SqlSessionTemplate session;
-    private final String namespace = "com.wru.wrubookstore.mapper.AddressMapper.";
+    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
     public BookRepositoryImpl(SqlSessionTemplate session) {
         this.session = session;
@@ -31,5 +31,15 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void insert(BookDto book)  throws Exception{
         session.insert(namespace + "insert", book);
+    }
+    // 각 책의 지은이들을 조회
+    @Override
+    public List<String> selectWriter(Integer bookId) throws Exception{
+        return session.selectList(namespace + "selectWriter", bookId);
+    }
+    // 각 책의 출판사를 조회
+    @Override
+    public String selectPublisher(Integer bookId) throws Exception{
+        return session.selectOne(namespace + "selectPublisher", bookId);
     }
 }

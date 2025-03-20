@@ -46,17 +46,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="coupon : ${couponList}">
-                <td th:text="${coupon.couponId}">1</td>
-                <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
-                <td th:text="${coupon.discount}">2,000</td>
-                <td th:text="${coupon.maxDiscountAmount}">0</td>
-                <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
+            <tr th:each="address : ${addressList}">
+                <td th:text="${address.name}"></td>
+                <td th:text="${address.recipient}"></td>
+                <td th:text="${address.phoneNum}"></td>
+                <td>([[${address.zipCode}]])[[${address.mainAddress}]] [[${address.detailAddress}]]</td>
+                <td><a th:href="@{/myPage/editAddress/{addressId}(addressId=${address.addressId})}">수정</a></td>
             </tr>
             </tbody>
         </table>
         <!-- 배송지 등록 버튼 -->
-        <a href="/myPage/addAddress" class="register-button">배송지등록</a>
+        <a href="/myPage/addAddress" class="register-button">배송지 등록</a>
         <!-- 유의사항 -->
         <div class="notice">
             <h3>배송주소록 유의사항</h3>

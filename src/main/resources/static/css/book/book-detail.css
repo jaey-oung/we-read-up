@@ -307,3 +307,71 @@ body {
     text-align: center;
     color: #777;
 }
+
+
+
+
+
+
+.review-container {
+    display: flex;
+    flex-direction: column; /* 리뷰 항목들이 세로로 쌓이도록 설정 */
+}
+
+.review {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    width: 800px;
+    position: relative;
+}
+
+.review-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 20px;
+    width: 120px;
+}
+
+.rating {
+    color: gold;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;  /* 별점이 가로로 정렬되도록 */
+}
+
+.star {
+    margin-right: 3px;
+    display: inline-block;
+}
+
+.review-right {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-content {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.review-info {
+    text-align: left;
+    font-size: 14px;
+    color: #888;
+}
+
+.review-author {
+    font-weight: bold;
+}
+
+.review-date {
+    margin-top: 5px;
+}
+
