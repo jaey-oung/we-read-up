@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 
 import java.util.List;
@@ -17,4 +18,12 @@ public interface BookRepository {
 
     // 테스트용 insert
     void insert(BookDto book) throws Exception;
+
+    List<BookDto> searchByAll(MainSearchCondition sc) throws Exception;
+
+    List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception;
+
+    List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception;
+
+    int selectSearchCnt(MainSearchCondition sc) throws Exception;
 }
