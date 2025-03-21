@@ -261,13 +261,13 @@
                 } else {
                     alert('Error: ' + response.data);
                     // 오류 발생 시 버튼을 원래 상태로 복원
-                    text('LIKE').css('background-color', '#fff');
+                    $(this).text('LIKE').css('background-color', '#fff');
                 }
             })
             .catch(function(error) {
                 alert('Error: ' + error);
                 // 오류 발생 시 버튼을 원래 상태로 복원
-                text('LIKE').css('background-color', '#fff');
+                $(this).text('LIKE').css('background-color', '#fff');
             });
         });
 
@@ -345,7 +345,16 @@
                         alert("리뷰 등록에 성공했습니다..");
                         location.reload();
                         // 성공 시 아무런 추가 작업 필요
-                    } else {
+                    } else if(response.data === 'all') {
+                        alert("리뷰 내용과 별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'rating') {
+                        alert("별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'content') {
+                        alert("내용을 입력해주세요.");
+                        location.reload();
+                    } else if(response.data === 'error') {
                         alert("리뷰 등록에 실패했습니다.");
                         location.reload();
                     }
