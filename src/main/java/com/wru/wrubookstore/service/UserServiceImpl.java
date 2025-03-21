@@ -15,18 +15,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int count(int isMember) throws Exception {
-        return userRepository.count(isMember);
+    public int count() throws Exception {
+        return userRepository.count();
     }
 
     @Override
-    public List<UserDto> selectAll(int isMember) throws Exception {
-        return userRepository.selectAll(isMember);
+    public List<UserDto> selectAll() throws Exception {
+        return userRepository.selectAll();
     }
 
     @Override
-    public void deleteAll(int isMember) throws Exception {
-        userRepository.deleteAll(isMember);
+    public void deleteAll() throws Exception {
+        userRepository.deleteAll();
     }
 
     @Override
@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto select(String email, int isMember) throws Exception {
-        return userRepository.select(email, isMember);
+    public UserDto select(String email) throws Exception {
+        return userRepository.select(email);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int delete(String email, int isMember) throws Exception {
-        return userRepository.delete(email, isMember);
+    public int delete(String email) throws Exception {
+        return userRepository.delete(email);
     }
 }

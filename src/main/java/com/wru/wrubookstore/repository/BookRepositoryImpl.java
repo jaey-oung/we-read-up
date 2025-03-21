@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,11 +11,14 @@ import java.util.Map;
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private final SqlSessionTemplate session;
-    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
     public BookRepositoryImpl(SqlSessionTemplate session) {
         this.session = session;
     }
+
+    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
+
+
 
     // 책 번호로 한개 조회
     @Override
@@ -41,5 +45,26 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public String selectPublisher(Integer bookId) throws Exception{
         return session.selectOne(namespace + "selectPublisher", bookId);
+    }
+
+    //  도서 제목과 저자 이름으로 통합 검색
+    public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByAll", sc);
+    }
+
+    // 도서 제목으로 검색
+    public List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByTitle", sc);
+    }
+
+    // 저자 이름으로 검색
+    public List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByWriter", sc);
+    }
+
+    // 검색 결과 개수 조회
+    @Override
+    public int selectSearchCnt(MainSearchCondition sc) throws Exception {
+        return session.selectOne(namespace + "selectSearchCnt", sc);
     }
 }

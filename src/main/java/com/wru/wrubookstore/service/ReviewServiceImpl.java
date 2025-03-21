@@ -36,13 +36,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     // 해당 책에 리뷰 삭제
     @Override
-    public void deleteReview(Map map) throws Exception{
-        reviewRepository.deleteReview(map);
+    public void deleteReview(ReviewDto reviewDto) throws Exception{
+        reviewRepository.deleteReview(reviewDto);
     }
 
     // 해당 책에 리뷰 수정
     @Override
-    public void modifyReview(Map map) throws Exception{
-        reviewRepository.modifyReview(map);
+    public void modifyReview(ReviewDto reviewDto) throws Exception{
+        reviewRepository.modifyReview(reviewDto);
     }
 }

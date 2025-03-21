@@ -77,7 +77,10 @@
                         <button class="cart">CART</button>
                         <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
-                        <input type="hidden" id="memberId" th:value="${bookDto.bookId}"/>
+
+                        <!-- memberId value변경 해야됨 -->
+
+                        <input type="hidden" id="memberId" th:value="${1}"/>
                         <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
                     </form>
                 </div>
@@ -86,69 +89,101 @@
         <div class="third-category">
             <div class="info-container">
                 <div class="info-title">기본정보</div>
-                <div class="info-details">
-                    <div class="book-info">
-                        <span th:text="${bookDto.page}+'쪽'">216쪽</span>
+                <div class="custom-wow">
+                    <div class="book-info2">
+                        <span th:text="${bookDto.page}+'쪽'" >216쪽</span>
                         <span th:text="${bookDto.size}+'mm'">145*210mm</span>
                         <span th:text="${bookDto.weight}+'g'">300g</span>
                         <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
                     </div>
 
-                    <div class="category">
-                        <div><span class="highlight">주제 분류</span></div>
+                    <br>
+                    <div class="book-info2">
+                        <div><strong style="color:#000000">주제 분류</strong></div>
                         <!-- 추가 예정 -->
-                        <div >카테고리</div>
+                        <div style="color:#000000">카테고리</div>
                     </div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">목차</div>
-                <div class="book-info">
+                <div class="custom-wow">
+                <div class="book-info2">
                     <!-- 목차 라인 수 제한 + 더보기 추가 -->
                     <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
+                </div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">책소개</div>
-                <div class="book-info">
+                <div class="custom-wow">
+                <div class="book-info2">
                     <!-- 책소개 라인 수 제한 + 더보기 추가 -->
                     <div th:text="${bookDto.description}" style="color:#000000"></div>
                 </div>
+                </div>
             </div>
 
-            <div class="info-container">
-                <div class="info-title" style="color:#007BFF">리뷰</div>
-                <!-- 리뷰 작성 창 추가 -->
 
-                <div th:if="${reviewCnt != 0}">
-                    <div class="review-container">
-                        <div class="review" th:each="i : ${review}">
-                            <div class="review-left">
-                                <div class="rating">
-                                    <div th:each="j : ${#numbers.sequence(1, 5)}">
-                                        <div th:if="${i.rating >= j}" class="star">★</div>
-                                        <div th:if="${i.rating < j}" class="star empty">☆</div>
+
+
+            <div class="review-container">
+                <div class="info-title" style="color:#007BFF; position:absolute">리뷰</div>
+                    <input type="hidden" id="rating" th:value="0">
+                    <!-- 리뷰 작성 창 -->
+                    <div class="custom-review" id="review" style="position:relative; left:180px">
+                        <div class="custom-review-left">
+                            <div class="custom-rating">
+                                <div class="custom-star" id="star1" data-value="1">★</div>
+                                <div class="custom-star" id="star2" data-value="2">★</div>
+                                <div class="custom-star" id="star3" data-value="3">★</div>
+                                <div class="custom-star" id="star4" data-value="4">★</div>
+                                <div class="custom-star" id="star5" data-value="5">★</div>
+                            </div>
+                        </div>
+                        <div class="custom-review-right">
+                            <textarea class="custom-review-content" placeholder="리뷰를 작성해주세요..." id="content"></textarea>
+                            <div class="custom-review-action">
+                                <button class="custom-submit-btn" id="reviewBtn">등록</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 기존 리뷰들 -->
+                    <div th:if="${reviewCnt != 0}" style="position:relative; left:180px">
+                        <div class="review-container">
+                            <div class="review" th:each="i : ${review}">
+                                <div class="review-left">
+                                    <div class="rating">
+                                        <div th:each="j : ${#numbers.sequence(1, 5)}">
+                                            <div th:if="${i.rating >= j}" class="star">★</div>
+                                            <div th:if="${i.rating < j}" class="star empty">☆</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="review-right">
-                                <div class="review-content" th:text="${i.content}">
-                                    책 내용이 너무 알차요!
-                                </div>
-                                <div class="review-info">
-                                    <span class="review-author" th:text="${i.nickname}">이훈</span>
-                                    <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                <div class="review-right">
+                                    <div class="review-content" th:text="${i.content}">
+                                        책 내용이 너무 알차요!
+                                    </div>
+                                    <div class="review-info">
+                                        <span class="review-author" th:text="${i.nickname}">이훈</span>
+                                        <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- 리뷰가 없을 때 -->
+                    <div class="book-info" th:if="${reviewCnt == 0}">
+                        <div>리뷰가 없습니다!</div>
+                    </div>
                 </div>
-                <div class="book-info" th:if="${reviewCnt == 0}">
-                    <div>리뷰가 없습니다!</div>
-                </div>
-            </div>
+
+
+
 
 
         </div>
@@ -208,16 +243,16 @@
         $('#likeButton').click(function(event) {
             event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
             let bookId = $('#bookId').val();
-            let currentButton = $(this); // 현재 클릭된 버튼
+            let {text} = $(this); // 현재 클릭된 버튼
             let isLikeUser = parseInt($('#isLikeUser').val());
             console.log(isLikeUser);
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
             if (isLikeUser === 0) {
-                currentButton.text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
+                $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
                 $('#isLikeUser').val(1);
             } else{
-                currentButton.text('LIKE').css('background-color', '#fff');     // LIKE로 변경
+                $(this).text('LIKE').css('background-color', '#fff');     // LIKE로 변경
                 $('#isLikeUser').val(0);
             }
 
@@ -225,52 +260,114 @@
             axios.post('/book/like', bookId, {
                 headers: { "content-type": "application/json" }
             })
+            .then(function(response) {
+                if (response.data === 'success') {
+                    // 성공 시 아무런 추가 작업 필요
+                } else {
+                    alert('Error: ' + response.data);
+                    // 오류 발생 시 버튼을 원래 상태로 복원
+                    $(this).text('LIKE').css('background-color', '#fff');
+                }
+            })
+            .catch(function(error) {
+                alert('Error: ' + error);
+                // 오류 발생 시 버튼을 원래 상태로 복원
+                $(this).text('LIKE').css('background-color', '#fff');
+            });
+        });
+
+        // 별점 1
+        $('#star1').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+
+            $('#star2').html('★').css('color', '#d3d3d3');
+            $('#star3').html('★').css('color', '#d3d3d3');
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 2
+        $('#star2').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+
+            $('#star3').html('★').css('color', '#d3d3d3');
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 3
+        $('#star3').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 4
+        $('#star4').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+            $('#star4').html('★').css('color', '#ff1493');
+
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 5
+        $('#star5').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+            $('#star4').html('★').css('color', '#ff1493');
+            $('#star5').html('★').css('color', '#ff1493');
+
+            $('#rating').val(star);
+        });
+
+        $('#reviewBtn').click(function(){
+            let memberId = $('#memberId').val();
+            let bookId = $('#bookId').val();
+            let content = $('#content').val();
+            let rating = $('#rating').val();
+
+            axios.post('/reviewInsert', {memberId, bookId, content, rating},{
+                headers: { "content-type": "application/json" }
+            })
                 .then(function(response) {
                     if (response.data === 'success') {
+                        alert("리뷰 등록에 성공했습니다..");
+                        location.reload();
                         // 성공 시 아무런 추가 작업 필요
-                    } else {
-                        alert('Error: ' + response.data);
-                        // 오류 발생 시 버튼을 원래 상태로 복원
-                        currentButton.text('LIKE').css('background-color', '#fff');
+                    } else if(response.data === 'all') {
+                        alert("리뷰 내용과 별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'rating') {
+                        alert("별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'content') {
+                        alert("내용을 입력해주세요.");
+                        location.reload();
+                    } else if(response.data === 'error') {
+                        alert("리뷰 등록에 실패했습니다.");
+                        location.reload();
                     }
                 })
                 .catch(function(error) {
                     alert('Error: ' + error);
-                    // 오류 발생 시 버튼을 원래 상태로 복원
-                    currentButton.text('LIKE').css('background-color', '#fff');
                 });
-        });
-
-        // // 좋아요 취소 버튼
-        // $('#unlike').click(function(event) {
-        //     event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
-        //     let bookId = $('#bookId').val();
-        //     let currentButton = $(this); // 현재 클릭된 버튼
-        //
-        //     // 버튼 텍스트와 배경 색상을 즉시 변경
-        //     currentButton.text('LIKE').css('background-color', '#fff');  // LIKE로 변경
-        //
-        //     // 서버에 bookId만 전송
-        //     axios.post('/book/like', bookId, {
-        //         headers: { "content-type": "application/json" }
-        //     })
-        //         .then(function(response) {
-        //             if (response.data === 'success') {
-        //                 // 성공 시 아무런 추가 작업 필요
-        //             } else {
-        //                 alert('Error: ' + response.data);
-        //                 // 오류 발생 시 버튼을 원래 상태로 복원
-        //                 currentButton.text('UNLIKE').css('background-color', 'red');
-        //             }
-        //         })
-        //         .catch(function(error) {
-        //             alert('Error: ' + error);
-        //             // 오류 발생 시 버튼을 원래 상태로 복원
-        //             currentButton.text('UNLIKE').css('background-color', 'red');
-        //         });
-        // });
-
-
+            })
     });
 </script>
 

@@ -17,8 +17,8 @@ public interface ReviewService {
     void insertReview(ReviewDto reviewDto) throws Exception;
 
     // 해당 책에 리뷰 삭제
-    void deleteReview(Map map) throws Exception;
+    void deleteReview(ReviewDto reviewDto) throws Exception;
 
     // 해당 책에 리뷰 수정
-    void modifyReview(Map map) throws Exception;
+    void modifyReview(ReviewDto reviewDto) throws Exception;
 }

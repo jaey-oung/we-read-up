@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 
 import java.util.List;
@@ -23,4 +24,16 @@ public interface BookRepository {
 
     // 각 책의 출판사를 조회
     String selectPublisher(Integer bookId) throws Exception;
+
+    //  도서제목과 저자 이름으로 통합 검색
+    List<BookDto> searchByAll(MainSearchCondition sc) throws Exception;
+
+    // 도서 제목으로 검색
+    List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception;
+
+    // 저자 이름으로 검색
+    List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception;
+
+    // 검색 결과 개수 조회
+    int selectSearchCnt(MainSearchCondition sc) throws Exception;
 }

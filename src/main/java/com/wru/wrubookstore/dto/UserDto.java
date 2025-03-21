@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,6 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(of = {"email", "password", "name"})
 public class UserDto {
     private Integer userId;         // 사용자 코드
     private String userStatusId;    // 사용자 상태 코드
