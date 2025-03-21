@@ -2,11 +2,11 @@ package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.UserDto;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final String namespace = "com.wru.wrubookstore.mapper.UserMapper.";
