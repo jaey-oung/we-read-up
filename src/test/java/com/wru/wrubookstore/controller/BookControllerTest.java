@@ -1,18 +1,18 @@
-package com.wru.wrubookstore.service;
+package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.repository.BookRepository;
-import com.wru.wrubookstore.repository.BookRepositoryImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@SpringBootTest
-public class BookServiceImplTest {
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+class BookControllerTest {
     @Autowired
     BookRepository book;
 
@@ -39,6 +39,5 @@ public class BookServiceImplTest {
                 "https://image.aladin.co.kr/product/32875/63/cover500/k562936112_2.jpg");
         book.insert(bookDto);
     }
-
 
 }
