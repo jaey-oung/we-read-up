@@ -51,9 +51,9 @@
             <tr th:each="coupon : ${couponList}">
                 <td th:text="${coupon.couponId}">1</td>
                 <td th:text="${coupon.name}">회원가입 축하 쿠폰</td>
-                <td th:text="${coupon.discount}">2,000</td>
-                <td th:text="${coupon.maxDiscountAmount}">0</td>
-                <td th:text="${coupon.minDiscountAmount}">15,000</td>
+                <td th:text="${coupon.discount <= 1 ? #numbers.formatInteger(coupon.discount * 100, 0) + '%' : coupon.discount + '원'}">2,000</td>
+                <td th:text="${coupon.maxDiscountAmount + '원'}">0</td>
+                <td th:text="${coupon.minDiscountAmount == 0 ? '-' : coupon.minDiscountAmount}">15,000</td>
                 <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]] ~ [[${#dates.format(coupon.endDate, 'yyyy-MM-dd')}]]</td>
             </tr>
             </tbody>
