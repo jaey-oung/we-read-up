@@ -8,7 +8,14 @@ import lombok.ToString;
 @Setter
 @ToString
 public class LikeDto {
-    private Integer LikeId;
-    private Integer BookId;
-    private Integer UserId;
+    private Integer likeId;
+    private Integer bookId;
+    private Integer memberId;
+
+    public LikeDto(){}
+
+    public LikeDto(Integer bookId, Integer memberId) {
+        this.bookId = bookId;
+        this.memberId = memberId;
+    }
 }

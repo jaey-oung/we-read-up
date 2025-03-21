@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.dto.LikeDto;
 import com.wru.wrubookstore.repository.LikeRepository;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
@@ -42,19 +43,16 @@ public class likeController {
             // User - email로 교체 예정
             String id = "gildong@naver.com";
 
-            Map map = new HashMap();
-            map.put("bookId", bookId);
-            // member_id UserDto or MemberDto 생성 후 추가 예정
-            map.put("memberId", 1);
+            LikeDto likeDto = new LikeDto(bookId, 1);
 
-            int isLikeUser = likeService.selectLikeMember(map);
+            int isLikeUser = likeService.selectLikeMember(likeDto);
             m.addAttribute("isLikeUser", isLikeUser);
 
             // member_id가 book_id를 like하지 않음 - like 추가
             if (isLikeUser == 0) {
-                likeService.insertLike(map);
-            } else if (isLikeUser == 1) {
-                likeService.deleteLike(map);
+                likeService.insertLike(likeDto);
+            } else {
+                likeService.deleteLike(likeDto);
             }
 
             System.out.println("isLikeUser = " + isLikeUser);

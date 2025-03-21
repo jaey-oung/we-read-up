@@ -38,14 +38,14 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     // 해당 책에 리뷰 삭제
     @Override
-    public void deleteReview(Map map) throws Exception{
-        session.delete(namespace + "deleteReview", map);
+    public void deleteReview(ReviewDto reviewDto) throws Exception{
+        session.delete(namespace + "deleteReview", reviewDto);
     }
 
     // 해당 책에 리뷰 수정
     @Override
-    public void modifyReview(Map map) throws Exception{
-        session.update(namespace + "modifyReview", map);
+    public void modifyReview(ReviewDto reviewDto) throws Exception{
+        session.update(namespace + "modifyReview", reviewDto);
     }
 
 }

@@ -89,47 +89,51 @@
         <div class="third-category">
             <div class="info-container">
                 <div class="info-title">기본정보</div>
-                <div class="info-details">
-                    <div class="book-info">
-                        <span th:text="${bookDto.page}+'쪽'">216쪽</span>
+                <div class="custom-wow">
+                    <div class="book-info2">
+                        <span th:text="${bookDto.page}+'쪽'" >216쪽</span>
                         <span th:text="${bookDto.size}+'mm'">145*210mm</span>
                         <span th:text="${bookDto.weight}+'g'">300g</span>
                         <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
                     </div>
 
-                    <div class="category">
-                        <div><span class="highlight">주제 분류</span></div>
+                    <br>
+                    <div class="book-info2">
+                        <div><strong style="color:#000000">주제 분류</strong></div>
                         <!-- 추가 예정 -->
-                        <div >카테고리</div>
+                        <div style="color:#000000">카테고리</div>
                     </div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">목차</div>
-                <div class="book-info">
+                <div class="custom-wow">
+                <div class="book-info2">
                     <!-- 목차 라인 수 제한 + 더보기 추가 -->
                     <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
+                </div>
                 </div>
             </div>
 
             <div class="info-container">
                 <div class="info-title">책소개</div>
-                <div class="book-info">
+                <div class="custom-wow">
+                <div class="book-info2">
                     <!-- 책소개 라인 수 제한 + 더보기 추가 -->
                     <div th:text="${bookDto.description}" style="color:#000000"></div>
+                </div>
                 </div>
             </div>
 
 
-            <div class="info-container">
-                <div class="review-section">
-                    <div class="info-title2" style="color:#007BFF;">리뷰</div>
 
+
+            <div class="review-container">
+                <div class="info-title" style="color:#007BFF; position:absolute">리뷰</div>
                     <input type="hidden" id="rating" th:value="0">
-
                     <!-- 리뷰 작성 창 -->
-                    <div class="custom-review" id="review">
+                    <div class="custom-review" id="review" style="position:relative; left:180px">
                         <div class="custom-review-left">
                             <div class="custom-rating">
                                 <div class="custom-star" id="star1" data-value="1">★</div>
@@ -148,7 +152,7 @@
                     </div>
 
                     <!-- 기존 리뷰들 -->
-                    <div th:if="${reviewCnt != 0}">
+                    <div th:if="${reviewCnt != 0}" style="position:relative; left:180px">
                         <div class="review-container">
                             <div class="review" th:each="i : ${review}">
                                 <div class="review-left">
@@ -177,7 +181,8 @@
                         <div>리뷰가 없습니다!</div>
                     </div>
                 </div>
-            </div>
+
+
 
 
 
@@ -261,13 +266,13 @@
                 } else {
                     alert('Error: ' + response.data);
                     // 오류 발생 시 버튼을 원래 상태로 복원
-                    text('LIKE').css('background-color', '#fff');
+                    $(this).text('LIKE').css('background-color', '#fff');
                 }
             })
             .catch(function(error) {
                 alert('Error: ' + error);
                 // 오류 발생 시 버튼을 원래 상태로 복원
-                text('LIKE').css('background-color', '#fff');
+                $(this).text('LIKE').css('background-color', '#fff');
             });
         });
 
@@ -345,7 +350,16 @@
                         alert("리뷰 등록에 성공했습니다..");
                         location.reload();
                         // 성공 시 아무런 추가 작업 필요
-                    } else {
+                    } else if(response.data === 'all') {
+                        alert("리뷰 내용과 별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'rating') {
+                        alert("별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'content') {
+                        alert("내용을 입력해주세요.");
+                        location.reload();
+                    } else if(response.data === 'error') {
                         alert("리뷰 등록에 실패했습니다.");
                         location.reload();
                     }
