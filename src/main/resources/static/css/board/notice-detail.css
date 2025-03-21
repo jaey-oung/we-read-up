@@ -11,7 +11,8 @@ body {
 }
 
 .container .content {
-    margin: 0 60px;
+    margin: 0 auto; /* 수정: 중앙 정렬 */
+    max-width: 1200px; /* 선택 사항: 최대 너비 설정 */
 }
 
 .content-head {
@@ -44,6 +45,8 @@ body {
     background-color: white;
     border-radius: 4px;
     overflow: hidden;
+    width: 80%; /* 수정: 너비 설정 */
+    margin: 20px auto; /* 수정: 중앙 정렬 및 상하 여백 추가 */
 }
 
 .main-container header {
@@ -103,6 +106,7 @@ body {
     margin: 0 auto;
     background-color: #fff;
     padding: 20px;
+    width: 80%; /* main-container와 동일한 너비 설정 */
 }
 
 .comment {

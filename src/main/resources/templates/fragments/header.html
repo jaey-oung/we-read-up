@@ -17,18 +17,19 @@
         </div>
         <div class="top_nav_box">
             <div class="top_category">
-                <img id="nav-icon" src="img/nav-icon.png" alt="카테고리 분류" height="30px">
+                <img id="nav-icon" src="/img/nav-icon.png" alt="카테고리 분류" height="30px">
                 <a href="/">
-                    <img src="img/read-up-logo.png" alt="로고" height="100px">
+                    <img src="/img/read-up-logo.png" alt="로고" height="100px">
                 </a>
             </div>
-            <form action="" method="get" class="search-container">
-                <select>
-                    <option value="all">통합검색</option>
-                    <option value="title">도서명</option>
-                    <option value="author">저자명</option>
+            <form action="/bookList" method="get" class="search-container">
+                <select th:name="option">
+                    <option th:value="'all'" th:selected="${sc?.option} == 'all'">통합검색</option>
+                    <option th:value="'title'" th:selected="${sc?.option} == 'title'">도서명</option>
+                    <option th:value="'writer'" th:selected="${sc?.option} == 'writer'">저자명</option>
                 </select>
-                <input type="text" placeholder="검색어를 입력하세요">
+
+                <input type="text" placeholder="검색어를 입력하세요" th:name="keyword" th:value="${sc?.keyword != null ? sc.keyword : ''}">
                 <button>
                     <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="검색">
                 </button>
@@ -105,7 +106,7 @@
             </table>
         </div>
     </div>
-    <script src="js/home.js"></script>
+    <script src="/js/home.js"></script>
 </header>
 </body>
 </html>

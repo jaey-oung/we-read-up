@@ -23,13 +23,14 @@
         ORDER BY category_small_id desc, reg_date desc
         LIMIT #{offset}, #{limit}
     </select>
-    <!--  책 하나의 지은이들 조회 (bookId별 지은이 -->
+    <!--  책 하나의 지은이들 조회 (bookId별 지은이) -->
     <select id="selectWriter" parameterType="int" resultType="String">
         SELECT w.name
         FROM writer AS w, (SELECT writer_id FROM writer_book WHERE book_id=#{bookId} ORDER BY book_id desc) AS wb
         WHERE wb.writer_id = w.writer_id
         ORDER BY name;
     </select>
+    <!--  책 하나의 출판사 이름 -->
     <select id="selectPublisher" parameterType="int" resultType="String">
         SELECT p.name
         FROM publisher AS p, (SELECT publisher_id FROM book WHERE book_id=3) AS bp
@@ -44,5 +45,64 @@
                 #{discountPrice},#{salePrice},#{releaseDate},#{regDate},#{tableOfContent},#{description},#{isbn},
                 #{stockQuantity},#{size},#{weight},#{page},#{image});
     </insert>
-
+    <sql id="sql-part-searchByTitle">
+        FROM book b
+        WHERE name LIKE concat('%', #{keyword}, '%')
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+    <sql id="sql-part-searchByWriter">
+        FROM
+            (SELECT w.*, wb.book_id
+            FROM
+                (SELECT *
+                FROM writer
+                WHERE name LIKE concat('%', #{keyword}, '%')) w, writer_book wb
+        WHERE w.writer_id = wb.writer_id) wwb, book b
+        WHERE wwb.book_id = b.book_id
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+    <sql id="sql-searchByTitle">
+        (SELECT *
+        <include refid="sql-part-searchByTitle" />)
+    </sql>
+    <sql id="sql-searchByWriter">
+        (SELECT DISTINCT b.*
+        <include refid="sql-part-searchByWriter" />)
+    </sql>
+    <sql id="sql-option-cnt">
+        <choose>
+            <when test='option=="title"'>
+                <include refid="sql-part-searchByTitle" />
+            </when>
+            <when test='option=="writer"'>
+                <include refid="sql-part-searchByWriter" />
+            </when>
+            <otherwise>
+                FROM (
+                <include refid="sql-searchByTitle"/>
+                UNION
+                <include refid="sql-searchByWriter"/>
+                ) b
+            </otherwise>
+        </choose>
+    </sql>
+    <!-- 도서 제목과 저자 이름으로 통합 검색 -->
+    <select id="searchByAll" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        UNION
+        <include refid="sql-searchByWriter" />
+    </select>
+    <!-- 도서 제목으로 검색 -->
+    <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+    </select>
+    <!-- 저자 이름으로 검색 -->
+    <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByWriter" />
+    </select>
+    <!-- 검색 결과 개수 조회 -->
+    <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
+        SELECT count(DISTINCT b.book_id)
+        <include refid="sql-option-cnt" />
+    </select>
 </mapper>
