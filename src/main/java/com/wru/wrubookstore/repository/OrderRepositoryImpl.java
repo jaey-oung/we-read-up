@@ -1,5 +1,7 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.dto.OrderBookDto;
+import com.wru.wrubookstore.dto.OrderDto;
 import com.wru.wrubookstore.dto.OrderHistoryDto;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -25,5 +27,15 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public int selectOrderCnt(Map<String, Object> map) throws Exception {
         return session.selectOne(namespace + "selectOrderCnt", map);
+    }
+
+    @Override
+    public OrderDto select(Integer orderId) throws Exception {
+        return session.selectOne(namespace + "select", orderId);
+    }
+
+    @Override
+    public List<OrderBookDto> selectOrderBook(Integer orderId) throws Exception {
+        return session.selectList(namespace + "selectOrderBook", orderId);
     }
 }
