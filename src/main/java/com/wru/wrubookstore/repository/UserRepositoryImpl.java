@@ -2,13 +2,11 @@ package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.UserDto;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Service
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final String namespace = "com.wru.wrubookstore.mapper.UserMapper.";
@@ -19,18 +17,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int count(int isMember) throws Exception {
-        return session.selectOne(namespace+"count", isMember);
+    public int count() throws Exception {
+        return session.selectOne(namespace+"count");
     }
 
     @Override
-    public List<UserDto> selectAll(int isMember) throws Exception {
-        return session.selectList(namespace+"selectAll", isMember);
+    public List<UserDto> selectAll() throws Exception {
+        return session.selectList(namespace+"selectAll");
     }
 
     @Override
-    public void deleteAll(int isMember) throws Exception {
-        session.delete(namespace+"deleteAll", isMember);
+    public void deleteAll() throws Exception {
+        session.delete(namespace+"deleteAll");
     }
 
     @Override
@@ -39,11 +37,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserDto select(String email, int isMember) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        map.put("email", email);
-        map.put("isMember", isMember);
-        return session.selectOne(namespace+"select", map);
+    public UserDto select(String email) throws Exception {
+        return session.selectOne(namespace+"select", email);
     }
 
     @Override
@@ -52,10 +47,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int delete(String email, int isMember) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        map.put("email", email);
-        map.put("isMember", isMember);
-        return session.delete(namespace+"delete", map);
+    public int delete(String email) throws Exception {
+        return session.delete(namespace+"delete", email);
     }
+
 }
