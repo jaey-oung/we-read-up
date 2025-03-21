@@ -85,6 +85,10 @@ body {
     border-radius: 5px;
 }
 
+.register-button:hover {
+    background-color: #999;
+}
+
 /* 유의사항 스타일 */
 .notice h3 {
     margin: 20px 0;
