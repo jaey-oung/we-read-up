@@ -26,13 +26,13 @@ public interface BookService {
     String selectPublisher(Integer bookId) throws Exception;
 
     //  도서 제목과 저자 이름으로 통합 검색
-    List<BookDto> selectByAll(MainSearchCondition sc) throws Exception;
+    List<BookDto> searchByAll(MainSearchCondition sc) throws Exception;
 
     // 도서 제목으로 검색
-    List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception;
+    List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception;
 
     // 저자 이름으로 검색
-    List<BookDto> selectByWriter(MainSearchCondition sc) throws Exception;
+    List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception;
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;

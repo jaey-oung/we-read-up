@@ -10,6 +10,8 @@ import lombok.ToString;
 public class MainSearchCondition {
     private Integer page = 1;
     private Integer pageSize = 8;
+    private String category;
+    private String categoryOption;
     private String keyword = "";
     private String option = "";
 

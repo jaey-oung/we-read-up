@@ -2,15 +2,18 @@ package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.domain.MainSearchCondition;
+import com.wru.wrubookstore.domain.SearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.ReviewDto;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
 import com.wru.wrubookstore.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +31,7 @@ public class BookController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/searchCategory")
+    @GetMapping("/bookList")
     public String bookList(Integer page, String category, Integer pageSize,Model m) {
         // 홈페이지에서 카테고리를 눌러서 들어온다.
         // 카테고리 id가 넘어오고
@@ -73,22 +76,23 @@ public class BookController {
         return "book/book-list";
     }
 
-    @GetMapping("/bookList")
-    public String bookList(MainSearchCondition sc, Model model) {
+    @GetMapping("/search")
+    public String search(MainSearchCondition sc, Model model, HttpServletRequest request) {
 
         try {
             String option = sc.getOption();
             int count = bookService.selectSearchCnt(sc);
             List<BookDto> list = switch (option) {
-                case "all" -> bookService.selectByAll(sc);
-                case "title" ->  bookService.selectByTitle(sc);
-                case "writer" -> bookService.selectByWriter(sc);
+                case "all" -> bookService.searchByAll(sc);
+                case "title" ->  bookService.searchByTitle(sc);
+                case "writer" -> bookService.searchByWriter(sc);
                 default -> throw new Exception("잘못된 옵션입니다.");
             };
 
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);
+            model.addAttribute("uri", request.getRequestURI());
             model.addAttribute("ph", pageHandler);
         } catch (Exception e) {
             e.printStackTrace();

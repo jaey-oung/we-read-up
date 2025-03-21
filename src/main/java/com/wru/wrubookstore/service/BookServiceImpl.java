@@ -49,19 +49,19 @@ public class BookServiceImpl implements BookService {
 
     //  도서 제목과 저자 이름으로 통합 검색
     @Override
-    public List<BookDto> selectByAll(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByAll(sc);
     }
 
     // 도서 제목으로 검색
     @Override
-    public List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByTitle(sc);
     }
 
     // 저자 이름으로 검색
     @Override
-    public List<BookDto> selectByWriter(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByWriter(sc);
     }
 

@@ -12,7 +12,7 @@
                 <a href="/register/form">회원가입</a>
                 <a href="/login">로그인</a>
                 <a href="/myPage">마이페이지</a>
-                <a href="/customerService">고객센터</a>
+                <a href="/board/notice-list">고객센터</a>
             </div>
         </div>
         <div class="top_nav_box">
@@ -22,7 +22,7 @@
                     <img src="/img/read-up-logo.png" alt="로고" height="100px">
                 </a>
             </div>
-            <form action="/bookList" method="get" class="search-container">
+            <form action="/search" method="get" class="search-container">
                 <select th:name="option">
                     <option th:value="'all'" th:selected="${sc?.option} == 'all'">통합검색</option>
                     <option th:value="'title'" th:selected="${sc?.option} == 'title'">도서명</option>
@@ -42,6 +42,7 @@
     </div>
     <div id="parent-table">
         <div id="table">
+            <form action="/bookList" name="category" method="get">
             <table class="categoryAll">
                 <tr class="categoryHeader">
                     <th>분류</th>
@@ -104,6 +105,7 @@
                     <td>컴퓨터 공학</td>
                 </tr>
             </table>
+            </form>
         </div>
     </div>
     <script src="/js/home.js"></script>

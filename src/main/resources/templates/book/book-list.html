@@ -55,7 +55,7 @@
                     </p>
                 </a>
             </div>
-    <form class="howtopag" id="form" action="/bookList" method="get">
+    <form class="howtopag" id="form" th:action="@{${uri}}" method="get">
         <!-- 이전 페이지 -10 -->
         <th:block th:if="${ph.page -10 > 0}">
             <button type="submit" name="page" th:value="${ph.page -10}">❮❮</button>
