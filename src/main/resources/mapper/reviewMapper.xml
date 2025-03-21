@@ -27,13 +27,13 @@
         VALUES (#{bookId},#{memberId},#{content},#{rating})
     </insert>
     <!-- 해당 책에 리뷰 삭제 -->
-    <delete id="deleteReview" parameterType="map">
+    <delete id="deleteReview" parameterType="ReviewDto">
         DELETE
         FROM review
         WHERE book_id=#{bookId} AND member_id=#{memberId}
     </delete>
     <!-- 해당 책에 리뷰 수정 -->
-    <update id="modifyReview" parameterType="map">
+    <update id="modifyReview" parameterType="ReviewDto">
         UPDATE review
         SET content=#{content}
         WHERE book_id=#{bookId} and member_id=#{memberId}
