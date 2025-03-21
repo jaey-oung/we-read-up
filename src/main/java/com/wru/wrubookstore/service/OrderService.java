@@ -8,4 +8,5 @@ import java.util.List;
 public interface OrderService {
 
     List<OrderHistoryDto> selectOrderHistory(Integer userId, OrderSearchCondition osc) throws Exception;
+    int selectOrderCnt(Integer userId, String statusId) throws Exception;
 }

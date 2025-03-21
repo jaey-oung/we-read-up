@@ -21,4 +21,9 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderHistoryDto> selectOrderHistory(Integer userId, OrderSearchCondition osc) throws Exception {
         return orderRepository.selectOrderHistory(Map.of("userId", userId, "osc", osc));
     }
+
+    @Override
+    public int selectOrderCnt(Integer userId, String statusId) throws Exception {
+        return orderRepository.selectOrderCnt(Map.of("userId", userId, "statusId", statusId));
+    }
 }

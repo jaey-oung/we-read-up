@@ -21,4 +21,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     public List<OrderHistoryDto> selectOrderHistory(Map<String, Object> map) throws Exception {
         return session.selectList(namespace + "selectOrderHistory", map);
     }
+
+    @Override
+    public int selectOrderCnt(Map<String, Object> map) throws Exception {
+        return session.selectOne(namespace + "selectOrderCnt", map);
+    }
 }

@@ -47,4 +47,14 @@ class OrderRepositoryImplTest {
 
         assertEquals(orderHistory.size(), 0);
     }
+
+    @Test
+    public void selectOrderCnt() throws Exception {
+        Integer userId = 3;
+        String statusId = "DS2";
+
+        int orderCnt = orderRepository.selectOrderCnt(Map.of("userId", userId, "statusId", statusId));
+
+        assertEquals(orderCnt, 5);
+    }
 }

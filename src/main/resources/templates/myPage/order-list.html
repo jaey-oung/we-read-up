@@ -14,6 +14,7 @@
         event.preventDefault(); // 폼 제출 방지
 
         const today = new Date();
+        today.setDate(today.getDate() + 1);
         const startDate = new Date();
 
         // 시작 날짜 설정 (오늘 날짜에서 daysAgo 만큼 뺌)
@@ -31,11 +32,6 @@
         document.getElementById("startDate").value = formatDate(startDate);
         document.getElementById("endDate").value = formatDate(today);
     }
-
-    /*// 페이지 로드 시 기본 설정: endDate = 오늘, startDate = 6개월 전
-    window.onload = function () {
-        setDateRange(event, 180);
-    };*/
 </script>
 
 <body>
@@ -116,19 +112,27 @@
                         [[${order.bookName}]] [[${order.bookTypeCount >= 2 ? '외' : ''}]]<br> 총 [[${order.bookTypeCount}]]종 [[${order.totalBookCount}]]권, [[${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 0, 'POINT')}]]원
                     </div>
                 </td>
-                <td><a th:href="#{/}">상세조회</a></td>
+                <td><a th:href="@{/myPage/orderDetail}">상세조회</a></td>
                 <td><a href="">반품/교환신청</a></td>
             </tr>
             </tbody>
         </table>
 
         <div>
-            <form class="howtopag" action="/board/list" method="get">
-                <button type="submit" name="page">❮❮</button>
-                <button type="submit" name="page">❮</button>
-                <button type="submit" name="page">num</button>
-                <button type="submit" name="page">❯</button>
-                <button type="submit" name="page">❯❯</button>
+            <form class="howtopag" action="/myPage/orderList" method="get">
+                <button type="submit" name="page" th:value="${ph.page - 10}" th:class="|howtopag_item${ph.page >= 1 and ph.page <= 10 ? '_pagdisabled' : ''}|">❮❮</button>
+                <button type="submit" name="page" th:value="${ph.page - 1}" th:class="|howtopag_item${ph.showPrev ? '' : '_pagdisabled'}|">❮</button>
+                <th:block th:unless="${ph.endPage == 0}">
+                    <th:block th:each="num : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                        <button type="submit" name="page" th:value="${num}" th:text="${num}" th:class="|howtopag_item${ph.page == num ? '_pagactive' : ''}|">num</button>
+                    </th:block>
+                </th:block>
+                <button type="submit" name="page" th:value="${ph.page + 1}" th:class="|howtopag_item${ph.showNext ? '' : '_pagdisabled'}|">❯</button>
+                <button type="submit" name="page" th:value="${ph.page + 10}" th:class="|howtopag_item${ph.page > ph.totalPage - 10 ? '_pagdisabled' : ''}|">❯❯</button>
+
+                <input type="hidden" name="statusId" th:value="${osc.statusId}">
+                <input type="hidden" name="startDate" th:value="${osc.startDate}">
+                <input type="hidden" name="endDate" th:value="${osc.endDate}">
             </form>
         </div>
     </main>
