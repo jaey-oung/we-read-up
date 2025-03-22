@@ -50,8 +50,10 @@ public class likeController {
 
             // member_id가 book_id를 like하지 않음 - like 추가
             if (isLikeUser == 0) {
+                System.out.println("좋아요 누름" + isLikeUser);
                 likeService.insertLike(likeDto);
             } else {
+                System.out.println("좋아요 삭제함" + isLikeUser);
                 likeService.deleteLike(likeDto);
             }
 

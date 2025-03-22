@@ -10,6 +10,8 @@ import java.util.Date;
 @Setter
 @ToString
 public class ReviewListResponse {
+    private Integer reviewId;
+    private Integer memberId;   // 멤버 아이디
     private Integer rating;     // 리뷰 별점
     private String nickname;    // 회원 닉네임
     private String content;     // 리뷰 내용

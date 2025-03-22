@@ -152,11 +152,11 @@
                     </div>
 
                     <!-- 기존 리뷰들 -->
-                    <div th:if="${reviewCnt != 0}" style="position:relative; left:180px">
+                    <div th:if="${reviewCnt != 0 }" style="position:relative; left:180px">
                         <div class="review-container">
                             <div class="review" th:each="i : ${review}">
                                 <div class="review-left">
-                                    <div class="rating">
+                                    <div class="rating" id="modRating">
                                         <div th:each="j : ${#numbers.sequence(1, 5)}">
                                             <div th:if="${i.rating >= j}" class="star">★</div>
                                             <div th:if="${i.rating < j}" class="star empty">☆</div>
@@ -164,19 +164,25 @@
                                     </div>
                                 </div>
                                 <div class="review-right">
-                                    <div class="review-content" th:text="${i.content}">
+                                    <div class="review-content" id="review-con" th:text="${i.content}">
                                         책 내용이 너무 알차요!
                                     </div>
                                     <div class="review-info">
+                                        <input type="hidden" id="reviewId" th:value="${i.reviewId}"/>
                                         <span class="review-author" th:text="${i.nickname}">이훈</span>
                                         <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                        <th:block th:if="${i.memberId==memberId}">
+                                            <button id="delBtn" style="position:relative;left:500px">삭제</button>
+                                            <button id="modBtn" style="position:relative;left:400px">수정</button>
+                                        </th:block>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 리뷰가 없을 때 -->
+                    <!-- 리뷰가 없을 때 이거 가운데로 옮겨 줘야됨 -->
                     <div class="book-info" th:if="${reviewCnt == 0}">
                         <div>리뷰가 없습니다!</div>
                     </div>
@@ -184,15 +190,154 @@
 
 
 
-
-
         </div>
+    </div>
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script>
     $(document).ready(function () {
+        // 수정 버튼을 누르면 삭제버튼은 완료버튼으로 수정 버튼은 취소 버튼으로?
+        $('#modBtn').click(function() {
+            $('#modBtn').html('취소').attr('id', 'cancelBtn');
+            $('#delBtn').html('완료');
+
+            var divContent = $('#review-con').html(); // div의 내용 저장
+            var textarea = $('<textarea>').val(divContent).attr('id', 'review-con'); // div 내용을 textaref로 설정
+
+            $('#review-con').replaceWith(textarea); // div를 textaref로 교체
+
+            // 취소 버튼
+            $('#cancelBtn').click(function() {
+               location.reload();
+            });
+            // 별점 변경
+            $('#modRating').html(
+                '<div class="custom-star" id="star6" data-value="1">★</div>' +
+                '<div class="custom-star" id="star7" data-value="2">★</div>' +
+                '<div class="custom-star" id="star8" data-value="3">★</div>' +
+                '<div class="custom-star" id="star9" data-value="4">★</div>' +
+                '<div class="custom-star" id="star10" data-value="5">★</div>' +
+                '<input type="hidden" id="rating2" th:value="0"/>'
+
+            ).attr('class', 'custom-rating');
+
+            // 별점 1
+            $('#star6').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+
+                $('#star7').html('★').css('color', '#d3d3d3');
+                $('#star8').html('★').css('color', '#d3d3d3');
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 2
+            $('#star7').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+
+                $('#star8').html('★').css('color', '#d3d3d3');
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 3
+            $('#star8').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 4
+            $('#star9').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+                $('#star9').html('★').css('color', '#ff1493');
+
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 5
+            $('#star10').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+                $('#star9').html('★').css('color', '#ff1493');
+                $('#star10').html('★').css('color', '#ff1493');
+
+                $('#rating2').val(star);
+            });
+            // 별점 변경
+        });
+
+
+
+        $('#delBtn').click(function() {
+            if($(this).html()==='삭제'){
+                var result = confirm("정말로 삭제하시겠습니까?");
+                let reviewId = $('#reviewId').val();
+                let memberId = $('#memberId').val();
+                let bookId = $('#bookId').val();
+                console.log(reviewId);
+                if (result) {
+                    axios.post('/reviewDelete', {reviewId, memberId, bookId}, {
+                        headers: { "content-type": "application/json" }
+                    })
+                        .then(function (response) {
+                            if (response.data === ('success')) {
+                                alert("삭제되었습니다.");
+                                location.reload();
+                            } else if(response.data === ('fail')){
+                                alert("삭제에 실패하였습니다.");
+                            }
+                        }).error(function (error) {
+                        alert("삭제에 실패하였습니다.");
+                        location.reload();
+                    })
+                }
+            }
+            // 수정
+            else if($(this).html()==='완료'){
+                var result = confirm("정말로 변경하시겠습니까?");
+                let reviewId = $('#reviewId').val();
+                let memberId = $('#memberId').val();
+                let bookId = $('#bookId').val();
+                let content = $('#review-con').val();
+                let rating = $('#rating2').val();
+                let modDate = new Date();
+                // 완료 버튼
+                if(result){
+                    axios.post('/reviewUpdate', {bookId, memberId, reviewId, content, rating, modDate}, {
+                        headers: {"content-type" : "application/json" }
+                    }).then(function (response){
+                        if(response.data === ('success')){
+                            alert("수정 성공");
+                            location.reload();
+                        }
+                    }).catch(function (error){
+                        if(error.data === ('error')){
+                            alert("수정 오류");
+                            location.reload();
+                        }
+                    })
+                }
+            }
+        });
         let quantity = $("#quantity").val();
         let price = parseInt($("#total-price").text().replace('원','').replace(/,/g,''));
 
@@ -367,9 +512,10 @@
                 .catch(function(error) {
                     alert('Error: ' + error);
                 });
-            })
-    });
+            });
+        });
 </script>
+
 
 </body>
 </html>
