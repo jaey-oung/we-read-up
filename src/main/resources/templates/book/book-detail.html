@@ -328,6 +328,10 @@
                         if(response.data === ('success')){
                             alert("수정 성공");
                             location.reload();
+                        } else if(response.data === ('ratingError')){
+                            alert("별점을 눌러주세요.");
+                        } else if(response.data === ('contentError')){
+                            alert("내용을 입력해주세요.");
                         }
                     }).catch(function (error){
                         if(error.data === ('error')){

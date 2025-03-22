@@ -60,11 +60,18 @@ public class ReviewController {
             }
 
             // 회원이고 리뷰 작성 당사자이면
-            if(memberDto.getMemberId().equals(reviewDto.getMemberId())){
+            if(reviewDto.getRating() == null || reviewDto.getRating() == 0) {
+                return "ratingError";
+            }
+            else if(reviewDto.getContent() == null || reviewDto.getContent().isEmpty()) {
+                return "contentError";
+            }
+            else if(memberDto.getMemberId().equals(reviewDto.getMemberId())){
                 reviewService.modifyReview(reviewDto);
 
                 return "success";
-            } else{
+            }
+            else{
                 return "fail";
             }
 
