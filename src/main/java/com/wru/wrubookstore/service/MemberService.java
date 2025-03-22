@@ -13,6 +13,7 @@ public interface MemberService {
     void deleteAllUsers() throws Exception;
     void insert(UserDto userDto, MemberDto memberDto) throws Exception;
     MemberDto select(String email) throws Exception;
+    MemberDto selectByUserId(int userId) throws Exception;
     int updateUser(UserDto userDto) throws Exception;
     int updateMember(MemberDto memberDto) throws Exception;
     int deleteMember(String email) throws Exception;

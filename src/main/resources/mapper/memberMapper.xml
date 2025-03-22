@@ -63,6 +63,13 @@
         WHERE u.user_id = m.user_id AND u.email = #{email} AND u.is_member = 1
     </select>
 
+    <!-- user_id로 추가 정보 조회 -->
+    <select id="selectByUserId" parameterType="int" resultType="MemberDto">
+        SELECT *
+        FROM member
+        WHERE user_id = #{userId}
+    </select>
+
     <!-- User 테이블에 있는 회원 정보 수정 -->
     <update id="updateUser" parameterType="UserDto">
         UPDATE user

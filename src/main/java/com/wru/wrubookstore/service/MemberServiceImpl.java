@@ -43,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
         int rowCnt1 = memberRepository.insertUser(userDto);
 
         if (rowCnt1 != 1)
-                throw new Exception("사용자 테이블에 회원 계정 생성 실패");
+            throw new Exception("사용자 테이블에 회원 계정 생성 실패");
 
         int rowCnt2 = memberRepository.insertMember(memberDto);
 
@@ -54,6 +54,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto select(String email) throws Exception {
         return memberRepository.select(email);
+    }
+
+    @Override
+    public MemberDto selectByUserId(int userId) throws Exception {
+        return memberRepository.selectByUserId(userId);
     }
 
     @Override

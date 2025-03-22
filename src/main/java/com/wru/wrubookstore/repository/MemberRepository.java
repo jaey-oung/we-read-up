@@ -14,6 +14,7 @@ public interface MemberRepository {
     int insertUser(UserDto userDto) throws Exception;
     int insertMember(MemberDto memberDto) throws Exception;
     MemberDto select(String email) throws Exception;
+    MemberDto selectByUserId(int userId) throws Exception;
     int updateUser(UserDto userDto) throws Exception;
     int updateMember(MemberDto memberDto) throws Exception;
     int deleteMember(String email) throws Exception;
