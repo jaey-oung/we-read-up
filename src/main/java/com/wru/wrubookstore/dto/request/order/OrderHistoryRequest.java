@@ -1,4 +1,4 @@
-package com.wru.wrubookstore.dto;
+package com.wru.wrubookstore.dto.request.order;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter @Setter
 @ToString
-public class OrderHistoryDto {
+public class OrderHistoryRequest {
 
     private Date regDate;
     private Integer orderId;
@@ -18,11 +18,11 @@ public class OrderHistoryDto {
     private int totalBookCount;
     private int totalPrice;
 
-    public OrderHistoryDto() {
+    public OrderHistoryRequest() {
 
     }
 
-    public OrderHistoryDto(Date regDate, Integer orderId, String userName, String bookName, int bookTypeCount, int totalBookCount, int totalPrice) {
+    public OrderHistoryRequest(Date regDate, Integer orderId, String userName, String bookName, int bookTypeCount, int totalBookCount, int totalPrice) {
         this.regDate = regDate;
         this.orderId = orderId;
         this.userName = userName;

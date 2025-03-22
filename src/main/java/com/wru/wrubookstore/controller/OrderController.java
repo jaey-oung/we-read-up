@@ -2,8 +2,8 @@ package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.domain.OrderSearchCondition;
 import com.wru.wrubookstore.domain.PageHandler;
-import com.wru.wrubookstore.dto.OrderDetailDto;
-import com.wru.wrubookstore.dto.OrderHistoryDto;
+import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
+import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +33,9 @@ public class OrderController {
             // 검색 조건에 offset 설정
             osc.setOffset(osc.getPageSize() * (osc.getPage() - 1));
             // 주문 상태와 날짜 조건 페이징에 따른 게시물 리스트
-            List<OrderHistoryDto> orderHistoryDto = orderService.selectOrderHistory(userId, osc);
+            List<OrderHistoryRequest> orderHistoryRequest = orderService.selectOrderHistory(userId, osc);
 
-            model.addAttribute("orderList", orderHistoryDto);
+            model.addAttribute("orderList", orderHistoryRequest);
             model.addAttribute("osc", osc);
             model.addAttribute("ph", ph);
         } catch (Exception e) {
@@ -49,9 +49,9 @@ public class OrderController {
     public String orderDetail(@PathVariable Integer orderId, Model model) {
         try {
             // 주문 상세 정보를 위한 Dto 생성
-            OrderDetailDto orderDetailDto = orderService.selectOrderDetail(orderId);
+            OrderDetailRequest orderDetailRequest = orderService.selectOrderDetail(orderId);
 
-            model.addAttribute("orderDetail", orderDetailDto);
+            model.addAttribute("orderDetail", orderDetailRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }

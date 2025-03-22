@@ -21,4 +21,5 @@ public class DeliveryDto {
     private String message;
     private Date regDate;
     private Date endDate;
+    private String waybill;
 }
