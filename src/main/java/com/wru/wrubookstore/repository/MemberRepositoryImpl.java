@@ -53,8 +53,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public MemberDto selectByUserId(int userId) throws Exception {
-        return session.selectOne(namespace+"selectByUserId", userId);
+    public MemberDto selectMember(Integer userId) throws Exception {
+        return session.selectOne(namespace+"selectMember", userId);
     }
 
     @Override
