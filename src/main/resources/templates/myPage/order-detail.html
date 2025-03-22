@@ -98,7 +98,7 @@
 
         <section class="order-info">
             <h5>주문상품 정보</h5>
-            <div class="product-container" th:each="orderBook : ${orderDetail.orderBookDtoList}">
+            <div class="product-container" th:each="orderBook : ${orderDetail.orderBookRequestList}">
                 <div class="product-image">
                     <img th:src="${orderBook.image}" alt="상품 이미지">
                 </div>
