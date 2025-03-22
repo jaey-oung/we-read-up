@@ -14,7 +14,6 @@
         event.preventDefault(); // 폼 제출 방지
 
         const today = new Date();
-        today.setDate(today.getDate() + 1);
         const startDate = new Date();
 
         // 시작 날짜 설정 (오늘 날짜에서 daysAgo 만큼 뺌)
@@ -112,7 +111,7 @@
                         [[${order.bookName}]] [[${order.bookTypeCount >= 2 ? '외' : ''}]]<br> 총 [[${order.bookTypeCount}]]종 [[${order.totalBookCount}]]권, [[${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 0, 'POINT')}]]원
                     </div>
                 </td>
-                <td><a th:href="@{/myPage/orderDetail}">상세조회</a></td>
+                <td><a th:href="@{/myPage/orderDetail/{orderId}(orderId=${order.orderId})}">상세조회</a></td>
                 <td><a href="">반품/교환신청</a></td>
             </tr>
             </tbody>

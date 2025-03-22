@@ -38,10 +38,6 @@ body {
     border-left: 1px solid #ddd;
 }
 
-.title {
-    margin-bottom: 20px;
-}
-
 /* 탭 메뉴 */
 .tab-menu {
     display: flex;
@@ -145,6 +141,10 @@ button.btn-search {
     text-decoration: none;
     border: 1px solid #ddd;
     color: black;
+}
+
+.board-table td a:hover {
+    border-color: black;
 }
 
 form.howtopag {
