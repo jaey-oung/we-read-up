@@ -18,7 +18,21 @@ public class BookRepositoryImpl implements BookRepository {
 
     private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
+    // 관리자용
+    @Override
+    public int countAllByAdmin() throws Exception {
+        return session.selectOne(namespace + "countAllByAdmin");
+    }
 
+    @Override
+    public List<BookDto> selectAllByAdmin() throws Exception {
+        return session.selectList(namespace + "selectAllByAdmin");
+    }
+
+    @Override
+    public void deleteAllByAdmin() throws Exception {
+        session.delete(namespace + "deleteAllByAdmin");
+    }
 
     // 책 번호로 한개 조회
     @Override
@@ -33,8 +47,8 @@ public class BookRepositoryImpl implements BookRepository {
     public int sCategoryCnt(String category) throws Exception{ return session.selectOne(namespace + "sCategoryCnt", category);}
     // 테스트용 insert
     @Override
-    public void insert(BookDto book)  throws Exception{
-        session.insert(namespace + "insert", book);
+    public int insert(BookDto book)  throws Exception{
+        return session.insert(namespace + "insert", book);
     }
     // 각 책의 지은이들을 조회
     @Override
@@ -67,4 +81,5 @@ public class BookRepositoryImpl implements BookRepository {
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return session.selectOne(namespace + "selectSearchCnt", sc);
     }
+
 }

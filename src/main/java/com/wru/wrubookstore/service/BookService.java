@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface BookService {
+
+    // 관리자용
+    int countAllByAdmin() throws Exception;
+    List<BookDto> selectAllByAdmin() throws Exception;
+    void deleteAllByAdmin() throws Exception;
+
     // 책 번호로 한개 조회
     BookDto select(Integer bookId) throws Exception;
 
@@ -17,7 +23,7 @@ public interface BookService {
     int sCategoryCnt(String category) throws Exception;
 
     // 테스트용 insert
-    void insert(BookDto book) throws Exception;
+    int insert(BookDto book) throws Exception;
 
     // 각 책의 지은이들을 조회
     List<String> selectWriter(Integer bookId) throws Exception;
@@ -36,4 +42,5 @@ public interface BookService {
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;
+
 }
