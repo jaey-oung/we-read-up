@@ -27,13 +27,13 @@ public class OrderController {
     public String orderList(@SessionAttribute Integer userId, Model model, @ModelAttribute OrderSearchCondition osc) {
         try {
             // 주문 상태와 날짜 조건에 따른 총 게시물 개수
-            int orderCnt = orderService.selectOrderCnt(userId, osc);
+            int orderCnt = orderService.selectCntByOsc(userId, osc);
             // PageHandler 생성
             PageHandler ph = new PageHandler(orderCnt, osc.getPage(), 4);
             // 검색 조건에 offset 설정
             osc.setOffset(osc.getPageSize() * (osc.getPage() - 1));
             // 주문 상태와 날짜 조건 페이징에 따른 게시물 리스트
-            List<OrderHistoryRequest> orderHistoryRequest = orderService.selectOrderHistory(userId, osc);
+            List<OrderHistoryRequest> orderHistoryRequest = orderService.selectListByOsc(userId, osc);
 
             model.addAttribute("orderList", orderHistoryRequest);
             model.addAttribute("osc", osc);

@@ -11,6 +11,7 @@ import java.util.Date;
 public class OrderDto {
 
     private Integer orderId;
+    private Integer userId;
     private String userName;
     private String statusId;
     private Date regDate;
