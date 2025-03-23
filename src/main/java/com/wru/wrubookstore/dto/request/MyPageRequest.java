@@ -23,6 +23,15 @@ public class MyPageRequest {
 
     }
 
+    public MyPageRequest(int orderCnt, int orderDs1Cnt, int orderDs2Cnt, int orderDs3Cnt, int exchangeCnt, int refundCnt) {
+        this.orderCnt = orderCnt;
+        this.orderDs1Cnt = orderDs1Cnt;
+        this.orderDs2Cnt = orderDs2Cnt;
+        this.orderDs3Cnt = orderDs3Cnt;
+        this.exchangeCnt = exchangeCnt;
+        this.refundCnt = refundCnt;
+    }
+
     public MyPageRequest(String image, String membershipName, int mileage, int couponCnt, int orderCnt, int orderDs1Cnt, int orderDs2Cnt, int orderDs3Cnt, int exchangeCnt, int refundCnt) {
         this.image = image;
         this.membershipName = membershipName;
