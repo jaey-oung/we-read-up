@@ -1,5 +1,7 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.domain.PageHandler;
+import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.LikeDto;
 import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.repository.LikeRepository;
@@ -10,28 +12,68 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class likeController {
-    LikeService likeService;
-    MemberService memberService;
+    private final LikeService likeService;
+    private final MemberService memberService;
 
-    likeController(LikeService likeService, MemberService memberService) {
+    public likeController(LikeService likeService, MemberService memberService) {
         this.likeService = likeService;
         this.memberService = memberService;
     }
 
-    @GetMapping("/myPage/likeList")
-    public String likeList() {
+    @GetMapping("/myPage/like/list")
+    public String likeList(@SessionAttribute Integer userId, @RequestParam(defaultValue = "1") int page,
+                           Model model) {
+        try {
+            // userId를 통해 memberId 조회
+            Integer memberId = memberService.selectMember(userId).getMemberId();
+            // 회원의 좋아요 개수 조회
+            int likeCnt = likeService.selectCntByMember(memberId);
+            // PageHandler 생성
+            PageHandler ph = new PageHandler(likeCnt, page, 5);
+            // 좋아요 한 책 리스트 조회
+            List<BookDto> likeBookList = likeService.selectListByPh(memberId, ph);
+
+            model.addAttribute("ph", ph);
+            model.addAttribute("likeBookList", likeBookList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "myPage/like-list";
+    }
+
+    @PostMapping("/myPage/like/deleteAll")
+    public String deleteAll(@SessionAttribute Integer userId) {
+        try {
+            Integer memberId = memberService.selectMember(userId).getMemberId();
+            // 회원의 좋아요 모두 삭제
+            likeService.deleteAll(memberId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/myPage/like/list";
+    }
+
+    @PostMapping("/myPage/like/deleteSelected")
+    public String deleteSelected(@RequestParam("bookId") List<Integer> bookIdList, @SessionAttribute Integer userId) {
+        try {
+            Integer memberId = memberService.selectMember(userId).getMemberId();
+            likeService.deleteSelected(memberId, bookIdList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/myPage/like/list";
     }
 
     @PostMapping("/book/like")
