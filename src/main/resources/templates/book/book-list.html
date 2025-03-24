@@ -18,19 +18,21 @@
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <th:block th:if="${category == null}">
-                    <div th:switch="${list.get(0).categoryType}">
-                        <h1 th:case="'cl'" th:text="${list.get(0).categoryLargeName}" />
-                        <h1 th:case="'cm'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName}" />
-                        <h1 th:case="'cs'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName} + ' > ' + ${list.get(0).categorySmallName}" />
-                    </div>
-                </th:block>
-                <th:block th:unless="${category == null}">
-                    <div th:switch="${category.categoryType}">
-                        <h1 th:case="'cl'" th:text="${category.categoryLargeName}" />
-                        <h1 th:case="'cm'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName}" />
-                        <h1 th:case="'cs'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName} + ' > ' + ${category.categorySmallName}" />
-                    </div>
+                <th:block th:if="${uri == '/bookList'}">
+                    <th:block th:if="${category == null}">
+                        <div th:switch="${list.get(0).categoryType}">
+                            <h1 th:case="'cl'" th:text="${list.get(0).categoryLargeName}" />
+                            <h1 th:case="'cm'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName}" />
+                            <h1 th:case="'cs'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName} + ' > ' + ${list.get(0).categorySmallName}" />
+                        </div>
+                    </th:block>
+                    <th:block th:unless="${category == null}">
+                        <div th:switch="${category.categoryType}">
+                            <h1 th:case="'cl'" th:text="${category.categoryLargeName}" />
+                            <h1 th:case="'cm'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName}" />
+                            <h1 th:case="'cs'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName} + ' > ' + ${category.categorySmallName}" />
+                        </div>
+                    </th:block>
                 </th:block>
             </div>
         </div>
