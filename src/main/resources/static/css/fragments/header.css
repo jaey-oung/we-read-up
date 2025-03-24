@@ -10,23 +10,10 @@ header {
 
 .toparea {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     width: 100%;
-    height: 80px;
-}
-
-.toparea_logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.toparea_logo > a {
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 22px;
-    color: black;
+    height: 50px;
 }
 
 .toparea_state {
@@ -35,7 +22,7 @@ header {
     font-size: 13px;
 }
 
-.toparea_state > a {
+.toparea_state > a, .toparea_state > span {
     text-decoration: none;
     color: #6a6a6a;
 }
@@ -48,6 +35,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: 10px;
     z-index: 5;
@@ -56,34 +44,12 @@ header {
     border-bottom: 1px solid #bbb;
 }
 
-/* .top_category {
-
-} */
-
-.top_category > ul {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-    gap: 15px;
+ .top_category {
+     display: flex;
+     align-items: flex-end;
+     gap: 40px;
 }
 
-.top_category > ul > li {
-    list-style: none;
-    height: 20px;
-    position: relative;
-}
-
-.top_category > ul > li > a{
-    display: block;
-    line-height: 20px;
-    list-style: none;
-    text-decoration: none;
-    color: black
-}
-
-.top_category > ul > li > a:hover{
-    color: #777;
-}
 
 .search-container {
     display: flex;

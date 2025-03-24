@@ -15,20 +15,18 @@ class CouponRepositoryImplTest {
     @Autowired
     CouponRepository couponRepository;
 
+    Integer userId = 3;
+
     @Test
     public void selectListTest() throws Exception {
-        Integer memberId = 1;
-
-        List<CouponDto> couponDtoList = couponRepository.selectList(memberId);
+        List<CouponDto> couponDtoList = couponRepository.selectList(userId);
 
         assertEquals(couponDtoList.size(), 3);
     }
 
     @Test
     public void selectCountTest() throws Exception {
-        Integer memberId = 1;
-
-        int couponCount = couponRepository.selectCount(memberId);
+        int couponCount = couponRepository.selectCount(userId);
 
         assertEquals(couponCount, 3);
     }

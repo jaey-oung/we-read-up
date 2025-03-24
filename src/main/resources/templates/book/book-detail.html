@@ -5,15 +5,15 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/book/book-detail.css">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
-
-
-
-
 
 <div class="container">
     <div class="content">
@@ -25,146 +25,501 @@
             <div class="second-category">
                 <!-- 상품 이미지 -->
                 <div class="product-image">
-                    <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/5b1b33bf3a2c534946ba8851a67a4315.png" alt="캐시미어 베이직 니트">
+                    <img th:src="${bookDto.image}" th:alt="${bookDto.name}">
                 </div>
 
                 <!-- 상품 정보 -->
                 <div class="product-info">
-                    <h1 class="product-title">캐시미어 베이직 니트</h1>
-                    <p class="price">500,000원</p>
+                    <h1 class="product-title" th:text="${bookDto.name}">캐시미어 베이직 니트</h1>
+                    <!-- 지은이 (여러명가능)추가, 출판사 조인-->
+                    <p>
+                        <span th:each="i, stat: ${writer}" style="display:inline-block">
+                            <span th:if="${stat.size != stat.count}" th:text="${i}+',&nbsp;'"></span>
+                            <span th:if="${stat.size == stat.count}" th:text="${i}+' (지은이) |'"></span>
+                        </span>
+                        <span th:text="${bookDto.translator}+' (역자) |'"></span>
+                        <span th:text="${publisher}+' |'"></span>
+                        <span th:text="${#dates.format(bookDto.releaseDate, 'yyyy-MM-dd')}"></span>
+                    </p>
 
                     <div class="addtional-info">
-                        <p class="shipping-info"><strong>배송방법 :</strong> 택배</p>
-                        <p class="shipping-info"><strong>배송비 :</strong> 무료</p>
+                        <p><strong>정가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> <span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'"></span></p>
+                        <p><strong>판매가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <span th:text="${#numbers.formatInteger(bookDto.salePrice,3,'COMMA')}+'원'" style="font-size:23px; vertical-align: -3px;"></span>
+                            <span th:text="'('+${#numbers.formatInteger(bookDto.discountPercent*100, 0)}+'%, '+${bookDto.discountPrice}+'원 할인)'"></span>
+                        </p>
+                        <p><strong>마일리지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <span th:text="${#numbers.formatInteger(#numbers.formatInteger(bookDto.originalPrice*0.05,0),3,'COMMA')}+'원(5%) + 멤버십(최대6%)'"></span>
+                        </p>
+                        <p><strong>배송방법&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 택배</p>
+                        <p><strong>배송비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 무료</p>
+                    </div>
 
+                    <div class="addtional-info">
                         <p class="product-detail">(최소 주문 수량 1개 이상)</p>
 
                         <!-- 수량 선택 -->
                         <div class="quantity-selector">
-                            <button onclick="decreaseQuantity()">-</button>
-                            <input type="text" id="quantity" value="1" readonly>
-                            <button onclick="increaseQuantity()">+</button>
+                            <button id="decrease">-</button>
+                            <input type="text" id="quantity" value="1" maxlength="3">
+                            <button id="increase">+</button>
                         </div>
                     </div>
 
                     <!-- 총 가격 -->
-                    <div class="total">
+                    <div class="total" id="total">
                         TOTAL (Quantity)
-                        <span class="total-price">500,000원 (1개)</span>
+                        <span class="total-price" id="total-price" th:text="${#numbers.formatInteger(bookDto.getSalePrice(), 3, 'COMMA')}+'원'">500,000원 (1개)</span>
                     </div>
-
                     <!-- 구매, 장바구니, 위시리스트 버튼 -->
-                    <div class="button-group">
+                    <form class="button-group" id="btnForm">
                         <button class="buy-now">BUY IT NOW</button>
                         <button class="cart">CART</button>
-                        <button class="wishlist">WISH LIST</button>
-                    </div>
+                        <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
+                        <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
+
+                        <!-- memberId value변경 해야됨 -->
+
+                        <input type="hidden" id="memberId" th:value="${1}"/>
+                        <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
+                    </form>
                 </div>
             </div>
         </div>
-
-
-
-
-
         <div class="third-category">
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">기본정보</div>
-
-                <!-- 오른쪽 상세 내용 -->
-                <div class="info-details">
-                    <div class="book-info">
-                        <span>216쪽</span>
-                        <span>145*210mm</span>
-                        <span>300g</span>
-                        <span>ISBN : 9788936434120</span>
+                <div class="custom-wow">
+                    <div class="book-info2">
+                        <span th:text="${bookDto.page}+'쪽'" >216쪽</span>
+                        <span th:text="${bookDto.size}+'mm'">145*210mm</span>
+                        <span th:text="${bookDto.weight}+'g'">300g</span>
+                        <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
                     </div>
 
-                    <div class="category">
-                        <p>
-                            국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                        </p>
+                    <br>
+                    <div class="book-info2">
+                        <div><strong style="color:#000000">주제 분류</strong></div>
+                        <!-- 추가 예정 -->
+                        <div style="color:#000000">카테고리</div>
                     </div>
                 </div>
             </div>
 
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">목차</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="custom-wow">
+                <div class="book-info2">
+                    <!-- 목차 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
+                </div>
                 </div>
             </div>
 
             <div class="info-container">
-                <!-- 왼쪽 타이틀 -->
                 <div class="info-title">책소개</div>
-                <div class="category">
-                    <p>
-                        국내도서 > 추천도서 > <span class="highlight">올해의 책 Top 10</span>
-                    </p>
+                <div class="custom-wow">
+                <div class="book-info2">
+                    <!-- 책소개 라인 수 제한 + 더보기 추가 -->
+                    <div th:text="${bookDto.description}" style="color:#000000"></div>
+                </div>
                 </div>
             </div>
 
-            <div class="qna-container">
-                <!-- 탭 메뉴 -->
-                <div class="tab-menu">
-                    <div class="tab active">상품후기</div>
-                    <div class="tab">상품문의</div>
-                </div>
 
-                <!-- 버튼 그룹 -->
-                <div class="button-group">
-                    <a href="/reviewList">LIST</a>
-                    <a href="">WRITE</a>
-                </div>
 
-                <!-- Q&A 리스트 -->
-                <div class="qna-list">
-                    <div class="qna-item">
-                        <div class="qna-index">1</div>
-                        <div class="qna-title">문의</div>
-                        <div class="qna-user">홍****</div>
-                        <div class="qna-date">2025-03-16<br>16:00:03</div>
+
+            <div class="review-container">
+                <div class="info-title" style="color:#007BFF; position:absolute">리뷰</div>
+                    <input type="hidden" id="rating" th:value="0">
+                    <!-- 리뷰 작성 창 -->
+                    <div class="custom-review" id="review" style="position:relative; left:180px">
+                        <div class="custom-review-left">
+                            <div class="custom-rating">
+                                <div class="custom-star" id="star1" data-value="1">★</div>
+                                <div class="custom-star" id="star2" data-value="2">★</div>
+                                <div class="custom-star" id="star3" data-value="3">★</div>
+                                <div class="custom-star" id="star4" data-value="4">★</div>
+                                <div class="custom-star" id="star5" data-value="5">★</div>
+                            </div>
+                        </div>
+                        <div class="custom-review-right">
+                            <textarea class="custom-review-content" placeholder="리뷰를 작성해주세요..." id="content"></textarea>
+                            <div class="custom-review-action">
+                                <button class="custom-submit-btn" id="reviewBtn">등록</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 기존 리뷰들 -->
+                    <div th:if="${reviewCnt != 0 }" style="position:relative; left:180px">
+                        <div class="review-container">
+                            <div class="review" th:each="i : ${review}">
+                                <div class="review-left">
+                                    <div class="rating" id="modRating">
+                                        <div th:each="j : ${#numbers.sequence(1, 5)}">
+                                            <div th:if="${i.rating >= j}" class="star">★</div>
+                                            <div th:if="${i.rating < j}" class="star empty">☆</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-right">
+                                    <div class="review-content" id="review-con" th:text="${i.content}">
+                                        책 내용이 너무 알차요!
+                                    </div>
+                                    <div class="review-info">
+                                        <input type="hidden" id="reviewId" th:value="${i.reviewId}"/>
+                                        <span class="review-author" th:text="${i.nickname}">이훈</span>
+                                        <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+                                        <th:block th:if="${i.memberId==memberId}">
+                                            <button id="delBtn" style="position:relative;left:500px">삭제</button>
+                                            <button id="modBtn" style="position:relative;left:400px">수정</button>
+                                        </th:block>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 리뷰가 없을 때 이거 가운데로 옮겨 줘야됨 -->
+                    <div class="book-info" th:if="${reviewCnt == 0}">
+                        <div>리뷰가 없습니다!</div>
                     </div>
                 </div>
-            </div>
 
-            <div class="qna-container">
-                <!-- 탭 메뉴 -->
-                <div class="tab-menu">
-                    <div class="tab">상품후기</div>
-                    <div class="tab active">상품문의</div>
-                </div>
 
-                <!-- 버튼 그룹 -->
-                <div class="button-group">
-                    <a href="">LIST</a>
-                    <a href="">WRITE</a>
-                </div>
 
-                <!-- Q&A 리스트 -->
-                <div class="qna-list">
-                    <div class="qna-item">
-                        <div class="qna-index">1</div>
-                        <div class="qna-title">문의</div>
-                        <div class="qna-user">홍****</div>
-                        <div class="qna-date">2025-03-16<br>16:00:03</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-
-
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+    $(document).ready(function () {
+        // 수정 버튼을 누르면 삭제버튼은 완료버튼으로 수정 버튼은 취소 버튼으로?
+        $('#modBtn').click(function() {
+            $('#modBtn').html('취소').attr('id', 'cancelBtn');
+            $('#delBtn').html('완료');
+
+            var divContent = $('#review-con').html(); // div의 내용 저장
+            var textarea = $('<textarea>').val(divContent).attr('id', 'review-con'); // div 내용을 textaref로 설정
+
+            $('#review-con').replaceWith(textarea); // div를 textaref로 교체
+
+            // 취소 버튼
+            $('#cancelBtn').click(function() {
+               location.reload();
+            });
+            // 별점 변경
+            $('#modRating').html(
+                '<div class="custom-star" id="star6" data-value="1">★</div>' +
+                '<div class="custom-star" id="star7" data-value="2">★</div>' +
+                '<div class="custom-star" id="star8" data-value="3">★</div>' +
+                '<div class="custom-star" id="star9" data-value="4">★</div>' +
+                '<div class="custom-star" id="star10" data-value="5">★</div>' +
+                '<input type="hidden" id="rating2" th:value="0"/>'
+
+            ).attr('class', 'custom-rating');
+
+            // 별점 1
+            $('#star6').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+
+                $('#star7').html('★').css('color', '#d3d3d3');
+                $('#star8').html('★').css('color', '#d3d3d3');
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 2
+            $('#star7').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+
+                $('#star8').html('★').css('color', '#d3d3d3');
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 3
+            $('#star8').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+
+                $('#star9').html('★').css('color', '#d3d3d3');
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 4
+            $('#star9').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+                $('#star9').html('★').css('color', '#ff1493');
+
+                $('#star10').html('★').css('color', '#d3d3d3');
+
+                $('#rating2').val(star);
+            });
+            // 별점 5
+            $('#star10').click(function(){
+                let star = $(this).data('value');
+                $('#star6').html('★').css('color', '#ff1493');
+                $('#star7').html('★').css('color', '#ff1493');
+                $('#star8').html('★').css('color', '#ff1493');
+                $('#star9').html('★').css('color', '#ff1493');
+                $('#star10').html('★').css('color', '#ff1493');
+
+                $('#rating2').val(star);
+            });
+            // 별점 변경
+        });
+
+
+
+        $('#delBtn').click(function() {
+            if($(this).html()==='삭제'){
+                var result = confirm("정말로 삭제하시겠습니까?");
+                let reviewId = $('#reviewId').val();
+                let memberId = $('#memberId').val();
+                let bookId = $('#bookId').val();
+                console.log(reviewId);
+                if (result) {
+                    axios.post('/reviewDelete', {reviewId, memberId, bookId}, {
+                        headers: { "content-type": "application/json" }
+                    })
+                        .then(function (response) {
+                            if (response.data === ('success')) {
+                                alert("삭제되었습니다.");
+                                location.reload();
+                            } else if(response.data === ('fail')){
+                                alert("삭제에 실패하였습니다.");
+                            }
+                        }).error(function (error) {
+                        alert("삭제에 실패하였습니다.");
+                        location.reload();
+                    })
+                }
+            }
+            // 수정
+            else if($(this).html()==='완료'){
+                var result = confirm("정말로 변경하시겠습니까?");
+                let reviewId = $('#reviewId').val();
+                let memberId = $('#memberId').val();
+                let bookId = $('#bookId').val();
+                let content = $('#review-con').val();
+                let rating = $('#rating2').val();
+                let modDate = new Date();
+                // 완료 버튼
+                if(result){
+                    axios.post('/reviewUpdate', {bookId, memberId, reviewId, content, rating, modDate}, {
+                        headers: {"content-type" : "application/json" }
+                    }).then(function (response){
+                        if(response.data === ('success')){
+                            alert("수정 성공");
+                            location.reload();
+                        } else if(response.data === ('ratingError')){
+                            alert("별점을 눌러주세요.");
+                        } else if(response.data === ('contentError')){
+                            alert("내용을 입력해주세요.");
+                        }
+                    }).catch(function (error){
+                        if(error.data === ('error')){
+                            alert("수정 오류");
+                            location.reload();
+                        }
+                    })
+                }
+            }
+        });
+        let quantity = $("#quantity").val();
+        let price = parseInt($("#total-price").text().replace('원','').replace(/,/g,''));
+
+        function updateTotal(){
+            let totalPrice = quantity * price;
+            $('#total-price').text(totalPrice.toLocaleString()+"원");
+        }
+
+        $('#quantity').on('input', function(){
+            let value = $(this).val().replace(/[^0-9]/g,'');
+            $(this).val(value);
+
+            if(value === '' || value[0] === '0'){
+                value = 1;
+            }
+
+            $(this).val(value);
+
+            quantity = parseInt(value);
+
+            if(quantity < 1){
+                quantity = 1;
+                $(this).val(quantity);
+                alert("1개 이상만 주문이 가능합니다.")
+            }
+
+            updateTotal();
+        });
+
+        $('#decrease').click(function(){
+            if(quantity > 1){
+                quantity--;
+                $('#quantity').val(quantity);
+                updateTotal();
+            }
+        });
+
+        $('#increase').click(function(){
+            if(quantity < 999){
+                quantity++;
+                $('#quantity').val(quantity);
+                updateTotal();
+            }
+        });
+        updateTotal();
+
+        // 좋아요 버튼
+        $('#likeButton').click(function(event) {
+            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+            let bookId = $('#bookId').val();
+            let {text} = $(this); // 현재 클릭된 버튼
+            let isLikeUser = parseInt($('#isLikeUser').val());
+            console.log(isLikeUser);
+
+            // 버튼 텍스트와 배경 색상을 즉시 변경
+            if (isLikeUser === 0) {
+                $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
+                $('#isLikeUser').val(1);
+            } else{
+                $(this).text('LIKE').css('background-color', '#fff');     // LIKE로 변경
+                $('#isLikeUser').val(0);
+            }
+
+            // 서버에 bookId만 전송
+            axios.post('/book/like', bookId, {
+                headers: { "content-type": "application/json" }
+            })
+            .then(function(response) {
+                if (response.data === 'success') {
+                    // 성공 시 아무런 추가 작업 필요
+                } else {
+                    alert('Error: ' + response.data);
+                    // 오류 발생 시 버튼을 원래 상태로 복원
+                    $(this).text('LIKE').css('background-color', '#fff');
+                }
+            })
+            .catch(function(error) {
+                alert('Error: ' + error);
+                // 오류 발생 시 버튼을 원래 상태로 복원
+                $(this).text('LIKE').css('background-color', '#fff');
+            });
+        });
+
+        // 별점 1
+        $('#star1').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+
+            $('#star2').html('★').css('color', '#d3d3d3');
+            $('#star3').html('★').css('color', '#d3d3d3');
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 2
+        $('#star2').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+
+            $('#star3').html('★').css('color', '#d3d3d3');
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 3
+        $('#star3').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+
+            $('#star4').html('★').css('color', '#d3d3d3');
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 4
+        $('#star4').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+            $('#star4').html('★').css('color', '#ff1493');
+
+            $('#star5').html('★').css('color', '#d3d3d3');
+
+            $('#rating').val(star);
+        });
+        // 별점 5
+        $('#star5').click(function(){
+            let star = $(this).data('value');
+            $('#star1').html('★').css('color', '#ff1493');
+            $('#star2').html('★').css('color', '#ff1493');
+            $('#star3').html('★').css('color', '#ff1493');
+            $('#star4').html('★').css('color', '#ff1493');
+            $('#star5').html('★').css('color', '#ff1493');
+
+            $('#rating').val(star);
+        });
+
+        $('#reviewBtn').click(function(){
+            let memberId = $('#memberId').val();
+            let bookId = $('#bookId').val();
+            let content = $('#content').val();
+            let rating = $('#rating').val();
+
+            axios.post('/reviewInsert', {memberId, bookId, content, rating},{
+                headers: { "content-type": "application/json" }
+            })
+                .then(function(response) {
+                    if (response.data === 'success') {
+                        alert("리뷰 등록에 성공했습니다..");
+                        location.reload();
+                        // 성공 시 아무런 추가 작업 필요
+                    } else if(response.data === 'all') {
+                        alert("리뷰 내용과 별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'rating') {
+                        alert("별점을 눌러주세요.");
+                        location.reload();
+                    } else if(response.data === 'content') {
+                        alert("내용을 입력해주세요.");
+                        location.reload();
+                    } else if(response.data === 'error') {
+                        alert("리뷰 등록에 실패했습니다.");
+                        location.reload();
+                    }
+                })
+                .catch(function(error) {
+                    alert('Error: ' + error);
+                });
+            });
+        });
+</script>
+
 
 </body>
 </html>

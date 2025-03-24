@@ -39,30 +39,37 @@ body {
 }
 
 /* 테이블 스타일 */
-table {
+.board-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin: 30px 0;
 }
 
-th, td {
+.board-table thead {
+    background-color: #f5f5f5;
+}
+
+.board-table th,
+.board-table td {
+    padding: 20px 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-table td {
+    color: #333;
+}
+
+.board-table td a {
+    padding: 5px 10px;
+    font-size: 12px;
+    text-decoration: none;
     border: 1px solid #ddd;
-    text-align: center;
-    padding: 10px;
+    color: black;
 }
 
-th {
-    background-color: #F4F4F4;
-}
-
-.empty-message {
-    text-align: center;
-    padding: 40px;
-}
-
-.empty-icon {
-    font-size: 24px;
-    font-weight: bold;
+.board-table td a:hover {
+    border-color: black;
 }
 
 /* 버튼 스타일 */
@@ -76,6 +83,10 @@ th {
     color: white;
     text-decoration: none;
     border-radius: 5px;
+}
+
+.register-button:hover {
+    background-color: #999;
 }
 
 /* 유의사항 스타일 */

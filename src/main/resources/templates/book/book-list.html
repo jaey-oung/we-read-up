@@ -5,32 +5,32 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
+    <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/book/book-list.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
 
-
-
-
 <div class="container">
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <span>홈 / 아우터</span>
-            </div>
+                <!-- 카테고리 추가 예정 -->
+                <h1>홈 / 아우터</h1>
 
-            <h1 class="second-category">Outer</h1>
+            </div>
         </div>
 
         <div class="content-main">
             <div class="sort">
                 <p class="product-count">
-                    총 <strong class="highlight">8</strong>개의 상품이 있습니다.
+                    총 <strong class="highlight" th:text="${ph.totalCnt}"></strong>개의 상품이 있습니다.
                 </p>
 
+                <!-- 정렬 방식 추가 -->
                 <select>
                     <option value="">- 정렬방식 -</option>
                     <option value="latest">최신순</option>
@@ -40,105 +40,51 @@
             </div>
 
             <div class="product-grid">
-                <a href="/bookDetail" class="product">
-                    <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/5b1b33bf3a2c534946ba8851a67a4315.png" alt="캐시미어 베이직 니트">
+                <!-- 쿼리 스트링으로 값 넘겨주기 -->
+                <a th:each="item : ${list}" th:href="@{'/bookDetail?bookId='+${item.bookId}+'&page='+${ph.page}+'&category='+${category}+'&pageSize='+${ph.pageSize}}" class="product">
+                    <img th:src="${item.image}" th:alt="${item.name}">
                     <div class="hover-buttons">
+                        <!-- 장바구니 추가 -->
                         <button>장바구니</button>
+                        <!-- 주문으로 넘어가기 추가 -->
                         <button>구매</button>
                     </div>
-                    <p class="product-name">캐시미어 베이직 니트</p>
-                    <p class="product-price"><strong>500,000원</strong></p>
+                    <p class="product-name" th:text="${item.name}" style="text-decoration:none"></p>
+                    <p class="product-price" id="salePrice" >
+                        <strong th:text="${#numbers.formatInteger(item.salePrice, 3,'COMMA')}+'원'"></strong>
+                    </p>
                 </a>
-
-                <div class="product">
-                    <img src="images/watch-brown.jpg" alt="브라운 워치 타입A">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">브라운 워치 타입A</p>
-                    <p class="product-price"><strong>150,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <img src="images/hoodie.jpg" alt="데일리 후드티">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">데일리 후드티</p>
-                    <p class="product-price"><strong>49,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <img src="images/watch-black.jpg" alt="블랙 워치">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">블랙 워치</p>
-                    <p class="product-price"><strong>249,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <img src="images/watch-brown.jpg" alt="브라운 워치 타입A">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">브라운 워치 타입A</p>
-                    <p class="product-price"><strong>150,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <img src="images/sweater.jpg" alt="캐시미어 베이직 니트">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">캐시미어 베이직 니트</p>
-                    <p class="product-price"><strong>500,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <div class="discount-badge">10%</div>
-                    <img src="images/jacket-beige.jpg" alt="베이지 자켓">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">베이지 자켓</p>
-                    <p class="product-price"><strong>300,000원</strong></p>
-                </div>
-
-                <div class="product">
-                    <div class="discount-badge">43%</div>
-                    <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/bb5025802c49871946913c6b43e75515.png" alt="블랙 가죽 자켓">
-                    <div class="hover-buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name">블랙 가죽 자켓</p>
-                    <p class="product-price"><strong>340,000원</strong></p>
-                </div>
             </div>
-        </div>
-
-    </div>
-    <form class="howtopag" action="/board/list" method="get">
-        <button type="submit" name="page">❮❮</button>
-        <button type="submit" name="page">❮</button>
-        <button type="submit" name="page">num</button>
-        <button type="submit" name="page">❯</button>
-        <button type="submit" name="page">❯❯</button>
+    <form class="howtopag" id="form" action="/bookList" method="get">
+        <!-- 이전 페이지 -10 -->
+        <th:block th:if="${ph.page -10 > 0}">
+            <button type="submit" name="page" th:value="${ph.page -10}">❮❮</button>
+        </th:block>
+        <!-- 이전 페이지 -1 -->
+        <th:block th:if="${ph.page -1 > 0}">
+            <button type="submit" name="page" th:value="${ph.page -1}">❮</button>
+        </th:block>
+        <!-- 페이지 1-10 -->
+        <th:block th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+            <button type="submit" name="page" th:text="${i}" th:value="${i}">num</button>
+        </th:block>
+        <!-- 다음 페이지 +1 -->
+        <th:block th:if="${ph.page+1 < ph.totalPage}">
+            <button type="submit" name="page" th:value="${ph.page+1}">❯</button>
+        </th:block>
+        <!-- 다음 페이지 +10 -->
+        <th:block th:if="${ph.page +10 < ph.totalPage}">
+            <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
+        </th:block>
+        <!-- 요청 넘겨주기용 input -->
+        <input type="hidden" id="category" name="category" th:value="${category}"/>
+        <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
+        <input type="hidden" id="option" name="option" th:value="${sc.option}"/>
+        <input type="hidden" id="keyword" name="keyword" th:value="${sc.keyword}"/>
     </form>
 </div>
 
-
-
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-
 </body>
+
 </html>
