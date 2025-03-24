@@ -26,6 +26,15 @@ public class FaqService {
         return faqDto;
     }
 
+    public Integer remove(Integer faqId, String employeeId) throws Exception{
+        return faqRepository.delete(faqId, employeeId);
+    }
+
+    public Integer write(FaqDto faqDto) throws Exception{
+        return faqRepository.insert(faqDto);
+    }
+
+
 
 
 
