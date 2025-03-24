@@ -71,14 +71,19 @@
                         TOTAL (Quantity)
                         <span class="total-price" id="total-price" th:text="${#numbers.formatInteger(bookDto.getSalePrice(), 3, 'COMMA')}+'원'">500,000원 (1개)</span>
                     </div>
-                    <!-- 구매, 장바구니, 위시리스트 버튼 -->
+
+                    <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
+
                     <form class="button-group" id="btnForm">
                         <button class="buy-now">BUY IT NOW</button>
                         <button class="cart">CART</button>
+
+                    <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
+
+
+
                         <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
-
-                        <!-- memberId value변경 해야됨 -->
 
                         <input type="hidden" id="memberId" th:value="${memberId}"/>
                         <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
