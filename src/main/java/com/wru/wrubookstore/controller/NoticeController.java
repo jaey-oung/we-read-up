@@ -50,7 +50,7 @@ public class NoticeController {
 
     @GetMapping("/write")
     public String writer(Model m){
-        System.out.println("글쓰기 페이지 진입!");
+//        System.out.println("글쓰기 페이지 진입!");
         m.addAttribute("mode","new");
         return "board/notice-detail";         //읽기와 쓰기에 사용, 쓰기에 사용할때는 mode=new
     }
@@ -81,7 +81,7 @@ public class NoticeController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam("noticeId")Integer noticeId, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rdatt) {
-//        String employee_id = (String) session.getAttribute("id");
+//        String employeeId = (String) session.getAttribute("id");
         String employeeId = "emp_1";
         try {
             m.addAttribute("page", page);
