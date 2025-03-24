@@ -50,4 +50,14 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void deleteLike(LikeDto likeDto) throws Exception{
         session.delete(namespace + "deleteLike", likeDto);
     }
+
+    @Override
+    public void deleteAll(Integer memberId) throws Exception {
+        session.delete(namespace + "deleteAll", memberId);
+    }
+
+    @Override
+    public void deleteSelected(Map<String, Object> map) throws Exception {
+        session.delete(namespace + "deleteSelected", map);
+    }
 }

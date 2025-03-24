@@ -62,22 +62,16 @@ body {
 
 .wishlist-item input[type="checkbox"] {
     margin-right: 10px;
+    width: 15px;
+    height: 15px;
 }
 
-.wishlist-item .image-placeholder {
-    width: 80px;
-    height: 80px;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+
+.wishlist-item img {
     margin-right: 15px;
-    border: 1px solid #ddd;
-}
-
-.wishlist-item .image-placeholder img {
-    width: 50%;
-    opacity: 0.5;
+    width: 100px;
+    height: auto;
 }
 
 .wishlist-item .product-info {
@@ -98,17 +92,22 @@ body {
     font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
-    border: 1px solid #000;
-    background-color: #fff;
+    border: 1px solid #ddd;
+    background-color: white;
 }
 
 .btn.black {
-    background-color: #000;
-    color: #fff;
+    color: white;
+    background-color: black;
 }
 
 .btn:hover {
-    opacity: 0.8;
+    border-color: black;
+}
+
+.black:hover {
+    border-color: #ddd;
+    background-color: #999;
 }
 
 .bottom-actions {
