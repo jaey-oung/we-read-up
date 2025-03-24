@@ -6,7 +6,7 @@
     <select id="selectList" parameterType="Integer" resultType="AddressDto">
         SELECT a.address_id, m.member_id, a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.default_address
         FROM member m, address a
-        WHERE m.member_id = a.member_id AND m.member_id = 1
+        WHERE m.member_id = a.member_id AND m.member_id = #{memberId}
     </select>
 
     <select id="selectOne" parameterType="Integer" resultType="AddressDto">
