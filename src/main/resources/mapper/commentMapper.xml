@@ -31,11 +31,13 @@
         ORDER BY reg_date ASC, comment_id ASC
     </select>
 
-    <select id="select" parameterType="int" resultType="CommentDto">
-        SELECT comment_id, notice_id, content, member_id, reg_date, mod_date
-        FROM comment
-        WHERE notice_id = #{noticeId}
+    <select id="selectCommentsByNoticeId" parameterType="int" resultType="CommentDto">
+        SELECT c.comment_id, c.notice_id, c.content, c.member_id, m.nickname, c.reg_date, c.mod_date
+        FROM comment c
+                 JOIN member m ON c.member_id = m.member_id
+        WHERE c.notice_id = #{noticeId}
     </select>
+
 
     <update id="update" parameterType="CommentDto">
         UPDATE comment

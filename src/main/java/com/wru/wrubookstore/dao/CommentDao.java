@@ -36,7 +36,7 @@ public class CommentDao {
     } // int insert(String statement, Object parameter)
 
     public List<CommentDto> selectAll(Integer noticeId) throws Exception {
-        return session.selectList(namespace+"selectAll", noticeId);
+        return session.selectList(namespace+"selectCommentsByNoticeId", noticeId);
     } // List<E> selectList(String statement)
 
     public CommentDto select(Integer commentId) throws Exception {

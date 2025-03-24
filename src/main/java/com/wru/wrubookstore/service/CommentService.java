@@ -44,8 +44,8 @@ public class CommentService {
         return commentDao.selectAll(noticeId);
     }
 
-    public CommentDto read(Integer cno) throws Exception {
-        return commentDao.select(cno);
+    public CommentDto read(Integer commentId) throws Exception {
+        return commentDao.select(commentId);
     }
 
     public int modify(CommentDto commentDto) throws Exception {

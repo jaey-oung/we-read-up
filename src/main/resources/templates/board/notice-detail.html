@@ -274,9 +274,9 @@
         let html = "<ul>";
         comments.forEach(function(comment) {
             html += '<li data-commentId="' + comment.commentId + '" data-noticeId="' + comment.noticeId + '">';
-            html += '<span class="memberId">' + escapeHtml(comment.memberId) + '</span>: ';
-            html += '<span class="content">' + escapeHtml(comment.content) + '</span>';
-            html += '<span class="modDate">' + comment.modDate + '</span>';
+            html += '<div><strong>작성자:</strong> ' + escapeHtml(comment.nickname) + '</div>';
+            html += '<div><strong>내용:</strong> ' + escapeHtml(comment.content) + '</div>';
+            html += '<div><strong>수정일:</strong> ' + comment.modDate + '</div>';
             html += '<button class="delBtn">삭제</button>';
             html += '<button class="modBtn">수정</button>';
             html += '</li>';
