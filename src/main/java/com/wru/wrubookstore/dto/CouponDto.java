@@ -14,7 +14,8 @@ public class CouponDto {
     private String name;
     private double discount;
     private int maxDiscountAmount;
-    private int minDiscountAmount;
+    private int minPurchaseAmount;
+    private String couponSource;
     private Date regDate;
     private Date endDate;
 }

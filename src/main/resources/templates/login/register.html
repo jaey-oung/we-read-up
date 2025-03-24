@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/login/register.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
-<body>
-<div th:replace="~{fragments/header :: header}"></div>\
+<body th:attr="data-msg=${msg}">
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <div class="content">
         <div class="content-head">
@@ -72,37 +71,7 @@
     </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/display-msg.js"></script>
+<script src="/js/register.js"></script>
 </body>
 </html>
-<script>
-    const msg = "[[${msg}]]";
-
-    $(document).ready(function () {
-        // 초기 상태는 비회원가입 모드 (회원 관련 입력 필드 숨김)
-        $(".member-field").hide();
-        $("form").attr("action", "/register/user");
-
-        // 회원가입 유형에서 선택한 탭에만 active 클래스 추가
-        $(".signup-tab").click(function () {
-            $(".signup-tab").removeClass("active");
-            $(this).addClass("active");
-
-            // 비회원가입 탭이 선택 시
-            if ($(this).attr("id") === "user-tab") {
-                $(".member-field").hide(); // 회원 전용 입력 필드 숨김
-                $("#signup-title").text("비회원가입"); // 제목 변경
-                $("form").attr("action", "/register/user");
-            } else { // 회원가입 탭 선택 시
-                $(".member-field").show(); // 회원 전용 입력 필드 표시
-                $("#signup-title").text("회원가입"); // 제목 변경
-                $("form").attr("action", "/register/member");
-            }
-        });
-
-        displayMsg(msg);
-    });
-
-    function displayMsg(msg) {
-        if(msg === "USER_SIGNUP_ERR") alert("비회원 계정이 생성 오류");
-    }
-</script>

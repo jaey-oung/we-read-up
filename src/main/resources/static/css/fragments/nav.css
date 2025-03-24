@@ -41,7 +41,7 @@
     text-decoration: underline;
 }
 
-td:nth-child(3), th:nth-child(3) {
+.categoryAll td:nth-child(3), .categoryAll th:nth-child(3) {
     border-left: 1px solid #cccccc;
     border-right: 1px solid #cccccc;
 }

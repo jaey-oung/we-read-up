@@ -11,19 +11,32 @@
         ORDER BY book_id desc;
     </select>
     <!-- 현재 유저가 해당 책을 좋아요 눌렀는지 확인 -->
-    <select id="selectLikeMember" parameterType="map" resultType="int">
+    <select id="selectLikeMember" parameterType="LikeDto" resultType="int">
         SELECT count(*)
         FROM `like`
         WHERE book_id=#{bookId} and member_id=#{memberId}
         ORDER BY book_id desc, member_id desc;
     </select>
+    <!-- 회원의 좋아요 수 조회 -->
+    <select id="selectCntByMember" parameterType="Integer" resultType="int">
+        SELECT COUNT(*)
+        FROM `like`
+        WHERE member_id = #{memberId}
+    </select>
+    <!-- 회원의 좋아요 목록 페이징에 맞게 출력 -->
+    <select id="selectListByPh" parameterType="Map" resultType="BookDto">
+        SELECT b.*
+        FROM `like` l, book b
+        WHERE l.book_id = b.book_id AND l.member_id = #{memberId}
+        LIMIT #{ph.offset}, #{ph.pageSize}
+    </select>
     <!-- 좋아요 추가 -->
-    <insert id="insertLike" parameterType="map">
+    <insert id="insertLike" parameterType="LikeDto">
         INSERT INTO `like`(member_id, book_id)
         VALUES (#{memberId}, #{bookId})
     </insert>
     <!-- 좋아요 삭제 -->
-    <delete id="deleteLike" parameterType="map">
+    <delete id="deleteLike" parameterType="LikeDto">
         DELETE FROM `like` WHERE book_id=#{bookId} AND member_id=#{memberId}
         ORDER BY book_id desc, member_id desc
     </delete>

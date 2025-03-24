@@ -7,6 +7,7 @@ import com.wru.wrubookstore.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -36,14 +37,30 @@ public class BookServiceImpl implements BookService {
 
     // 책 번호로 한 개 조회
     @Override
+    public int countAllByAdmin() throws Exception {
+        return bookRepository.countAllByAdmin();
+    }
+
+    @Override
+    public List<BookDto> selectAllByAdmin() throws Exception {
+        return bookRepository.selectAllByAdmin();
+    }
+
+    @Override
+    public void deleteAllByAdmin() throws Exception {
+        bookRepository.deleteAllByAdmin();
+    }
+
+    // 책 번호로 한개 조회
+    @Override
     public BookDto select(Integer bookId) throws Exception{
         return bookRepository.select(bookId);
     }
 
     // 테스트용 insert
     @Override
-    public void insert(BookDto book) throws Exception{
-        bookRepository.insert(book);
+    public int insert(BookDto book) throws Exception{
+        return bookRepository.insert(book);
     }
     // 각 책의 지은이들을 조회
     @Override
@@ -79,4 +96,5 @@ public class BookServiceImpl implements BookService {
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return bookRepository.selectSearchCnt(sc);
     }
+
 }

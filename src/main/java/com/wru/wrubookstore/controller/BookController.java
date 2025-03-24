@@ -3,13 +3,13 @@ package com.wru.wrubookstore.controller;
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.domain.SearchCondition;
-import com.wru.wrubookstore.dto.BookDto;
-import com.wru.wrubookstore.dto.CategoryDto;
-import com.wru.wrubookstore.dto.ReviewDto;
+import com.wru.wrubookstore.dto.*;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
+import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -27,11 +27,13 @@ public class BookController {
     private final BookService bookService;
     private final LikeService likeService;
     private final ReviewService reviewService;
+    private final MemberService memberService;
 
-    BookController(BookService bookService, LikeService likeService, ReviewService reviewService) {
+    BookController(BookService bookService, LikeService likeService, ReviewService reviewService, MemberService memberService) {
         this.bookService = bookService;
         this.likeService = likeService;
         this.reviewService = reviewService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/bookList")
@@ -93,38 +95,40 @@ public class BookController {
 
 
     @GetMapping("/bookDetail")
-    public String bookDetail(Integer bookId, Integer page, String category, Integer pageSize,Model m) {
+    public String bookDetail(HttpSession session, Integer bookId, Integer page, String category, Integer pageSize, Model m) {
 
         try{
-            // String id = (String)session.getAttribute("userId");
-            // User - email로 교체 예정
-            String id = "gildong@naver.com";
+            int userId = 0;
 
-            Map map = new HashMap();
-            map.put("bookId", bookId);
-            // member_id UserDto or MemberDto 생성 후 추가 예정
-            map.put("memberId", 1);
+            // 멤버 정보 조회
+            if((Boolean)session.getAttribute("isMember")){
+                userId = (Integer)session.getAttribute("userId");
+                System.out.println("userId = " + userId);
+            }
 
+            MemberDto memberDto = memberService.selectMember(userId);
+            System.out.println("memberDto = " + memberDto);
+
+            int memberId = memberDto.getMemberId();
+            // 좋아요 누른 회원의 정보 조회
+            LikeDto likeDto = new LikeDto(bookId, memberId);
             // 책 정보 조회
             BookDto bookDto = bookService.select(bookId);
             // 지은이들 조회
             List<String> writer = bookService.selectWriter(bookId);
             // 출판사 조회
             String publisher = bookService.selectPublisher(bookId);
-
+            // 리뷰들 조회
+            List<ReviewListResponse> review = reviewService.selectReview(bookId);
             // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
-            int isLikeUser = likeService.selectLikeMember(map);
+            int isLikeUser = likeService.selectLikeMember(likeDto);
             // 리뷰가 있는지 없는지 확인
             int reviewCnt = reviewService.countReview(bookId);
 
-            // 리뷰가 있으면 리뷰 조회
-            if(reviewCnt!=0){
-                // 리뷰들 조회
-                List<ReviewListResponse> review = reviewService.selectReview(bookId);
-                System.out.println("review = " + review);
-                m.addAttribute("review", review);
-            }
 
+
+            m.addAttribute("memberId", memberId);
+            m.addAttribute("review", review);
             m.addAttribute("bookDto", bookDto);
             m.addAttribute("writer", writer);
             m.addAttribute("publisher", publisher);

@@ -40,6 +40,25 @@
         <include refid="sql-part-selectByCategory" />
         <include refid="sql-option-category" />
     </select>
+    <!-- 관리자용: 전체 책 개수 조회 -->
+    <select id="countAllByAdmin" resultType="int">
+        SELECT COUNT(*)
+        FROM book
+    </select>
+
+    <!-- 관리자용: 전체 책 목록 조회 -->
+    <select id="selectAllByAdmin" resultType="BookDto">
+        SELECT book_id, publisher_id, category_small_id, name, translator, original_price, discount_percent,
+               discount_price, sale_price, release_date, reg_date, table_of_content, description, isbn, stock_quantity,
+            size, weight, page, image
+        FROM book
+    </select>
+
+    <!-- 관리자용: 전체 책 삭제 -->
+    <delete id="deleteAllByAdmin">
+        DELETE
+        FROM book
+    </delete>
     <!--  책 한 권의 정보 조회  -->
     <select id="select" parameterType="int" resultType="BookDto">
         SELECT *

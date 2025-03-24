@@ -7,16 +7,16 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private final SqlSessionTemplate session;
-    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
     public BookRepositoryImpl(SqlSessionTemplate session) {
         this.session = session;
     }
+
+    private final String namespace = "com.wru.wrubookstore.mapper.BookMapper.";
 
     // 카테고리 정보 조회
     @Override
@@ -40,7 +40,23 @@ public class BookRepositoryImpl implements BookRepository {
         return list;
     }
 
-    // 책 번호로 한 개 조회
+    // 관리자용
+    @Override
+    public int countAllByAdmin() throws Exception {
+        return session.selectOne(namespace + "countAllByAdmin");
+    }
+
+    @Override
+    public List<BookDto> selectAllByAdmin() throws Exception {
+        return session.selectList(namespace + "selectAllByAdmin");
+    }
+
+    @Override
+    public void deleteAllByAdmin() throws Exception {
+        session.delete(namespace + "deleteAllByAdmin");
+    }
+
+    // 책 번호로 한개 조회
     @Override
     public BookDto select(Integer bookId) throws Exception{
         return session.selectOne(namespace + "select", bookId);
@@ -48,8 +64,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     // 테스트용 insert
     @Override
-    public void insert(BookDto book)  throws Exception{
-        session.insert(namespace + "insert", book);
+    public int insert(BookDto book)  throws Exception{
+        return session.insert(namespace + "insert", book);
     }
 
     // 각 책의 지은이들을 조회

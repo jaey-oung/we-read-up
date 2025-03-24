@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/fragments/sidebar.css">
     <link rel="stylesheet" href="/css/myPage/order-list.css">
+    <script src="/js/order-list.js"></script>
 </head>
 <body>
 
@@ -37,48 +38,77 @@
 
         <!-- 주문내역 조회 탭 -->
         <div class="tab-menu">
-            <div class="tab active">주문내역조회 (0)</div>
-            <div class="tab">취소/반품/교환 내역 (0)</div>
+            <a href="/myPage/orderList" class="tab active">주문내역조회 <span th:text="|(${ph.totalCnt})|">(0)</span></a>
+            <a href="/myPage/exchangeRefundList" class="tab">교환/환불 내역</a>
         </div>
 
         <!-- 검색 필터 -->
-        <div class="search-bar">
-            <select>
-                <option>전체 주문처리상태</option>
-                <option>배송 준비 중</option>
-                <option>배송 중</option>
-                <option>배송 완료</option>
+        <form action="/myPage/orderList" method="get" class="search-bar">
+            <select name="statusId">
+                <option value="A" th:selected="${osc.statusId == 'A'}">전체 주문처리상태</option>
+                <option value="DS1" th:selected="${osc.statusId == 'DS1'}">배송 준비 중</option>
+                <option value="DS2" th:selected="${osc.statusId == 'DS2'}">배송 중</option>
+                <option value="DS3" th:selected="${osc.statusId == 'DS3'}">배송 완료</option>
             </select>
-            <button>오늘</button>
-            <button>1개월</button>
-            <button>3개월</button>
-            <button>6개월</button>
-            <input type="date" value="2024-12-14">
+            <button onclick="setDateRange(event, 0)">오늘</button>
+            <button onclick="setDateRange(event, 7)">1주일</button>
+            <button onclick="setDateRange(event, 30)">1개월</button>
+            <button onclick="setDateRange(event, 180)">6개월</button>
+            <input type="date" id="startDate" name="startDate" th:value="${osc.startDate}">
             <span>~</span>
-            <input type="date" value="2025-03-14">
-            <button class="btn-search">조회</button>
-        </div>
+            <input type="date" id="endDate" name="endDate" th:value="${osc.endDate}">
+            <button type="submit" class="btn-search">조회</button>
+        </form>
 
         <!-- 안내 문구 -->
         <div class="order-info">
-            <p>- 기본적으로 최근 3개월간의 자료가 조회되며, 기간 검색 시 주문처리완료 후 36개월 이내의 주문내역을 조회하실 수 있습니다.</p>
-            <p>- 완료 후 36개월 이상 경과한 주문은 <a href="#">[과거주문내역]</a>에서 확인할 수 있습니다.</p>
-            <p>- 리뷰얼 전에 주문한 내역은 <a href="#">[이전 주문내역]</a>에서 확인할 수 있습니다.</p>
+            <p>- 주문 처리 상태를 선택하고 날짜 범위를 지정할 수 있는 검색 필터입니다.</p>
+            <p>- 오늘, 1주일, 1개월, 6개월 버튼으로 빠르게 날짜를 설정할 수 있습니다.</p>
+            <p>- 시작일과 종료일을 수동으로도 선택 가능합니다.</p>
         </div>
 
-        <!-- 주문 내역 없음 이미지 -->
-        <div class="order-empty">
-            <img src="image.png" alt="주문 내역 없음">
-            <p>주문 내역이 없습니다.</p>
-        </div>
+        <table class="board-table">
+            <thead>
+            <tr>
+                <th>주문일</th>
+                <th>주문번호</th>
+                <th>주문자</th>
+                <th>주문상품</th>
+                <th>조회</th>
+                <th>교환 및 환불</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orderList}">
+                <td th:text="${#dates.format(order.regDate, 'yyyy-MM-dd')}">2025-01-01</td>
+                <td th:text="${order.orderId}">123</td>
+                <td th:text="${order.userName}">홍길동</td>
+                <td>
+                    <div>
+                        [[${order.bookName}]] [[${order.bookTypeCount >= 2 ? '외' : ''}]]<br> 총 [[${order.bookTypeCount}]]종 [[${order.totalBookCount}]]권, [[${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 0, 'POINT')}]]원
+                    </div>
+                </td>
+                <td><a th:href="@{/myPage/orderDetail/{orderId}(orderId=${order.orderId})}">상세조회</a></td>
+                <td><a href="">교환/환불 신청</a></td>
+            </tr>
+            </tbody>
+        </table>
 
         <div>
-            <form class="howtopag" action="/board/list" method="get">
-                <button type="submit" name="page">❮❮</button>
-                <button type="submit" name="page">❮</button>
-                <button type="submit" name="page">num</button>
-                <button type="submit" name="page">❯</button>
-                <button type="submit" name="page">❯❯</button>
+            <form class="howtopag" action="/myPage/orderList" method="get">
+                <button type="submit" name="page" th:value="${ph.page - 10}" th:class="|howtopag_item${ph.page >= 1 and ph.page <= 10 ? '_pagdisabled' : ''}|">❮❮</button>
+                <button type="submit" name="page" th:value="${ph.page - 1}" th:class="|howtopag_item${ph.showPrev ? '' : '_pagdisabled'}|">❮</button>
+                <th:block th:unless="${ph.endPage == 0}">
+                    <th:block th:each="num : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                        <button type="submit" name="page" th:value="${num}" th:text="${num}" th:class="|howtopag_item${ph.page == num ? '_pagactive' : ''}|">num</button>
+                    </th:block>
+                </th:block>
+                <button type="submit" name="page" th:value="${ph.page + 1}" th:class="|howtopag_item${ph.showNext ? '' : '_pagdisabled'}|">❯</button>
+                <button type="submit" name="page" th:value="${ph.page + 10}" th:class="|howtopag_item${ph.page > ph.totalPage - 10 ? '_pagdisabled' : ''}|">❯❯</button>
+
+                <input type="hidden" name="statusId" th:value="${osc.statusId}">
+                <input type="hidden" name="startDate" th:value="${osc.startDate}">
+                <input type="hidden" name="endDate" th:value="${osc.endDate}">
             </form>
         </div>
     </main>

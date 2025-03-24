@@ -21,11 +21,11 @@ public class CouponController {
     }
 
     @GetMapping("/myPage/couponList")
-    public String couponList(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String couponList(@SessionAttribute Integer userId, @RequestParam(defaultValue = "1") int page, Model model) {
         try {
-            // 임의의 회원 값 입력(수정 필요)
-            List<CouponDto> couponDtoList = couponService.selectList(1);
-            int couponCount = couponService.selectCount(1);
+            List<CouponDto> couponDtoList = couponService.selectList(userId);
+            // 쿠폰 PageHandler 생성
+            int couponCount = couponService.selectCount(userId);
             PageHandler ph = new PageHandler(couponCount, page);
 
             model.addAttribute("couponList", couponDtoList);

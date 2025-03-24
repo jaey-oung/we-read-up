@@ -19,10 +19,17 @@ public interface BookRepository {
     List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception;
 
     // 책 번호로 한 개 조회
+
+    // 관리자용
+    int countAllByAdmin() throws Exception;
+    List<BookDto> selectAllByAdmin() throws Exception;
+    void deleteAllByAdmin() throws Exception;
+
+    // 책 번호로 한개 조회
     BookDto select(Integer bookId) throws Exception;
 
     // 테스트용 insert
-    void insert(BookDto book) throws Exception;
+    int insert(BookDto book) throws Exception;
 
     // 각 책의 지은이들을 조회
     List<String> selectWriter(Integer bookId) throws Exception;

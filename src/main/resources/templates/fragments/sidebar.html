@@ -11,11 +11,11 @@
         <h3>나의 쇼핑 정보</h3>
         <ul>
             <li><a href="/myPage/orderList">주문내역 조회</a></li>
-            <li><a href="/myPage/couponList">쿠폰 내역</a></li>
-            <li><a href="/myPage/addressList">배송 주소록 관리</a></li>
+            <li th:if="${session.isMember}"><a href="/myPage/couponList">쿠폰 내역</a></li>
+            <li th:if="${session.isMember}"><a href="/myPage/addressList">배송 주소록 관리</a></li>
         </ul>
     </div>
-    <div class="menu">
+    <div class="menu" th:if="${session.isMember}">
         <h3>활동 정보</h3>
         <ul>
             <li><a href="/myPage/likeList">좋아요</a></li>
@@ -24,8 +24,8 @@
     <div class="menu">
         <h3>나의 정보</h3>
         <ul>
-            <li><a href="/myPage/editProfile">회원 정보 수정</a></li>
-            <li><a href="#">로그아웃</a></li>
+            <li><a href="/myPage/editProfile">사용자 정보 수정</a></li>
+            <li><a href="/login/logout">로그아웃</a></li>
         </ul>
     </div>
 </aside>
