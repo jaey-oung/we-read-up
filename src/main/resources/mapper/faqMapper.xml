@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wru.wrubookstore.mapper.BoardMapper">
+    <sql id="selectFromFaq">
+        SELECT faq_id as faqId, employee_id as employeeId, title, content, reg_date as regDate, mod_date as modDate
+        FROM faq
+    </sql>
+
+    <select id="select" parameterType="int" resultType="FaqDto">
+        <include refid="selectFromFaq"/>
+        WHERE faq_id = #{faqId}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(*) FROM faq
+    </select>
+
+    <select id="selectAll" resultType="FaqDto">
+        <include refid="selectFromFaq"/>
+        ORDER BY reg_date DESC, faq_id DESC
+    </select>
+
+    <delete id="deleteAll">
+        DELETE FROM faq
+    </delete>
+
+    <delete id="deleteForAdmin">
+        DELETE FROM faq WHERE faq_id = #{faqId}
+    </delete>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM faq WHERE faq_id = #{faq_id} and employee_id = #{employeeId}
+    </delete>
+
+    <insert id="insert" parameterType="FaqDto">
+        INSERT INTO faq(title, content, employee_id)
+        VALUES (#{title}, #{content}, #{employeeId})
+    </insert>
+
+    <update id="update" parameterType="FaqDto">
+        UPDATE faq
+        SET title = #{title}.
+            content = #{content},
+            mod_date = now()
+        WHERE faq_id = #{faqId} and employee_id = #{employeeId}
+    </update>
+
+</mapper>
