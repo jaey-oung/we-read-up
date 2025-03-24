@@ -16,6 +16,7 @@ public class PageHandler {
     private int endPage;        // 마지막 페이지
     private boolean showPrev;   // 이전 페이지 있는지
     private boolean showNext;   // 다음 페이지 있는지
+    private int offset;
 
     public PageHandler(){}
 
@@ -33,5 +34,6 @@ public class PageHandler {
         endPage = Math.min(beginPage + naviSize - 1, totalPage);
         showPrev = page != 1;
         showNext = page != totalPage && totalPage != 0;
+        offset = pageSize * (page - 1);
     }
 }
