@@ -27,13 +27,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistoryRequest> selectOrderHistory(Integer userId, OrderSearchCondition osc) throws Exception {
-        return orderRepository.selectOrderHistory(Map.of("userId", userId, "osc", osc));
+    public List<OrderHistoryRequest> selectListByOsc(Integer userId, OrderSearchCondition osc) throws Exception {
+        return orderRepository.selectListByOsc(Map.of("userId", userId, "osc", osc));
     }
 
     @Override
-    public int selectOrderCnt(Integer userId, OrderSearchCondition osc) throws Exception {
-        return orderRepository.selectOrderCnt(Map.of("userId", userId, "osc", osc));
+    public int selectCntByOsc(Integer userId, OrderSearchCondition osc) throws Exception {
+        return orderRepository.selectCntByOsc(Map.of("userId", userId, "osc", osc));
     }
 
     @Override
