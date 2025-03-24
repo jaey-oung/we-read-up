@@ -40,7 +40,7 @@ public class BookController {
     public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
                            HttpSession session) {
 
-        int userId = (int) session.getAttribute("userId");
+//        int userId = (int) session.getAttribute("userId");
 
         try{
             int count = bookService.selectByCategoryCnt(sc.getCategory());
@@ -57,7 +57,7 @@ public class BookController {
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
 
             model.addAttribute("sc", sc);
-            model.addAttribute("userId", userId);
+//            model.addAttribute("userId", userId);
             model.addAttribute("list", list);
             model.addAttribute("ph", pageHandler);
             model.addAttribute("uri", request.getRequestURI());
@@ -84,8 +84,8 @@ public class BookController {
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);
-            model.addAttribute("uri", request.getRequestURI());
             model.addAttribute("ph", pageHandler);
+            model.addAttribute("uri", request.getRequestURI());
         } catch (Exception e) {
             e.printStackTrace();
         }
