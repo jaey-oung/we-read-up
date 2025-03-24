@@ -1,9 +1,11 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.LikeDto;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -27,6 +29,17 @@ public class LikeRepositoryImpl implements LikeRepository {
     public Integer selectLikeMember(LikeDto likeDto) throws Exception{
         return session.selectOne(namespace + "selectLikeMember", likeDto);
     }
+
+    @Override
+    public int selectCntByMember(Integer memberId) throws Exception {
+        return session.selectOne(namespace + "selectCntByMember", memberId);
+    }
+
+    @Override
+    public List<BookDto> selectListByPh(Map<String, Object> map) throws Exception {
+        return session.selectList(namespace + "selectListByPh", map);
+    }
+
     // 해당 책을 좋아요에 추가
     @Override
     public void insertLike(LikeDto likeDto) throws Exception{
