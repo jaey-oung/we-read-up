@@ -80,7 +80,7 @@
 
                         <!-- memberId value변경 해야됨 -->
 
-                        <input type="hidden" id="memberId" th:value="${1}"/>
+                        <input type="hidden" id="memberId" th:value="${memberId}"/>
                         <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
                     </form>
                 </div>
@@ -168,13 +168,15 @@
                                         책 내용이 너무 알차요!
                                     </div>
                                     <div class="review-info">
-                                        <input type="hidden" id="reviewId" th:value="${i.reviewId}"/>
+                                        <input type="hidden" class="reviewId" id="reviewId" th:value="${i.reviewId}"/>
                                         <span class="review-author" th:text="${i.nickname}">이훈</span>
                                         <span class="review-date" th:text="${#dates.format(i.regDate, 'yyyy-MM-dd')}">2025-03-19</span>
+
                                         <th:block th:if="${i.memberId==memberId}">
                                             <button id="delBtn" style="position:relative;left:500px">삭제</button>
-                                            <button id="modBtn" style="position:relative;left:400px">수정</button>
+                                            <button id="modBtn" class="modBtn" style="position:relative;left:400px">수정</button>
                                         </th:block>
+                                        <input type="hidden" id="modCnt" th:value="0"/>
 
                                     </div>
                                 </div>
@@ -199,98 +201,50 @@
 <script>
     $(document).ready(function () {
         // 수정 버튼을 누르면 삭제버튼은 완료버튼으로 수정 버튼은 취소 버튼으로?
-        $('#modBtn').click(function() {
-            $('#modBtn').html('취소').attr('id', 'cancelBtn');
-            $('#delBtn').html('완료');
+        $(document).on('click', '#modBtn', function() {
+            if($('#modCnt').val() === '1'){
+                alert("수정이 취소되었습니다.");
+                location.reload();
+                return;
+            }
 
-            var divContent = $('#review-con').html(); // div의 내용 저장
-            var textarea = $('<textarea>').val(divContent).attr('id', 'review-con'); // div 내용을 textaref로 설정
+            $('#modCnt').val(1);
 
-            $('#review-con').replaceWith(textarea); // div를 textaref로 교체
+            $(this).closest('.review').find('#modBtn').html('취소');
+            $(this).closest('.review').find('#delBtn').html('완료');
 
-            // 취소 버튼
-            $('#cancelBtn').click(function() {
-               location.reload();
-            });
+            var divContent = $(this).closest('.review').find('.review-content').html(); // div의 내용 저장
+            var textarea = $('<textarea>').val(divContent).attr('class', 'review-content'); // div 내용을 textaref로 설정
+
+            $(this).closest('.review').find('.review-content').replaceWith(textarea); // div를 textaref로 교체
+
             // 별점 변경
-            $('#modRating').html(
+            $(this).closest('.review').find('.rating').html(
                 '<div class="custom-star" id="star6" data-value="1">★</div>' +
                 '<div class="custom-star" id="star7" data-value="2">★</div>' +
                 '<div class="custom-star" id="star8" data-value="3">★</div>' +
                 '<div class="custom-star" id="star9" data-value="4">★</div>' +
                 '<div class="custom-star" id="star10" data-value="5">★</div>' +
-                '<input type="hidden" id="rating2" th:value="0"/>'
-
+                '<input type="hidden" class="rating2" th:value="0"/>'
             ).attr('class', 'custom-rating');
 
-            // 별점 1
-            $('#star6').click(function(){
-                let star = $(this).data('value');
-                $('#star6').html('★').css('color', '#ff1493');
-
-                $('#star7').html('★').css('color', '#d3d3d3');
-                $('#star8').html('★').css('color', '#d3d3d3');
-                $('#star9').html('★').css('color', '#d3d3d3');
-                $('#star10').html('★').css('color', '#d3d3d3');
-
-                $('#rating2').val(star);
+            $(this).closest('.review').find('.custom-star').click(function(){
+               let star = $(this).data('value');
+               $(this).closest('.review').find('.custom-star').each(function(index){
+                   if(index < star){
+                       $(this).css('color', '#ff1493');
+                   } else{
+                       $(this).css('color', '#d3d3d3');
+                   }
+               });
+                $(this).closest('.review').find('.rating2').val(star);
             });
-            // 별점 2
-            $('#star7').click(function(){
-                let star = $(this).data('value');
-                $('#star6').html('★').css('color', '#ff1493');
-                $('#star7').html('★').css('color', '#ff1493');
-
-                $('#star8').html('★').css('color', '#d3d3d3');
-                $('#star9').html('★').css('color', '#d3d3d3');
-                $('#star10').html('★').css('color', '#d3d3d3');
-
-                $('#rating2').val(star);
-            });
-            // 별점 3
-            $('#star8').click(function(){
-                let star = $(this).data('value');
-                $('#star6').html('★').css('color', '#ff1493');
-                $('#star7').html('★').css('color', '#ff1493');
-                $('#star8').html('★').css('color', '#ff1493');
-
-                $('#star9').html('★').css('color', '#d3d3d3');
-                $('#star10').html('★').css('color', '#d3d3d3');
-
-                $('#rating2').val(star);
-            });
-            // 별점 4
-            $('#star9').click(function(){
-                let star = $(this).data('value');
-                $('#star6').html('★').css('color', '#ff1493');
-                $('#star7').html('★').css('color', '#ff1493');
-                $('#star8').html('★').css('color', '#ff1493');
-                $('#star9').html('★').css('color', '#ff1493');
-
-                $('#star10').html('★').css('color', '#d3d3d3');
-
-                $('#rating2').val(star);
-            });
-            // 별점 5
-            $('#star10').click(function(){
-                let star = $(this).data('value');
-                $('#star6').html('★').css('color', '#ff1493');
-                $('#star7').html('★').css('color', '#ff1493');
-                $('#star8').html('★').css('color', '#ff1493');
-                $('#star9').html('★').css('color', '#ff1493');
-                $('#star10').html('★').css('color', '#ff1493');
-
-                $('#rating2').val(star);
-            });
-            // 별점 변경
         });
 
-
-
-        $('#delBtn').click(function() {
+        $(document).on('click', '#delBtn', function() {
             if($(this).html()==='삭제'){
                 var result = confirm("정말로 삭제하시겠습니까?");
-                let reviewId = $('#reviewId').val();
+                let reviewId = $(this).closest('.review').find('#reviewId').val();
                 let memberId = $('#memberId').val();
                 let bookId = $('#bookId').val();
                 console.log(reviewId);
@@ -314,11 +268,11 @@
             // 수정
             else if($(this).html()==='완료'){
                 var result = confirm("정말로 변경하시겠습니까?");
-                let reviewId = $('#reviewId').val();
+                let reviewId = $(this).closest('.review').find('.reviewId').val();
                 let memberId = $('#memberId').val();
                 let bookId = $('#bookId').val();
-                let content = $('#review-con').val();
-                let rating = $('#rating2').val();
+                let content = $(this).closest('.review').find('.review-content').val();
+                let rating = $(this).closest('.review').find('.rating2').val();
                 let modDate = new Date();
                 // 완료 버튼
                 if(result){
@@ -392,6 +346,7 @@
         $('#likeButton').click(function(event) {
             event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
             let bookId = $('#bookId').val();
+            let memberId = $('#memberId').val();
             let {text} = $(this); // 현재 클릭된 버튼
             let isLikeUser = parseInt($('#isLikeUser').val());
             console.log(isLikeUser);
@@ -406,7 +361,7 @@
             }
 
             // 서버에 bookId만 전송
-            axios.post('/book/like', bookId, {
+            axios.post('/book/like', {bookId, memberId}, {
                 headers: { "content-type": "application/json" }
             })
             .then(function(response) {

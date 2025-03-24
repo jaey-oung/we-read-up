@@ -107,8 +107,13 @@ public class BookController {
     public String bookDetail(HttpSession session, Integer bookId, Integer page, String category, Integer pageSize, Model m) {
 
         try{
-            // 멤버 추가예정
-            int userId = 3;
+            int userId = 0;
+
+            // 멤버 정보 조회
+            if((Boolean)session.getAttribute("isMember")){
+                userId = (Integer)session.getAttribute("userId");
+                System.out.println("userId = " + userId);
+            }
 
             MemberDto memberDto = memberService.selectMember(userId);
             System.out.println("memberDto = " + memberDto);

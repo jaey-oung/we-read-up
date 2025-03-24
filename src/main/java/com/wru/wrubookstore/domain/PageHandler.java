@@ -29,11 +29,11 @@ public class PageHandler {
         this.page = page;
         this.pageSize = pageSize;
 
-        totalPage = (int) Math.ceil((double)totalCnt / pageSize);
+        totalPage = Math.max((int) Math.ceil((double)totalCnt / pageSize), 1);
         beginPage = (page - 1) / naviSize * naviSize + 1;
         endPage = Math.min(beginPage + naviSize - 1, totalPage);
         showPrev = page != 1;
-        showNext = page != totalPage && totalPage != 0;
+        showNext = page != totalPage;
         offset = pageSize * (page - 1);
     }
 }
