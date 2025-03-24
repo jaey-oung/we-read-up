@@ -2,11 +2,11 @@ package com.wru.wrubookstore.service;
 
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
+import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -16,21 +16,30 @@ public class BookServiceImpl implements BookService {
         this.bookRepository = bookRepository;
     }
 
-    // 책 번호로 한개 조회
+    // 카테고리 정보 조회
+    @Override
+    public CategoryDto selectCategoryInfo(String category) throws Exception {
+        return bookRepository.selectCategoryInfo(category);
+    }
+
+    // 카테고리에 속한 책들의 수 조회
+    @Override
+    public int selectByCategoryCnt(String category) throws Exception {
+        return bookRepository.selectByCategoryCnt(category);
+    }
+
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception {
+        return bookRepository.selectByCategory(sc);
+    }
+
+    // 책 번호로 한 개 조회
     @Override
     public BookDto select(Integer bookId) throws Exception{
         return bookRepository.select(bookId);
     }
-    // LIMIT로 N개 조회 category(카테고리 소), offset, limit
-    @Override
-    public List<BookDto> selectRegList(Map map) throws Exception{
-        return bookRepository.selectRegList(map);
-    }
-    // 카테고리에 있는 책 수 조회
-    @Override
-    public int sCategoryCnt(String category) throws Exception{
-        return bookRepository.sCategoryCnt(category);
-    }
+
     // 테스트용 insert
     @Override
     public void insert(BookDto book) throws Exception{
