@@ -12,6 +12,6 @@
     <select id="selectCount" parameterType="Integer" resultType="int">
         SELECT count(*)
         FROM member m, member_coupon mc
-        WHERE m.member_id = mc.member_id AND m.member_id = #{userId}
+        WHERE m.member_id = mc.member_id AND m.user_id = #{userId}
     </select>
 </mapper>

@@ -40,4 +40,18 @@
         DELETE FROM `like` WHERE book_id=#{bookId} AND member_id=#{memberId}
         ORDER BY book_id desc, member_id desc
     </delete>
+    <!-- 해당 회원의 좋아요 모두 삭제 -->
+    <delete id="deleteAll" parameterType="Integer">
+        DELETE FROM `like`
+        WHERE member_id = #{memberId}
+    </delete>
+    <!-- 마이페이지에서 선택한 좋아요 삭제 -->
+    <delete id="deleteSelected" parameterType="Map">
+        DELETE FROM `like`
+        WHERE member_id = #{memberId}
+        AND book_id IN
+        <foreach item="bookId" collection="bookIdList" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
 </mapper>
