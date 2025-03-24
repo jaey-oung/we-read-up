@@ -104,11 +104,6 @@ button.btn-search {
     margin-bottom: 20px;
 }
 
-.order-info a {
-    color: black;
-    text-decoration: underline;
-}
-
 /* 테이블 스타일 */
 .board-table {
     width: 100%;

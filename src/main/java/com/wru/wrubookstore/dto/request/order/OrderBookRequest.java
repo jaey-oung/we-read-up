@@ -1,4 +1,4 @@
-package com.wru.wrubookstore.dto;
+package com.wru.wrubookstore.dto.request.order;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Getter @Setter
 @ToString
-public class OrderBookDto {
+public class OrderBookRequest {
 
     private String image;   // 책 이미지
     private String name;    // 책 이름

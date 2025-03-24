@@ -17,12 +17,12 @@ public class CouponRepositoryImpl implements CouponRepository {
     }
 
     @Override
-    public List<CouponDto> selectList(Integer memberId) throws Exception {
-        return session.selectList(namespace + "selectList", memberId);
+    public List<CouponDto> selectList(Integer userId) throws Exception {
+        return session.selectList(namespace + "selectList", userId);
     }
 
     @Override
-    public int selectCount(Integer memberId) throws Exception {
-        return session.selectOne(namespace + "selectCount", memberId);
+    public int selectCount(Integer userId) throws Exception {
+        return session.selectOne(namespace + "selectCount", userId);
     }
 }

@@ -16,12 +16,12 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> selectList(Integer memberId) throws Exception {
-        return couponRepository.selectList(memberId);
+    public List<CouponDto> selectList(Integer userId) throws Exception {
+        return couponRepository.selectList(userId);
     }
 
     @Override
-    public int selectCount(Integer memberId) throws Exception {
-        return couponRepository.selectCount(memberId);
+    public int selectCount(Integer userId) throws Exception {
+        return couponRepository.selectCount(userId);
     }
 }

@@ -2,6 +2,9 @@ package com.wru.wrubookstore.service;
 
 import com.wru.wrubookstore.domain.OrderSearchCondition;
 import com.wru.wrubookstore.dto.*;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
+import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
+import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
 import com.wru.wrubookstore.repository.DeliveryRepository;
 import com.wru.wrubookstore.repository.OrderRepository;
 import com.wru.wrubookstore.repository.PaymentRepository;
@@ -24,22 +27,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistoryDto> selectOrderHistory(Integer userId, OrderSearchCondition osc) throws Exception {
-        return orderRepository.selectOrderHistory(Map.of("userId", userId, "osc", osc));
+    public List<OrderHistoryRequest> selectListByOsc(Integer userId, OrderSearchCondition osc) throws Exception {
+        return orderRepository.selectListByOsc(Map.of("userId", userId, "osc", osc));
     }
 
     @Override
-    public int selectOrderCnt(Integer userId, OrderSearchCondition osc) throws Exception {
-        return orderRepository.selectOrderCnt(Map.of("userId", userId, "osc", osc));
+    public int selectCntByOsc(Integer userId, OrderSearchCondition osc) throws Exception {
+        return orderRepository.selectCntByOsc(Map.of("userId", userId, "osc", osc));
     }
 
     @Override
-    public OrderDetailDto selectOrderDetail(Integer orderId) throws Exception {
+    public OrderDetailRequest selectOrderDetail(Integer orderId) throws Exception {
         OrderDto orderDto = orderRepository.select(orderId);
         PaymentDto paymentDto = paymentRepository.select(orderId);
-        List<OrderBookDto> orderBookDtoList = orderRepository.selectOrderBook(orderId);
+        List<OrderBookRequest> orderBookRequestList = orderRepository.selectOrderBook(orderId);
         DeliveryDto deliveryDto = deliveryRepository.select(orderId);
 
-        return new OrderDetailDto(orderDto, paymentDto, orderBookDtoList, deliveryDto);
+        return new OrderDetailRequest(orderDto, paymentDto, orderBookRequestList, deliveryDto);
     }
 }
