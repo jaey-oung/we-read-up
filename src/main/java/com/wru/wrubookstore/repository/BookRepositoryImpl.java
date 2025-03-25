@@ -23,7 +23,11 @@ public class BookRepositoryImpl implements BookRepository {
     // 카테고리 정보 조회
     @Override
     public CategoryDto selectCategoryInfo(String category) throws Exception {
-        CategoryDto categoryDto = (CategoryDto) session.selectList(namespace + "selectCategoryInfo", category).get(0);
+        List<Object> list = session.selectList(namespace + "selectCategoryInfo", category);
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("유효한 카테고리가 아닙니다.");
+        }
+        CategoryDto categoryDto = (CategoryDto) list.get(0);
         categoryDto.setCategoryType(category.substring(0, 2));
         return categoryDto;
     }
