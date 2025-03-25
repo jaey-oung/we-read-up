@@ -18,9 +18,22 @@
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <!-- 카테고리 추가 예정 -->
-                <h1>홈 / 아우터</h1>
-
+                <th:block th:if="${uri == '/bookList'}">
+                    <th:block th:if="${category == null}">
+                        <div th:switch="${list.get(0).categoryType}">
+                            <h1 th:case="'cl'" th:text="${list.get(0).categoryLargeName}" />
+                            <h1 th:case="'cm'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName}" />
+                            <h1 th:case="'cs'" th:text="${list.get(0).categoryLargeName} + ' > ' + ${list.get(0).categoryMediumName} + ' > ' + ${list.get(0).categorySmallName}" />
+                        </div>
+                    </th:block>
+                    <th:block th:unless="${category == null}">
+                        <div th:switch="${category.categoryType}">
+                            <h1 th:case="'cl'" th:text="${category.categoryLargeName}" />
+                            <h1 th:case="'cm'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName}" />
+                            <h1 th:case="'cs'" th:text="${category.categoryLargeName} + ' > ' + ${category.categoryMediumName} + ' > ' + ${category.categorySmallName}" />
+                        </div>
+                    </th:block>
+                </th:block>
             </div>
         </div>
 
@@ -55,7 +68,7 @@
                     </p>
                 </a>
             </div>
-    <form class="howtopag" id="form" action="/bookList" method="get">
+    <form class="howtopag" id="form" th:action="@{${uri}}" method="get">
         <!-- 이전 페이지 -10 -->
         <th:block th:if="${ph.page -10 > 0}">
             <button type="submit" name="page" th:value="${ph.page -10}">❮❮</button>
@@ -69,15 +82,15 @@
             <button type="submit" name="page" th:text="${i}" th:value="${i}">num</button>
         </th:block>
         <!-- 다음 페이지 +1 -->
-        <th:block th:if="${ph.page+1 < ph.totalPage}">
+        <th:block th:if="${ph.page+1 <= ph.totalPage}">
             <button type="submit" name="page" th:value="${ph.page+1}">❯</button>
         </th:block>
         <!-- 다음 페이지 +10 -->
-        <th:block th:if="${ph.page +10 < ph.totalPage}">
+        <th:block th:if="${ph.page +10 <= ph.totalPage}">
             <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
         </th:block>
         <!-- 요청 넘겨주기용 input -->
-        <input type="hidden" id="category" name="category" th:value="${category}"/>
+        <input type="hidden" id="category" name="category" th:value="${sc.category}"/>
         <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
         <input type="hidden" id="option" name="option" th:value="${sc.option}"/>
         <input type="hidden" id="keyword" name="keyword" th:value="${sc.keyword}"/>
