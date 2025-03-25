@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.dto.CommentDto;
 import com.wru.wrubookstore.dto.NoticeDto;
 import com.wru.wrubookstore.domain.NoticepageHandler;
 import com.wru.wrubookstore.domain.SearchCondition;
@@ -49,6 +50,7 @@ public class NoticeController {
 
     @GetMapping("/write")
     public String writer(Model m){
+//        System.out.println("글쓰기 페이지 진입!");
         m.addAttribute("mode","new");
         return "board/notice-detail";         //읽기와 쓰기에 사용, 쓰기에 사용할때는 mode=new
     }
@@ -62,7 +64,7 @@ public class NoticeController {
         try {
             int rowCnt = noticeService.write(noticeDto);  // insert
 
-            System.out.println("noticeDto: " + noticeDto);
+//            System.out.println("noticeDto: " + noticeDto);
 
             if(rowCnt!=1)
                 throw new Exception("Write failed");
@@ -79,14 +81,14 @@ public class NoticeController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam("noticeId")Integer noticeId, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rdatt) {
-//        String employee_id = (String) session.getAttribute("id");
+//        String employeeId = (String) session.getAttribute("id");
         String employeeId = "emp_1";
         try {
             m.addAttribute("page", page);
             m.addAttribute("pageSize", pageSize);
 
-            System.out.println("notice_id = " + noticeId);
-            System.out.println("employee_id = " + employeeId);
+//            System.out.println("notice_id = " + noticeId);
+//            System.out.println("employee_id = " + employeeId);
 
             int rowCnt = noticeService.remove(noticeId, employeeId);
 
@@ -106,6 +108,8 @@ public class NoticeController {
     public String read(@RequestParam("notice_id")Integer notice_id, Integer page, Integer pageSize, Model m) {
         try {
             NoticeDto noticeDto = noticeService.read(notice_id);
+
+//            System.out.println("noticeDto: " + noticeDto);  // 로그 확인
 
             m.addAttribute("noticeDto", noticeDto);
             m.addAttribute("page", page);

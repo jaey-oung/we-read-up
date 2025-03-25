@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @ToString
 public class CategoryDto {
-    private String categoryType; // ºĞ·ù Å¸ÀÔ - ´ë/Áß/¼Ò
+    private String categoryType; // ë¶„ë¥˜ íƒ€ì… - ëŒ€/ì¤‘/ì†Œ
 
     private String categoryLargeId;
     private String categoryLargeName;
@@ -20,24 +20,24 @@ public class CategoryDto {
     private String categorySmallId;
     private String categorySmallName;
 
-    private Integer bookId;             // Ã¥ ÄÚµå
-    private String publisherId;         // ÃâÆÇ»ç ÄÚµå
-    private String name;                // Ã¥ ÀÌ¸§
-    private String translator;          // ¿ªÀÚ
-    private Integer originalPrice;          // Á¤°¡
-    private BigDecimal discountPercent; // ÇÒÀÎÀ² 1 ~ 0.00
-    private Integer discountPrice;          // ÇÒÀÎµÇ´Â °¡°İ
-    private Integer salePrice;              // ÆÇ¸Å°¡
-    private Date releaseDate;           // µî·ÏÀÏ
-    private Date regDate;               // ÆÇ¸ÅÀÏ
-    private String tableOfContent;      // µµ¼­ ¸ñÂ÷
-    private String description;         // µµ¼­ ¼Ò°³
-    private long isbn;                  // Ã¥ °íÀ¯¹øÈ£
-    private Integer stockQuantity;          // Àç°í ¼ö·®
-    private String size;                // µµ¼­ »çÀÌÁî
-    private Integer weight;                 // µµ¼­ ¹«°Ô
-    private Integer page;                   // µµ¼­ ÆäÀÌÁö ¼ö
-    private String image;               // µµ¼­ÀÇ ÀÌ¹ÌÁö
+    private Integer bookId;             // ì±… ì½”ë“œ
+    private String publisherId;         // ì¶œíŒì‚¬ ì½”ë“œ
+    private String name;                // ì±… ì´ë¦„
+    private String translator;          // ì—­ì
+    private Integer originalPrice;          // ì •ê°€
+    private BigDecimal discountPercent; // í• ì¸ìœ¨ 1 ~ 0.00
+    private Integer discountPrice;          // í• ì¸ë˜ëŠ” ê°€ê²©
+    private Integer salePrice;              // íŒë§¤ê°€
+    private Date releaseDate;           // ë“±ë¡ì¼
+    private Date regDate;               // íŒë§¤ì¼
+    private String tableOfContent;      // ë„ì„œ ëª©ì°¨
+    private String description;         // ë„ì„œ ì†Œê°œ
+    private long isbn;                  // ì±… ê³ ìœ ë²ˆí˜¸
+    private Integer stockQuantity;          // ì¬ê³  ìˆ˜ëŸ‰
+    private String size;                // ë„ì„œ ì‚¬ì´ì¦ˆ
+    private Integer weight;                 // ë„ì„œ ë¬´ê²Œ
+    private Integer page;                   // ë„ì„œ í˜ì´ì§€ ìˆ˜
+    private String image;               // ë„ì„œì˜ ì´ë¯¸ì§€
 
     public CategoryDto() {}
 

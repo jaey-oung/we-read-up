@@ -1,6 +1,7 @@
 package com.wru.wrubookstore.dao;
 
 import com.wru.wrubookstore.dto.NoticeDto;
+import com.wru.wrubookstore.repository.NoticeRepositoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +13,16 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class NoticeDaoTest {
+public class NoticeRepositoryImplTest {
 
     @Autowired
-    private NoticeDao noticeDao;
+    private NoticeRepositoryImpl noticeRepositoryImpl;
 
     @Test
     public void select() throws Exception{
-        assertTrue(noticeDao!=null);
-        System.out.println("noticeDao = " + noticeDao);
-        NoticeDto noticeDto = noticeDao.select(1);
+        assertTrue(noticeRepositoryImpl !=null);
+        System.out.println("noticeDao = " + noticeRepositoryImpl);
+        NoticeDto noticeDto = noticeRepositoryImpl.select(1);
         System.out.println("noticeDto = " + noticeDto);
 //        assertTrue(noticeDto.getNotice_id().equals(1));
     }
