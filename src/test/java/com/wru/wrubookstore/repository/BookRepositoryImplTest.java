@@ -75,11 +75,11 @@ public class BookRepositoryImplTest {
         assertEquals("골프", categoryDto.getCategorySmallName());
 
         // 카테고리 테이블에 존재하지 않는 카테고리로 조회 - 코드 오류
-        assertThrowsExactly(IllegalArgumentException.class, () -> bookRepository.selectCategoryInfo("cz_1"),
+        assertThrows(IllegalArgumentException.class, () -> bookRepository.selectCategoryInfo("cz_1"),
                 "유효한 카테고리가 아닙니다.");
 
         // 카테고리 테이블에 존재하지 않는 카테고리로 조회 - 도메인 오류
-        assertThrowsExactly(IllegalArgumentException.class, () -> bookRepository.selectCategoryInfo("cl_10"),
+        assertThrows(IllegalArgumentException.class, () -> bookRepository.selectCategoryInfo("cl_10"),
                 "유효한 카테고리가 아닙니다.");
     }
 
@@ -126,7 +126,7 @@ public class BookRepositoryImplTest {
     public void searchByTitleTest() throws Exception {
         // 도서 제목에 '정석' 키워드가 포함된 도서 조회 (2권)
         MainSearchCondition sc = new MainSearchCondition(1, 8, "정석", "title");
-        List<BookDto> books = bookRepository.searchByAll(sc);
+        List<BookDto> books = bookRepository.searchByTitle(sc);
         assertEquals(2, books.size());
         for (BookDto book : books) {
             assertTrue(book.getName().contains("정석"));
@@ -139,7 +139,7 @@ public class BookRepositoryImplTest {
     public void searchByWriterTest() throws Exception {
         // 저자 이름에 '남궁' 키워드가 포함된 도서 조회 (2권)
         MainSearchCondition sc = new MainSearchCondition(1, 8, "남궁", "writer");
-        List<BookDto> books = bookRepository.searchByAll(sc);
+        List<BookDto> books = bookRepository.searchByWriter(sc);
         assertEquals(2, books.size());
         for (BookDto book : books) {
             List<String> writer_books = bookRepository.selectWriter(book.getBookId());
