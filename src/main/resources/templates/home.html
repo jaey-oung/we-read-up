@@ -7,21 +7,8 @@
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/home.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script>
-        const msg = "[[${msg}]]";
-
-        $(document).ready(function () {
-            displayMsg(msg);
-        });
-
-        function displayMsg(msg) {
-            if(msg === "USER_SIGNUP_OK") alert("비회원 계정 생성 성공");
-            if(msg === "MEMBER_SIGNUP_OK") alert("회원 계정 생성 성공");
-        }
-    </script>
 </head>
-<body>
+<body th:attr="data-msg=${msg}">
 <div th:replace="~{fragments/header :: header}"></div>
 <div id="parent-table">
     <div id="table">
@@ -89,7 +76,6 @@
         </table>
     </div>
 </div>
-
 <section class="sale-section">
     <div class="sale-header">
         <div>
@@ -104,7 +90,6 @@
             <a href="#">악세사리</a>
         </div>
     </div>
-
     <div class="product-grid">
         <div class="product">
             <div class="product-container">
@@ -113,7 +98,6 @@
             <div class="product-name">캐시미어 베이직 니트</div>
             <div class="product-price">500,000원</div>
         </div>
-
         <div class="product">
             <div class="product-container">
                 <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/decf2d8bd6fce68b55d688474cffdf8f.png" alt="브라운 워치 타입A">
@@ -121,7 +105,6 @@
             <div class="product-name">브라운 워치 타입A</div>
             <div class="product-price">150,000원</div>
         </div>
-
         <div class="product">
             <div class="product-container">
                 <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/bb5025802c49871946913c6b43e75515.png" alt="블랙 가죽 자켓">
@@ -131,7 +114,6 @@
             <div class="discount">150,000원</div>
             <div class="product-price">85,000원</div>
         </div>
-
         <div class="product">
             <div class="product-container">
                 <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/760bd958e1bf5dae96970639d547ce0f.png" alt="브라운 워치 타입B">
@@ -141,7 +123,6 @@
         </div>
     </div>
 </section>
-
 <section class="offline-shop">
     <div class="image-container">
         <img src="/img/offline-shop.png" alt="Offline Shop">
@@ -161,9 +142,8 @@
         <p>PM 12:00 ~ PM 01:00</p>
     </div>
 </section>
-
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script src="js/home.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/display-msg.js"></script>
 </body>
 </html>
