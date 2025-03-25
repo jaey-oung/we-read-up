@@ -40,6 +40,20 @@
         <include refid="sql-part-selectByCategory" />
         <include refid="sql-option-category" />
     </select>
+    <!-- 관리자용: 전체 책 잘라서 가져오기 -->
+    <select id="selectBook" parameterType="map" resultType="BookDto">
+        SELECT *
+        FROM book
+        ORDER BY book_id desc
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 관리자용: 판매중인 책 개수(0인거) 조회 -->
+    <select id="countQuantityZeroByAdmin" resultType="int">
+        SELECT count(*)
+        FROM book
+        WHERE stock_quantity = 0
+    </select>
+
     <!-- 관리자용: 전체 책 개수 조회 -->
     <select id="countAllByAdmin" resultType="int">
         SELECT COUNT(*)
@@ -59,7 +73,22 @@
         DELETE
         FROM book
     </delete>
-    <!--  책 한 권의 정보 조회  -->
+
+    <!-- 관리자용: 책 한권 삭제 -->
+    <delete id="deleteByAdmin" parameterType="BookListResponse">
+        DELETE
+        FROM book
+        WHERE book_id=#{bookId}
+    </delete>
+
+    <!-- 관리자용: 재고 관리 -->
+    <update id="updateByAdmin" parameterType="BookListResponse">
+        UPDATE book
+        SET stock_quantity=#{stockQuantity}
+        WHERE book_id=#{bookId}
+    </update>
+
+     <!--  책 한 권의 정보 조회  -->
     <select id="select" parameterType="int" resultType="BookDto">
         SELECT *
         FROM book

@@ -3,6 +3,7 @@ package com.wru.wrubookstore.repository;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.response.book.BookListResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,10 @@ public interface BookRepository {
     int countAllByAdmin() throws Exception;
     List<BookDto> selectAllByAdmin() throws Exception;
     void deleteAllByAdmin() throws Exception;
+    void updateByAdmin(BookListResponse bookListResponse) throws Exception;
+    int countQuantityZeroByAdmin() throws Exception;
+    void deleteByAdmin(BookListResponse bookListResponse) throws Exception;
+    List<BookDto> selectBook(Map map) throws Exception;
 
     // 책 번호로 한개 조회
     BookDto select(Integer bookId) throws Exception;

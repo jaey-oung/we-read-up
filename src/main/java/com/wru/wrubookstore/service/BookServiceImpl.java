@@ -3,6 +3,7 @@ package com.wru.wrubookstore.service;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,26 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteAllByAdmin() throws Exception {
         bookRepository.deleteAllByAdmin();
+    }
+
+    @Override
+    public void updateByAdmin(BookListResponse bookListResponse) throws Exception {
+        bookRepository.updateByAdmin(bookListResponse);
+    }
+
+    @Override
+    public void deleteByAdmin(BookListResponse bookListResponse) throws Exception{
+        bookRepository.deleteByAdmin(bookListResponse);
+    }
+
+    @Override
+    public int countQuantityZeroByAdmin() throws Exception{
+        return bookRepository.countQuantityZeroByAdmin();
+    }
+
+    @Override
+    public List<BookDto> selectBook(Map map) throws Exception{
+        return bookRepository.selectBook(map);
     }
 
     // 책 번호로 한개 조회
