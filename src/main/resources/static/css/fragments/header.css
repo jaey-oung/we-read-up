@@ -50,6 +50,10 @@ header {
      gap: 40px;
 }
 
+ #nav-icon {
+     padding: 10px;
+ }
+
 
 .search-container {
     display: flex;
