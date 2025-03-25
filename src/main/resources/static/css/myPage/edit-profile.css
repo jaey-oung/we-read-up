@@ -60,9 +60,15 @@ h1 {
     text-align: left;
 }
 
+.form-group .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
 .form-group input,
 .form-group select {
-    width: 100%;
+    width: 400px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -75,6 +81,13 @@ h1 {
     margin-left: 10px;
 }
 
+.err-msg {
+    align-self: flex-start;
+    margin-top: 5px;
+    font-size: 14px;
+    color: red;
+}
+
 .radio-group {
     display: flex;
 }
@@ -84,7 +97,7 @@ h1 {
 }
 
 .radio-group label {
-    padding: 10px 34px;
+    padding: 10px 30px;
     border: 1px solid #ddd;
     border-radius: 5px;
     text-align: center;
@@ -133,8 +146,8 @@ h1 {
 }
 
 .third-category {
-    align-self: flex-start;
-    margin: 20px 170px 20px;
+    margin: 50px 0;
+    width: 600px;
 }
 
 .third-category input {
