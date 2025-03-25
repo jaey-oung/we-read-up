@@ -43,6 +43,12 @@
         VALUES (#{email}, #{password}, #{name}, 1);
     </insert>
 
+    <!-- User 테이블에 회원 정보 추가 -->
+    <insert id="insertUserWithId" parameterType="MemberDto">
+        INSERT INTO user (user_id, email, password, name, is_member)
+        VALUES (#{userId}, #{email}, #{password}, #{name}, 1);
+    </insert>
+
     <!-- Member 테이블에 회원 상세 정보 추가 -->
     <insert id="insertMember" parameterType="MemberDto">
         INSERT INTO member (user_id, nickname, phone_num, birthdate, gender)
@@ -93,14 +99,14 @@
             SELECT user_id
             FROM user
             WHERE user_id = #{userId} AND is_member = 1
-        );
+        )
     </delete>
 
     <!-- User 테이블에서 회원 정보 삭제 -->
     <delete id="deleteUser" parameterType="Integer">
         DELETE
         FROM user
-        WHERE user_id = #{userId} AND is_member = 1
+        WHERE user_id = #{userId}
     </delete>
 
     <!-- 테스트 용도 -->

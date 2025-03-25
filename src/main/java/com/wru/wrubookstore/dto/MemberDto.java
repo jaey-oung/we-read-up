@@ -39,6 +39,7 @@ public class MemberDto {
     @Pattern(regexp = "^01[016789]-\\d{3,4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.")
     private String phoneNum;        // 회원 전화번호
 
+    @NotNull(message = "생일을 선택해주세요.")
     @Past(message = "생일은 과거 날짜만 가능합니다.")
     private LocalDate birthdate;   // 회원 생년월일
     private LocalDate regDate;      // 회원 등록 날짜

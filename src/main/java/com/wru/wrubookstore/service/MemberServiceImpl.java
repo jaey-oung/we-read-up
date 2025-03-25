@@ -100,4 +100,15 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.deleteMember(userId);
     }
 
+    @Override
+    @Transactional
+    public void convertToMember(MemberDto memberDto) throws Exception {
+        // 기존 사용자 삭제
+        memberRepository.deleteUser(memberDto.getUserId());
+        // 새로운 사용자 생성
+        memberRepository.insertUserWithId(memberDto);
+        // 새로운 회원 생성
+        memberRepository.insertMember(memberDto);
+    }
+
 }

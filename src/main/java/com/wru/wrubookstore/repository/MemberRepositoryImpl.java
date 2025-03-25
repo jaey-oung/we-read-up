@@ -43,6 +43,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public int insertUserWithId(MemberDto memberDto) throws Exception {
+        return session.insert(namespace + "insertUserWithId", memberDto);
+    }
+
+    @Override
     public int insertMember(MemberDto memberDto) throws Exception {
         return session.insert(namespace+"insertMember", memberDto);
     }
