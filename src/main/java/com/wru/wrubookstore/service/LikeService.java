@@ -25,4 +25,10 @@ public interface LikeService {
 
     // 해당 책에 누른 좋아요 삭제
     void deleteLike(LikeDto likeDto) throws Exception;
+
+    // 해당 회원의 좋아요 모두 삭제
+    void deleteAll(Integer memberId) throws Exception;
+
+    // 마이페이지에서 선택한 항목 좋아요 삭제
+    void deleteSelected(Integer memberId, List<Integer> bookIdList) throws Exception;
 }

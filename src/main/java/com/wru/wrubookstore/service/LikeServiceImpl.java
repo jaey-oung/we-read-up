@@ -4,6 +4,7 @@ import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.LikeDto;
 import com.wru.wrubookstore.repository.LikeRepository;
+import com.wru.wrubookstore.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.Map;
 
 @Service
 public class LikeServiceImpl implements LikeService {
-    LikeRepository likeRepository;
+
+    private final LikeRepository likeRepository;
 
     LikeServiceImpl(LikeRepository likeRepository){
         this.likeRepository = likeRepository;
@@ -48,5 +50,15 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void deleteLike(LikeDto likeDto) throws Exception{
         likeRepository.deleteLike(likeDto);
+    }
+
+    @Override
+    public void deleteAll(Integer memberId) throws Exception {
+        likeRepository.deleteAll(memberId);
+    }
+
+    @Override
+    public void deleteSelected(Integer memberId, List<Integer> bookIdList) throws Exception {
+        likeRepository.deleteSelected(Map.of("memberId", memberId, "bookIdList", bookIdList));
     }
 }
