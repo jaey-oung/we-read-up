@@ -4,17 +4,16 @@ import com.wru.wrubookstore.domain.OrderSearchCondition;
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
+import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/myPage")
 public class OrderController {
 
     private final OrderService orderService;
@@ -23,7 +22,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/myPage/orderList")
+    @GetMapping("/orderList")
     public String orderList(@SessionAttribute Integer userId, Model model, @ModelAttribute OrderSearchCondition osc) {
         try {
             // 주문 상태와 날짜 조건에 따른 총 게시물 개수
@@ -45,7 +44,7 @@ public class OrderController {
         return "myPage/order-list";
     }
 
-    @GetMapping("/myPage/orderDetail/{orderId}")
+    @GetMapping("/orderDetail/{orderId}")
     public String orderDetail(@PathVariable Integer orderId, Model model) {
         try {
             // 주문 상세 정보를 위한 Dto 생성
@@ -57,5 +56,11 @@ public class OrderController {
         }
 
         return "myPage/order-detail";
+    }
+
+    @GetMapping("/exchangeRefundList")
+    public String exchangeRefundList() {
+
+        return "myPage/exchange-refund-list";
     }
 }

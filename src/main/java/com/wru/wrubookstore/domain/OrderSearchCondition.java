@@ -35,4 +35,8 @@ public class OrderSearchCondition {
         this.endDate = endDate;
         this.statusId = statusId;
     }
+
+    public int setOffset() {
+        return pageSize * (page - 1);
+    }
 }

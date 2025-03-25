@@ -8,31 +8,8 @@
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/fragments/sidebar.css">
     <link rel="stylesheet" href="/css/myPage/order-list.css">
+    <script src="/js/order-list.js"></script>
 </head>
-<script>
-    function setDateRange(event, daysAgo) {
-        event.preventDefault(); // 폼 제출 방지
-
-        const today = new Date();
-        const startDate = new Date();
-
-        // 시작 날짜 설정 (오늘 날짜에서 daysAgo 만큼 뺌)
-        startDate.setDate(today.getDate() - daysAgo);
-
-        // 날짜를 YYYY-MM-DD 형식으로 변환하는 함수
-        function formatDate(date) {
-            const yyyy = date.getFullYear();
-            const mm = String(date.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1 필요)
-            const dd = String(date.getDate()).padStart(2, '0'); // 일
-            return `${yyyy}-${mm}-${dd}`;
-        }
-
-        // input 요소에 값 설정
-        document.getElementById("startDate").value = formatDate(startDate);
-        document.getElementById("endDate").value = formatDate(today);
-    }
-</script>
-
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
@@ -61,8 +38,8 @@
 
         <!-- 주문내역 조회 탭 -->
         <div class="tab-menu">
-            <div class="tab active">주문내역조회 (0)</div>
-            <div class="tab">교환/환불 내역 (0)</div>
+            <a href="/myPage/orderList" class="tab active">주문내역조회 <span th:text="|(${ph.totalCnt})|">(0)</span></a>
+            <a href="/myPage/exchangeRefundList" class="tab">교환/환불 내역</a>
         </div>
 
         <!-- 검색 필터 -->
@@ -98,7 +75,7 @@
                 <th>주문자</th>
                 <th>주문상품</th>
                 <th>조회</th>
-                <th>반품 및 교환</th>
+                <th>교환 및 환불</th>
             </tr>
             </thead>
             <tbody>
@@ -112,7 +89,7 @@
                     </div>
                 </td>
                 <td><a th:href="@{/myPage/orderDetail/{orderId}(orderId=${order.orderId})}">상세조회</a></td>
-                <td><a href="">반품/교환신청</a></td>
+                <td><a href="">교환/환불 신청</a></td>
             </tr>
             </tbody>
         </table>

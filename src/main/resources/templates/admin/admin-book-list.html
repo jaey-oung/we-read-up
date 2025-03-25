@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드</title>
+    <link rel="stylesheet" href="/css/admin/admin-book-list.css">
+</head>
+<body>
+<!-- 사이드바 -->
+<div id="sidebar">
+    <div id="logo">
+        <a th:href="@{'/admin/bookList'}"><h2>We Read Up</h2></a>
+    </div>
+    <ul id="menu">
+        <li><a href="/admin/bookList">상품 대시보드</a></li>
+        <li><a href="#">상품 등록</a></li>
+        <li><a href="#">주문 관리</a></li>
+        <li><a href="#">재고 관리</a></li>
+    </ul>
+</div>
+
+<!-- 대시보드 콘텐츠 -->
+<div id="main-content">
+    <div id="header">
+        <button id="register-product-btn">상품 등록</button>
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="상품 검색">
+            <button id="search-btn">검색</button>
+        </div>
+    </div>
+
+    <!-- 대시보드 통계 -->
+    <div id="dashboard-stats">
+        <div class="stat-box">
+            <h3>총 상품</h3>
+            <p>0개</p>
+        </div>
+        <div class="stat-box">
+            <h3>판매 중인 상품</h3>
+            <p>0개</p>
+        </div>
+        <div class="stat-box">
+            <h3>판매 중지 상품</h3>
+            <p>0개</p>
+        </div>
+    </div>
+
+    <!-- 상품 목록 -->
+    <div id="product-list-section">
+        <button>판매안함</button>
+        <button>판매함</button>
+
+        <table id="product-table">
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>상품 코드</th>
+                <th>이름</th>
+                <th>지은이</th>
+                <th>역자</th>
+                <th>정가</th>
+                <th>판매가</th>
+                <th>할인가</th>
+                <th>할인율</th>
+                <th>등록일</th>
+                <th>ISBN</th>
+                <th>재고</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>상품 코드</td>
+                <td>인생은 순간이다</td>
+                <td>홍길동</td>
+                <td>역자</td>
+                <td>5,000원</td>
+                <td>5,000원</td>
+                <td>180원</td>
+                <td>5%</td>
+                <td>2025-03-18</td>
+                <td>9791130648385</td>
+                <td>10</td>
+                <td>판매중</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
