@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
-public class BookRepositoryTest {
+public class BookRepositoryImplTest {
 
     @Autowired
     BookRepository book;

@@ -126,7 +126,6 @@
     <sql id="sql-part-searchByTitle">
         FROM book b
         WHERE name LIKE concat('%', #{keyword}, '%')
-        LIMIT #{offset}, #{limit}
     </sql>
     <sql id="sql-part-searchByWriter">
         FROM
@@ -137,7 +136,6 @@
                 WHERE name LIKE concat('%', #{keyword}, '%')) w, writer_book wb
         WHERE w.writer_id = wb.writer_id) wwb, book b
         WHERE wwb.book_id = b.book_id
-        LIMIT #{offset}, #{limit}
     </sql>
     <sql id="sql-searchByTitle">
         (SELECT *
@@ -169,14 +167,17 @@
         <include refid="sql-searchByTitle" />
         UNION
         <include refid="sql-searchByWriter" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 도서 제목으로 검색 -->
     <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByTitle" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 저자 이름으로 검색 -->
     <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByWriter" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 검색 결과 개수 조회 -->
     <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
