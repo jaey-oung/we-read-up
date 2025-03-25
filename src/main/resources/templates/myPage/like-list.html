@@ -37,15 +37,13 @@
         <hr>
 
         <div class="wishlist-box">
-            <div class="wishlist-item">
+            <div class="wishlist-item" th:each="likeBook : ${likeBookList}">
                 <div class="left">
-                    <input type="checkbox">
-                    <div class="image-placeholder">
-                        <img src="https://via.placeholder.com/50" alt="이미지 없음">
-                    </div>
+                    <input type="checkbox" name="bookId" th:value="${likeBook.bookId}">
+                    <img src="https://via.placeholder.com/50" alt="상품 이미지" th:src="${likeBook.image}">
                     <div class="product-info">
-                        <p><strong>샘플상품 1</strong></p>
-                        <p>5,000원</p>
+                        <p><strong th:text="${likeBook.name}">샘플상품 1</strong></p>
+                        <p th:text="|${#numbers.formatDecimal(likeBook.salePrice, 1, 'COMMA', 0, 'POINT')}원|">5,000원</p>
                     </div>
                 </div>
                 <div class="actions">
@@ -55,24 +53,33 @@
             </div>
         </div>
 
-        <div class="bottom-actions">
+        <div class="bottom-actions" th:unless="${likeBookList.size() == 0}">
             <div class="delete-actions">
-                <a class="btn">전체삭제</a>
-                <a class="btn">선택삭제</a>
+                <form action="/myPage/like/deleteAll" method="post">
+                    <button type="submit" class="btn">전체삭제</button>
+                </form>
+                <form action="/myPage/like/deleteSelected" method="post" id="deleteSelectedForm">
+                    <button type="button" class="btn" onclick="deleteSelected()">선택삭제</button>
+                </form>
             </div>
         </div>
 
-        <div class="full-order">
+        <div class="full-order" th:unless="${likeBookList.size() == 0}">
             <a class="btn black">전체상품주문</a>
         </div>
 
         <div>
-            <form class="howtopag" action="/board/list" method="get">
-                <button type="submit" name="page">❮❮</button>
-                <button type="submit" name="page">❮</button>
-                <button type="submit" name="page">num</button>
-                <button type="submit" name="page">❯</button>
-                <button type="submit" name="page">❯❯</button>
+            <form class="howtopag" action="/myPage/like/list" method="get">
+                <button type="submit" name="page" th:value="${ph.page}-10" th:class="'howtopag_item' + (${ph.page >= 1 and ph.page <= 10} ? '_pagdisabled' : '')">❮❮</button>
+                <button type="submit" name="page" th:value="${ph.page}-1" th:class="'howtopag_item' + (${ph.showPrev} ? '' : '_pagdisabled')">❮</button>
+                <th:block th:unless="${ph.endPage == 0}">
+                    <th:block th:each="num : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                        <button type="submit" name="page" th:value="${num}" th:text="${num}" th:class="'howtopag_item' + (${ph.page == num} ? '_pagactive' : '')">num</button>
+                    </th:block>
+                </th:block>
+                <button type="submit" name="page" th:value="${ph.page}+1" th:class="'howtopag_item' + (${ph.showNext} ? '' : '_pagdisabled')">❯</button>
+                <button type="submit" name="page" th:value="${ph.page}+10" th:class="'howtopag_item' + (${ph.totalPage - 10 < ph.page} ? '_pagdisabled' : '')">❯❯</button>
+
             </form>
         </div>
     </main>
@@ -83,6 +90,29 @@
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+    function deleteSelected() {
+        const form = document.getElementById('deleteSelectedForm');
+
+        // 체크된 bookId만 수집해서 form에 추가
+        document.querySelectorAll('input[type="checkbox"][name="bookId"]:checked').forEach(checkbox => {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'bookId';
+            hiddenInput.value = checkbox.value;
+            form.appendChild(hiddenInput);
+        });
+
+        // 선택된 항목이 없을 경우 확인
+        if (form.querySelectorAll('input[name="bookId"]').length === 0) {
+            alert('삭제할 항목을 선택해주세요.');
+            return;
+        }
+
+        form.submit();
+    }
+</script>
 
 </body>
 </html>

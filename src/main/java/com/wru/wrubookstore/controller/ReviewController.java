@@ -38,7 +38,7 @@ public class ReviewController {
 
     @PostMapping("/reviewUpdate")
     @ResponseBody
-    public String reviewUpdate(@RequestBody ReviewDto reviewDto) {
+    public String reviewUpdate(@RequestBody ReviewDto reviewDto, HttpSession session) {
         try{
             // 리뷰 삭제를 하려면 memberId와 세션멤버의 아이디가같아야함
             // 세션에서 이메일을 받아와서 이메일을 넣으면 user_id를 뱉어주고
@@ -47,7 +47,12 @@ public class ReviewController {
             System.out.println("ReviewUpdate//reviewDto = " + reviewDto);
 
             // 세션에 등록된 email 받아오기
-            Integer userId = 3;
+            int userId = 0;
+
+            // 멤버 정보 조회
+            if((Boolean)session.getAttribute("isMember")){
+                userId = (Integer)session.getAttribute("userId");
+            }
 
             // memberId 받아오기
             MemberDto memberDto = memberService.selectMember(userId);
@@ -92,7 +97,13 @@ public class ReviewController {
             System.out.println("ReviewDelect//reviewDto = " + reviewDto);
 
             // 세션에 등록된 email 받아오기
-            Integer userId = 3;
+            int userId = 0;
+
+            // 멤버 정보 조회
+            if((Boolean)session.getAttribute("isMember")){
+                userId = (Integer)session.getAttribute("userId");
+                System.out.println("userId = " + userId);
+            }
 
             // memberId 받아오기
             MemberDto memberDto = memberService.selectMember(userId);

@@ -17,6 +17,19 @@
         WHERE book_id=#{bookId} and member_id=#{memberId}
         ORDER BY book_id desc, member_id desc;
     </select>
+    <!-- 회원의 좋아요 수 조회 -->
+    <select id="selectCntByMember" parameterType="Integer" resultType="int">
+        SELECT COUNT(*)
+        FROM `like`
+        WHERE member_id = #{memberId}
+    </select>
+    <!-- 회원의 좋아요 목록 페이징에 맞게 출력 -->
+    <select id="selectListByPh" parameterType="Map" resultType="BookDto">
+        SELECT b.*
+        FROM `like` l, book b
+        WHERE l.book_id = b.book_id AND l.member_id = #{memberId}
+        LIMIT #{ph.offset}, #{ph.pageSize}
+    </select>
     <!-- 좋아요 추가 -->
     <insert id="insertLike" parameterType="LikeDto">
         INSERT INTO `like`(member_id, book_id)
@@ -26,5 +39,19 @@
     <delete id="deleteLike" parameterType="LikeDto">
         DELETE FROM `like` WHERE book_id=#{bookId} AND member_id=#{memberId}
         ORDER BY book_id desc, member_id desc
+    </delete>
+    <!-- 해당 회원의 좋아요 모두 삭제 -->
+    <delete id="deleteAll" parameterType="Integer">
+        DELETE FROM `like`
+        WHERE member_id = #{memberId}
+    </delete>
+    <!-- 마이페이지에서 선택한 좋아요 삭제 -->
+    <delete id="deleteSelected" parameterType="Map">
+        DELETE FROM `like`
+        WHERE member_id = #{memberId}
+        AND book_id IN
+        <foreach item="bookId" collection="bookIdList" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
     </delete>
 </mapper>
