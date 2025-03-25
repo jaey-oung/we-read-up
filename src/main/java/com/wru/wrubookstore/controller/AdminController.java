@@ -22,6 +22,11 @@ public class AdminController {
         this.bookService = bookService;
     }
 
+    @GetMapping("/bookCreate")
+    public String bookCreate(){
+        return "admin/admin-book-create";
+    }
+
     @PostMapping("/bookDelete")
     @ResponseBody
     public String bookDelete(@RequestBody BookListResponse[] bookListResponse){

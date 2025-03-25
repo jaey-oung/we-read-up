@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.HashMap;
 import java.util.List;
@@ -104,23 +105,21 @@ public class BookController {
     }
 
     @GetMapping("/bookDetail")
-    public String bookDetail(HttpSession session, Integer bookId, Integer page, String category, Integer pageSize, Model m) {
-
+    public String bookDetail(@SessionAttribute(value = "userId", required = false) Integer userId ,Integer bookId, Integer page, String category, Integer pageSize, Model m) {
         try{
-            int userId = 0;
+            int isLikeUser = 0;
+            int memberId = 0;
+            if(userId != null){
+                MemberDto memberDto = memberService.selectMember(userId);
+                System.out.println("bookDetail//memberDto = " + memberDto);
 
-            // 멤버 정보 조회
-            if((Boolean)session.getAttribute("isMember")){
-                userId = (Integer)session.getAttribute("userId");
-                System.out.println("userId = " + userId);
+                memberId = memberDto.getMemberId();
+                // 좋아요 누른 회원의 정보 조회
+                LikeDto likeDto = new LikeDto(bookId, memberId);
+                // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
+                isLikeUser = likeService.selectLikeMember(likeDto);
             }
 
-            MemberDto memberDto = memberService.selectMember(userId);
-            System.out.println("memberDto = " + memberDto);
-
-            int memberId = memberDto.getMemberId();
-            // 좋아요 누른 회원의 정보 조회
-            LikeDto likeDto = new LikeDto(bookId, memberId);
             // 책 정보 조회
             BookDto bookDto = bookService.select(bookId);
             // 지은이들 조회
@@ -129,22 +128,20 @@ public class BookController {
             String publisher = bookService.selectPublisher(bookId);
             // 리뷰들 조회
             List<ReviewListResponse> review = reviewService.selectReview(bookId);
-            // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
-            int isLikeUser = likeService.selectLikeMember(likeDto);
             // 리뷰가 있는지 없는지 확인
             int reviewCnt = reviewService.countReview(bookId);
 
 
-
-            m.addAttribute("memberId", memberId);
             m.addAttribute("review", review);
             m.addAttribute("bookDto", bookDto);
             m.addAttribute("writer", writer);
             m.addAttribute("publisher", publisher);
-            m.addAttribute("isLikeUser", isLikeUser);
             m.addAttribute("reviewCnt", reviewCnt);
+            m.addAttribute("isLikeUser", isLikeUser);
+            m.addAttribute("memberId", memberId);
+            System.out.println("bookDetail//isLikeUser = " + isLikeUser);
 
-            System.out.println("isLikeUser = " + isLikeUser);
+
             System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         } catch(Exception e){
             e.printStackTrace();
