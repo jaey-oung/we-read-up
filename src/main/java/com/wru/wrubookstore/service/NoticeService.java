@@ -1,6 +1,6 @@
 package com.wru.wrubookstore.service;
 
-import com.wru.wrubookstore.dao.NoticeDao;
+import com.wru.wrubookstore.repository.NoticeRepositoryImpl;
 import com.wru.wrubookstore.dto.NoticeDto;
 import com.wru.wrubookstore.domain.SearchCondition;
 import org.springframework.stereotype.Service;
@@ -11,50 +11,50 @@ import java.util.Map;
 @Service
 public class NoticeService {
 
-    private final NoticeDao noticeDao;
+    private final NoticeRepositoryImpl noticeRepositoryImpl;
 
-    public NoticeService(NoticeDao noticeDao) {
-        this.noticeDao = noticeDao;
+    public NoticeService(NoticeRepositoryImpl noticeRepositoryImpl) {
+        this.noticeRepositoryImpl = noticeRepositoryImpl;
     }
 
     public int getCount() throws Exception {
-        return noticeDao.count();
+        return noticeRepositoryImpl.count();
     }
 
     public int remove(Integer noticeId, String employeeId) throws Exception {
-        return noticeDao.delete(noticeId, employeeId);
+        return noticeRepositoryImpl.delete(noticeId, employeeId);
     }
 
     public int write(NoticeDto noticeDto) throws Exception {
 //        throw new Exception("test");      // 쓰기 실패 테스트를 위한 예외 던지기
-        return noticeDao.insert(noticeDto);
+        return noticeRepositoryImpl.insert(noticeDto);
     }
 
     public List<NoticeDto> getList() throws Exception {
-        return noticeDao.selectAll();
+        return noticeRepositoryImpl.selectAll();
     }
 
     public NoticeDto read(Integer bno) throws Exception {
-        NoticeDto noticeDto = noticeDao.select(bno);
-        noticeDao.increaseViewCnt(bno);
+        NoticeDto noticeDto = noticeRepositoryImpl.select(bno);
+        noticeRepositoryImpl.increaseViewCnt(bno);
 
         return noticeDto;
     }
 
     public List<NoticeDto> getPage(Map map) throws Exception {
-        return noticeDao.selectPage(map);
+        return noticeRepositoryImpl.selectPage(map);
     }
 
     public int modify(NoticeDto noticeDto) throws Exception {
-        return noticeDao.update(noticeDto);
+        return noticeRepositoryImpl.update(noticeDto);
     }
 
     public int getSearchResultCnt(SearchCondition sc) throws Exception {
-        return noticeDao.searchResultCnt(sc);
+        return noticeRepositoryImpl.searchResultCnt(sc);
     }
 
     public List<NoticeDto> getSearchResultPage(SearchCondition sc) throws Exception {
-        return noticeDao.searchSelectPage(sc);
+        return noticeRepositoryImpl.searchSelectPage(sc);
     }
 
 
