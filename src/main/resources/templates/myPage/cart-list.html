@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/myPage/cart-list.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
 </head>
 <body>
 
@@ -16,8 +17,13 @@
     <h2 th:text="'장바구니'+'('+${list.size()}+')'">장바구니</h2>
 
     <!-- 장바구니 비었을 때 -->
-    <div class="cart-list" th:if="${#lists.isEmpty(list)}">
-        <p>장바구니에 담긴 상품이 없습니다.</p>
+    <div class="cart-list cart-empty" th:if="${#lists.isEmpty(list)}">
+        <div class="empty-icon">
+            <i class='bx bx-error-circle'></i>
+        </div>
+        <p class="empty-title">장바구니가 비어 있어요.</p>
+        <p class="empty-desc">지금 원하는 상품을 찾아보세요!</p>
+        <a href="/" class="empty-btn">도서 둘러보기</a>
     </div>
 
     <!-- 장바구니 목록 -->
@@ -75,12 +81,12 @@
             <!-- 장바구니 삭제 버튼 -->
             <div class="book-delete">
                 <input type="hidden" name="cartId" th:value="${item.cartId}">
-                <div class="delete-btn"><box-icon name='trash'></box-icon></div>
+                <div class="delete-btn"><i class='bx bx-trash'></i></div>
             </div>
         </div>
     </div>
     <!-- 장바구니 요약 -->
-    <div class="cart-summary">
+    <div class="cart-summary" th:if="${not #lists.isEmpty(list)}">
         <p>총 상품 수: <span th:text="${list.size()}"></span>개</p>
         <p>
             총 주문 금액:
@@ -91,7 +97,6 @@
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 <script src="/js/cart-list.js"></script>
 </body>
 </html>
