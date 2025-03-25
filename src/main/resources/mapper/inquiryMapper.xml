@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wru.wrubookstore.mapper.InquiryMapper">
+
+    <sql id="selectFromInquiry">
+        SELECT inquiry_id as inquiryId, member_id as memberId, inquiry_status_id as inquiryStatusId, employee_id as employeeId, title, content, reply_content as replyContent, reg_date as regDate, mod_date as modDate
+        FROM inquiry
+    </sql>
+
+    <select id="select" parameterType="int" resultType="InquiryDto">
+        <include refid="selectFromInquiry"/>
+        WHERE inquiry_id = #{inquiryId}
+    </select>
+
+    <select id="selectAll" resultType="InquiryDto">
+        <include refid="selectFromInquiry"/>
+        ORDER BY reg_date DESC, inquiry_id DESC
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(*) FROM inquiry
+    </select>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM inquiry WHERE inquiry_id = #{inquiryId} and member_id = #{memberId}
+    </delete>
+
+    <delete id="deleteForAdmin">
+        DELETE FROM inquiry WHERE inquiry_id = #{inquiryId}
+    </delete>
+
+    <insert id="insert" parameterType="InquiryDto" useGeneratedKeys="true" keyProperty="inquiryId">
+        INSERT INTO inquiry (title, content, member_id)
+        VALUES (#{title}, #{content}, #{memberId})
+    </insert>
+
+    <update id="updateInquiryStatus" parameterType="map">
+        UPDATE inquiry
+        SET inquiry_status_id = #{inquiryStatusId}
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+    <update id="update" parameterType="InquiryDto">
+        UPDATE inquiry
+        SET title = #{title},
+            content = #{content},
+            mod_date = now()
+        WHERE inquiry_id = #{inquiryId} and member_id = #{memberId}
+    </update>
+
+    <update id="updateReply" parameterType="InquiryDto">
+        UPDATE inquiry
+        SET reply_content = #{replyContent},
+            mod_date = now(),
+            employee_id = #{employeeId},
+            inquiry_status_id = 'inq_2'
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+
+</mapper>
