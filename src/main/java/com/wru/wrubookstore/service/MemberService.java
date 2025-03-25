@@ -20,6 +20,10 @@ public interface MemberService {
     int deleteUser(Integer userId) throws Exception;
     int countMembers() throws Exception;
 
+    // 사용자, 회원 정보 함께 수정
     void editMember(MemberDto memberDto) throws Exception;
+    // 사용자, 회원 정보 함께 삭제
     void withdraw(Integer userId) throws Exception;
+    // 비회원 -> 회원 전환
+    void convertToMember(MemberDto memberDto) throws Exception;
 }
