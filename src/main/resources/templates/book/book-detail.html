@@ -149,7 +149,8 @@
                             </div>
                         </div>
                         <div class="custom-review-right">
-                            <textarea class="custom-review-content" placeholder="리뷰를 작성해주세요..." id="content"></textarea>
+
+                            <textarea class="custom-review-content" th:placeholder="${memberId == 0 ? '로그인 후 이용해주세요.' : '리뷰를 작성해주세요...'}" id="content" th:readonly="${memberId == 0 ? 'readonly' : 'false'}"></textarea>
                             <div class="custom-review-action">
                                 <button class="custom-submit-btn" id="reviewBtn">등록</button>
                             </div>
@@ -355,9 +356,14 @@
             let {text} = $(this); // 현재 클릭된 버튼
             let isLikeUser = parseInt($('#isLikeUser').val());
             console.log(isLikeUser);
+            console.log(memberId);
+
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+            }
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
-            if (isLikeUser === 0) {
+            if (isLikeUser === 0 && memberId !== '0') {
                 $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
                 $('#isLikeUser').val(1);
             } else{
@@ -365,28 +371,35 @@
                 $('#isLikeUser').val(0);
             }
 
-            // 서버에 bookId만 전송
-            axios.post('/book/like', {bookId, memberId}, {
-                headers: { "content-type": "application/json" }
-            })
-            .then(function(response) {
-                if (response.data === 'success') {
-                    // 성공 시 아무런 추가 작업 필요
-                } else {
-                    alert('Error: ' + response.data);
-                    // 오류 발생 시 버튼을 원래 상태로 복원
-                    $(this).text('LIKE').css('background-color', '#fff');
-                }
-            })
-            .catch(function(error) {
-                alert('Error: ' + error);
-                // 오류 발생 시 버튼을 원래 상태로 복원
-                $(this).text('LIKE').css('background-color', '#fff');
-            });
+            if(memberId !== '0'){
+                // 서버에 bookId만 전송
+                axios.post('/book/like', {bookId, memberId}, {
+                    headers: { "content-type": "application/json" }
+                })
+                    .then(function(response) {
+                        if (response.data === 'success') {
+                            // 성공 시 아무런 추가 작업 필요
+                        } else {
+                            alert('Error: ' + response.data);
+                            // 오류 발생 시 버튼을 원래 상태로 복원
+                            $(this).text('LIKE').css('background-color', '#fff');
+                        }
+                    })
+                    .catch(function(error) {
+                        alert('Error: ' + error);
+                        // 오류 발생 시 버튼을 원래 상태로 복원
+                        $(this).text('LIKE').css('background-color', '#fff');
+                    });
+            }
         });
 
+        let memberId = $('#memberId').val();
         // 별점 1
         $('#star1').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
 
@@ -399,6 +412,10 @@
         });
         // 별점 2
         $('#star2').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -411,6 +428,10 @@
         });
         // 별점 3
         $('#star3').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -423,6 +444,10 @@
         });
         // 별점 4
         $('#star4').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -435,6 +460,10 @@
         });
         // 별점 5
         $('#star5').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -451,31 +480,39 @@
             let content = $('#content').val();
             let rating = $('#rating').val();
 
-            axios.post('/reviewInsert', {memberId, bookId, content, rating},{
-                headers: { "content-type": "application/json" }
-            })
-                .then(function(response) {
-                    if (response.data === 'success') {
-                        alert("리뷰 등록에 성공했습니다..");
-                        location.reload();
-                        // 성공 시 아무런 추가 작업 필요
-                    } else if(response.data === 'all') {
-                        alert("리뷰 내용과 별점을 눌러주세요.");
-                        location.reload();
-                    } else if(response.data === 'rating') {
-                        alert("별점을 눌러주세요.");
-                        location.reload();
-                    } else if(response.data === 'content') {
-                        alert("내용을 입력해주세요.");
-                        location.reload();
-                    } else if(response.data === 'error') {
-                        alert("리뷰 등록에 실패했습니다.");
-                        location.reload();
-                    }
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
+
+            if(memberId !== '0'){
+                axios.post('/reviewInsert', {memberId, bookId, content, rating},{
+                    headers: { "content-type": "application/json" }
                 })
-                .catch(function(error) {
-                    alert('Error: ' + error);
-                });
+                    .then(function(response) {
+                        if (response.data === 'success') {
+                            alert("리뷰 등록에 성공했습니다..");
+                            location.reload();
+                            // 성공 시 아무런 추가 작업 필요
+                        } else if(response.data === 'all') {
+                            alert("리뷰 내용과 별점을 눌러주세요.");
+                            location.reload();
+                        } else if(response.data === 'rating') {
+                            alert("별점을 눌러주세요.");
+                            location.reload();
+                        } else if(response.data === 'content') {
+                            alert("내용을 입력해주세요.");
+                            location.reload();
+                        } else if(response.data === 'error') {
+                            alert("리뷰 등록에 실패했습니다.");
+                            location.reload();
+                        }
+                    })
+                    .catch(function(error) {
+                        alert('Error: ' + error);
+                    });
+                }
+
             });
         });
 </script>
