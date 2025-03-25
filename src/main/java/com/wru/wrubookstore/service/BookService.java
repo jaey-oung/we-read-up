@@ -18,8 +18,6 @@ public interface BookService {
     // 카테고리에 속한 책들의 정보 조회
     List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception;
 
-    // 책 번호로 한 개 조회
-
     // 관리자용
     int countAllByAdmin() throws Exception;
     List<BookDto> selectAllByAdmin() throws Exception;
