@@ -2,6 +2,7 @@ package com.wru.wrubookstore.service;
 
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
+import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,25 @@ public class BookServiceImpl implements BookService {
         this.bookRepository = bookRepository;
     }
 
+    // 카테고리 정보 조회
+    @Override
+    public CategoryDto selectCategoryInfo(String category) throws Exception {
+        return bookRepository.selectCategoryInfo(category);
+    }
+
+    // 카테고리에 속한 책들의 수 조회
+    @Override
+    public int selectByCategoryCnt(String category) throws Exception {
+        return bookRepository.selectByCategoryCnt(category);
+    }
+
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception {
+        return bookRepository.selectByCategory(sc);
+    }
+
+    // 책 번호로 한 개 조회
     @Override
     public int countAllByAdmin() throws Exception {
         return bookRepository.countAllByAdmin();
@@ -57,16 +77,7 @@ public class BookServiceImpl implements BookService {
     public BookDto select(Integer bookId) throws Exception{
         return bookRepository.select(bookId);
     }
-    // LIMIT로 N개 조회 category(카테고리 소), offset, limit
-    @Override
-    public List<BookDto> selectRegList(Map map) throws Exception{
-        return bookRepository.selectRegList(map);
-    }
-    // 카테고리에 있는 책 수 조회
-    @Override
-    public int sCategoryCnt(String category) throws Exception{
-        return bookRepository.sCategoryCnt(category);
-    }
+
     // 테스트용 insert
     @Override
     public int insert(BookDto book) throws Exception{
@@ -85,19 +96,19 @@ public class BookServiceImpl implements BookService {
 
     //  도서 제목과 저자 이름으로 통합 검색
     @Override
-    public List<BookDto> selectByAll(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByAll(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByAll(sc);
     }
 
     // 도서 제목으로 검색
     @Override
-    public List<BookDto> selectByTitle(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByTitle(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByTitle(sc);
     }
 
     // 저자 이름으로 검색
     @Override
-    public List<BookDto> selectByWriter(MainSearchCondition sc) throws Exception {
+    public List<BookDto> searchByWriter(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByWriter(sc);
     }
 
