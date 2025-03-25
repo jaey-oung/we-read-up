@@ -2,6 +2,7 @@ package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
+import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,26 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void deleteAllByAdmin() throws Exception {
         session.delete(namespace + "deleteAllByAdmin");
+    }
+
+    @Override
+    public void updateByAdmin(BookListResponse bookListResponse) throws Exception {
+        session.update(namespace + "updateByAdmin", bookListResponse);
+    }
+
+    @Override
+    public int countQuantityZeroByAdmin() throws Exception{
+        return session.selectOne(namespace + "countQuantityZeroByAdmin");
+    }
+
+    @Override
+    public List<BookDto> selectBook(Map map) throws Exception{
+        return session.selectList(namespace + "selectBook", map);
+    }
+
+    @Override
+    public void deleteByAdmin(BookListResponse bookListResponse) throws Exception{
+        session.delete(namespace + "deleteByAdmin", bookListResponse);
     }
 
     // 책 번호로 한개 조회

@@ -69,11 +69,11 @@
             <button type="submit" name="page" th:text="${i}" th:value="${i}">num</button>
         </th:block>
         <!-- 다음 페이지 +1 -->
-        <th:block th:if="${ph.page+1 < ph.totalPage}">
+        <th:block th:if="${ph.page+1 <= ph.totalPage}">
             <button type="submit" name="page" th:value="${ph.page+1}">❯</button>
         </th:block>
         <!-- 다음 페이지 +10 -->
-        <th:block th:if="${ph.page +10 < ph.totalPage}">
+        <th:block th:if="${ph.page +10 <= ph.totalPage}">
             <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
         </th:block>
         <!-- 요청 넘겨주기용 input -->

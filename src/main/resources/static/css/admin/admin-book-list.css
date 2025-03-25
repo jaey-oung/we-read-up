@@ -154,6 +154,7 @@ body {
 #product-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 14px;
     margin-top: 20px;
 }
 
@@ -183,3 +184,63 @@ td button {
 td button:hover {
     background-color: #0056b3;
 }
+
+#form-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-top: 30px;
+    border-radius: 10px;
+}
+
+#form-box button {
+    padding: 10px 20px;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#form-box button:hover {
+    background-color: #e67e00;
+}
+
+#form-box input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
+
+#form-box .page-number {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#form-box .page-number:hover {
+    color: #ff8c00;
+    cursor: pointer;
+}
+
+#form-box .page-number.selected {
+    color: #ff8c00;
+    font-weight: bold;
+}
+
+#form-box .page-arrow {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    color: #333;
+}
+
+#form-box .page-arrow:hover {
+    color: #ff8c00;
+}
+
