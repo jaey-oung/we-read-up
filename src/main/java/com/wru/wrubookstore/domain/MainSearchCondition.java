@@ -23,12 +23,10 @@ public class MainSearchCondition {
         this.option = option;
     }
 
-    public MainSearchCondition(Integer page, Integer pageSize, String category, String keyword, String option) {
+    public MainSearchCondition(Integer page, Integer pageSize, String category) {
         this.page = page;
         this.pageSize = pageSize;
         this.category = category;
-        this.keyword = keyword;
-        this.option = option;
     }
 
     public Integer getOffset() {

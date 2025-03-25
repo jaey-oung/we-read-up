@@ -37,6 +37,9 @@ public class BookController {
         this.memberService = memberService;
     }
 
+    /**
+     * 메인 홈페이지 메뉴의 카테고리 클릭 시 도서 리스트 출력
+     */
     @GetMapping("/bookList")
     public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
                            HttpSession session) {
@@ -44,12 +47,16 @@ public class BookController {
 //        int userId = (int) session.getAttribute("userId");
 
         try{
+            // 도서 테이블에서 특정 카테고리에 속한 도서 개수 파악
             int count = bookService.selectByCategoryCnt(sc.getCategory());
             List<CategoryDto> list = new ArrayList<>();
+
+            // 개수가 0이면 카테고리만 조인한 테이블에서 카테고리 정보만 반환
             if (count == 0) {
                 CategoryDto categoryInfo = bookService.selectCategoryInfo(sc.getCategory());
                 model.addAttribute("category", categoryInfo);
             } else if (count > 0) {
+                // 개수가 1 이상이면 도서 테이블에서 특정 카테고리에 속한 도서 개수 및 도서 리스트, 카테고리 정보 반환
                 list = bookService.selectByCategory(sc);
             } else {
                 throw new Exception("잘못된 도서 개수입니다.");
@@ -61,7 +68,7 @@ public class BookController {
 //            model.addAttribute("userId", userId);
             model.addAttribute("list", list);
             model.addAttribute("ph", pageHandler);
-            model.addAttribute("uri", request.getRequestURI());
+            model.addAttribute("uri", request.getRequestURI()); // 페이징 시 해당 uri 정보 전달
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -69,12 +76,18 @@ public class BookController {
         return "book/book-list";
     }
 
+    /**
+     * 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색
+     */
     @GetMapping("/search")
     public String search(MainSearchCondition sc, Model model, HttpServletRequest request) {
 
         try {
+            // scDto에서 어떤 옵션을 통한 검색인지 가져오기
             String option = sc.getOption();
+            // 검색 결과 개수 반환
             int count = bookService.selectSearchCnt(sc);
+            // 옵션과 키워드를 통한 도서 리스트 반환
             List<BookDto> list = switch (option) {
                 case "all" -> bookService.searchByAll(sc);
                 case "title" ->  bookService.searchByTitle(sc);
@@ -86,7 +99,7 @@ public class BookController {
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);
             model.addAttribute("ph", pageHandler);
-            model.addAttribute("uri", request.getRequestURI());
+            model.addAttribute("uri", request.getRequestURI()); // 페이징 시 해당 uri 정보 전달
         } catch (Exception e) {
             e.printStackTrace();
         }
