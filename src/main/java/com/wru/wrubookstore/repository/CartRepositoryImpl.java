@@ -1,6 +1,7 @@
 package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.CartDto;
+import com.wru.wrubookstore.dto.response.cart.CartListResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,16 @@ public class CartRepositoryImpl implements CartRepository {
     @Override
     public List<CartDto> selectAllByUserId(int userId) throws Exception {
         return session.selectList(namespace + "selectAllByUserId", userId);
+    }
+
+    @Override
+    public List<CartListResponse> selectCartListByUserId(int userId) throws Exception {
+        return session.selectList(namespace + "selectCartListByUserId", userId);
+    }
+
+    @Override
+    public CartListResponse selectCartByCartId(int cartId) throws Exception {
+        return session.selectOne(namespace + "selectCartByCartId", cartId);
     }
 
     @Override
