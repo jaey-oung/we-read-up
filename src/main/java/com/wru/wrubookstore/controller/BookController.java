@@ -46,7 +46,7 @@ public class BookController {
 //        int userId = (int) session.getAttribute("userId");
 
         try{
-            // 도서 테이블에 해당 카테고리에 속한 도서 개수 파악
+            // 도서 테이블에서 특정 카테고리에 속한 도서 개수 파악
             int count = bookService.selectByCategoryCnt(sc.getCategory());
             List<CategoryDto> list = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class BookController {
                 CategoryDto categoryInfo = bookService.selectCategoryInfo(sc.getCategory());
                 model.addAttribute("category", categoryInfo);
             } else if (count > 0) {
-                // 개수가 1 이상이면 도서 테이블에서 해당 카테고리에 속한 도서 개수 및 도서 리스트, 카테고리 정보 반환
+                // 개수가 1 이상이면 도서 테이블에서 특정 카테고리에 속한 도서 개수 및 도서 리스트, 카테고리 정보 반환
                 list = bookService.selectByCategory(sc);
             } else {
                 throw new Exception("잘못된 도서 개수입니다.");
