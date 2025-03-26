@@ -56,6 +56,6 @@
     <select id="selectOrderBook" parameterType="Integer" resultType="OrderBookRequest">
         SELECT b.image, b.name, b.sale_price * quantity 'order_price', ob.quantity
         FROM order_book ob, book b
-        WHERE ob.book_id = b.book_id AND ob.order_id = 1
+        WHERE ob.book_id = b.book_id AND ob.order_id = #{orderId}
     </select>
 </mapper>

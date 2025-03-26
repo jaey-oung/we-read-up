@@ -12,13 +12,14 @@ public interface MemberRepository {
     void deleteAllMembers() throws Exception;
     void deleteAllUsers() throws Exception;
     int insertUser(UserDto userDto) throws Exception;
+    int insertUserWithId(MemberDto memberDto) throws Exception;
     int insertMember(MemberDto memberDto) throws Exception;
-    MemberDto select(String email) throws Exception;
+    MemberDto select(Integer userId) throws Exception;
     MemberDto selectMember(Integer userId) throws Exception;
-    int updateUser(UserDto userDto) throws Exception;
+    int updateUser(MemberDto memberDto) throws Exception;
     int updateMember(MemberDto memberDto) throws Exception;
-    int deleteMember(String email) throws Exception;
-    int deleteUser(String email) throws Exception;
+    int deleteMember(Integer userId) throws Exception;
+    int deleteUser(Integer userId) throws Exception;
     int countMembers() throws Exception;
 
 }

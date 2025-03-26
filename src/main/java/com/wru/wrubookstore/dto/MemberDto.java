@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,17 +16,36 @@ public class MemberDto {
     private Integer memberId;       // 회원 코드
     private Integer userId;         // 사용자 코드
     private String userStatusId;    // 사용자 상태 코드
+
+    @NotBlank(message = "이메일을 입력해주세요.")
+    @Email(message = "이메일 형식이 올바르지 않습니다.")
     private String email;           // 사용자 이메일
+
+    @NotBlank(message = "비밀번호를 입력해주세요.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,20}$",
+            message = "영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자여야 합니다.")
     private String password;        // 사용자 비밀번호
+
+    @NotBlank(message = "이름을 입력해주세요.")
     private String name;            // 사용자 명
     // boolean 타입 사용 시 Lombok이 isMember() 메서드를 자동 생성
     private Boolean isMember;       // 사용자 회원 여부
     private String membershipId;    // 회원 멤버십 코드
+
+    @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;        // 회원 닉네임
+
+    @NotBlank(message = "전화번호를 입력해주세요.")
+    @Pattern(regexp = "^01[016789]-\\d{3,4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.")
     private String phoneNum;        // 회원 전화번호
+
+    @NotNull(message = "생일을 선택해주세요.")
+    @Past(message = "생일은 과거 날짜만 가능합니다.")
     private LocalDate birthdate;   // 회원 생년월일
     private LocalDate regDate;      // 회원 등록 날짜
     private LocalDate modDate;     // 회원 수정 날짜
+
+    @NotNull(message = "성별을 선택해주세요.")
     private char gender;          // 회원 성별
     private int mileage;            // 회원 보유 마일리지
     private int lastMonthAmount;    // 회원 전월 구매 금액

@@ -43,13 +43,18 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public int insertUserWithId(MemberDto memberDto) throws Exception {
+        return session.insert(namespace + "insertUserWithId", memberDto);
+    }
+
+    @Override
     public int insertMember(MemberDto memberDto) throws Exception {
         return session.insert(namespace+"insertMember", memberDto);
     }
 
     @Override
-    public MemberDto select(String email) throws Exception {
-        return session.selectOne(namespace+"select", email);
+    public MemberDto select(Integer userId) throws Exception {
+        return session.selectOne(namespace+"select", userId);
     }
 
     @Override
@@ -58,8 +63,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public int updateUser(UserDto userDto) throws Exception {
-        return session.update(namespace+"updateUser", userDto);
+    public int updateUser(MemberDto memberDto) throws Exception {
+        return session.update(namespace+"updateUser", memberDto);
     }
 
     @Override
@@ -68,13 +73,13 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public int deleteMember(String email) throws Exception {
-        return session.delete(namespace+"deleteMember", email);
+    public int deleteMember(Integer userId) throws Exception {
+        return session.delete(namespace+"deleteMember", userId);
     }
 
     @Override
-    public int deleteUser(String email) throws Exception {
-        return session.delete(namespace+"deleteUser", email);
+    public int deleteUser(Integer userId) throws Exception {
+        return session.delete(namespace+"deleteUser", userId);
     }
 
     @Override
