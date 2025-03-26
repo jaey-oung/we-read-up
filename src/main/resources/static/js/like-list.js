@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    setupAddCartButtons("#add-cart-btn");
+
     const deleteSelectedBtn = document.getElementById("delete-selected-btn");
     const deleteAllBtn = document.getElementById("delete-all-btn");
 
