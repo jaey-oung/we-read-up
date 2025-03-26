@@ -5,6 +5,7 @@ import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
+import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
 import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final MemberService memberService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, MemberService memberService) {
         this.orderService = orderService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/myPage/orderList")
@@ -65,7 +68,16 @@ public class OrderController {
     }
 
     @GetMapping("/order")
-    public String order() {
+    public String order(@SessionAttribute Integer userId, Model model) {
+        try {
+            Integer memberId = memberService.selectMember(userId).getMemberId();
+
+            OrderPaymentRequest orderPaymentRequest = orderService.selectOrderPayment(memberId);
+
+            model.addAttribute("orderPaymentRequest", orderPaymentRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "order/order";
     }

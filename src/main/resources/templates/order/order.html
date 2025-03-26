@@ -34,29 +34,25 @@
             <h3 class="section-title">배송지</h3>
             <div class="form-group">
                 <label for="receipt">* 받는사람</label>
-                <input type="text" id="receipt" name="receipt">
+                <input type="text" id="receipt" name="receipt" th:value="${orderPaymentRequest.addressDto.recipient}">
             </div>
             <div class="form-group">
                 <label for="zipCode">* 주소</label>
                 <div class="address-group">
-                    <input type="text" id="zipCode" name="zipCode" placeholder="우편번호">
+                    <input type="text" id="zipCode" name="zipCode" th:value="${orderPaymentRequest.addressDto.zipCode}" placeholder="우편번호">
                 </div>
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="mainAddress" placeholder="기본주소">
+                <input type="text" name="mainAddress" th:value="${orderPaymentRequest.addressDto.mainAddress}" placeholder="기본주소">
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)">
+                <input type="text" name="detailAddress" th:value="${orderPaymentRequest.addressDto.detailAddress}" placeholder="나머지 주소(선택 입력 가능)">
             </div>
             <div class="form-group">
                 <label for="phoneNum">* 휴대전화</label>
-                <input type="tel" id="phoneNum" name="phoneNum">
-            </div>
-            <div class="form-group">
-                <label for="email">* 이메일</label>
-                <input type="email" id="email" name="email">
+                <input type="tel" id="phoneNum" name="phoneNum" th:value="${orderPaymentRequest.addressDto.phoneNum}">
             </div>
             <div class="form-group">
                 <select name="message">
@@ -105,7 +101,7 @@
                 </div>
                 <div class="coupon-area">
                     <span class="price">0원</span>
-                    <button class="btn-small">쿠폰 적용</button>
+                    <button class="btn-small" onclick="openModal()">쿠폰 적용</button>
                     <div class="sub-label">보유쿠폰 1개</div>
                 </div>
             </div>
@@ -113,11 +109,11 @@
             <!-- 적립금 영역 -->
             <div class="row">
                 <div class="label">적립금</div>
-                <input type="text" name="mileageDiscount" placeholder="0" class="point-input">
-                <button class="btn-small">전액 사용</button>
+                <input type="text" name="mileageDiscount" placeholder="0" class="point-input" id="mileageInput">
+                <button type="button" class="btn-small" onclick="useFullMileage()" data-available="5000">전액 사용</button>
             </div>
 
-            <div class="sub-info">보유 잔액 <strong>5,000원</strong></div>
+            <div class="sub-info">보유 잔액 <strong id="availableMileageText">5,000원</strong></div>
 
             <!-- 적용금액 -->
             <div class="total-apply">
@@ -129,7 +125,6 @@
         <div class="form-container">
             <div class="summary-header">
                 결제정보
-                <span class="arrow">&#9650;</span>
             </div>
 
             <div class="summary-item">
@@ -156,7 +151,6 @@
         <div class="form-container">
             <div class="method-header">
                 <strong>결제수단</strong>
-                <span class="arrow">&#9650;</span>
             </div>
             <p class="method-subtitle">결제수단 선택</p>
 
@@ -183,6 +177,99 @@
 
     </section>
 </div>
+
+<div id="couponModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>쿠폰</h2>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+
+        <div class="modal-body">
+            <p><strong>샘플상품 1</strong></p>
+            <div class="price-row">
+                <span>판매가</span>
+                <span>5,000원</span>
+            </div>
+            <div class="price-row">
+                <span>할인혜택</span>
+                <span>0원</span>
+            </div>
+
+            <select class="select">
+                <option value="">선택하세요</option>
+                <option value="coupon1">첫구매 1,000원 할인</option>
+                <option value="coupon2">10% 할인</option>
+            </select>
+
+            <div class="discount-box">
+                <div>할인/적립금액</div>
+                <strong>0</strong>
+            </div>
+        </div>
+
+        <div class="coupon-button-group">
+            <button class="btn apply">적용</button>
+            <button class="btn reset">초기화</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const mileageInput = document.getElementById("mileageInput");
+    const maxMileage = 5000; // 서버에서 동적으로 받아올 수도 있음
+
+    document.querySelectorAll(".method-option").forEach(option => {
+        option.addEventListener("click", () => {
+            // 모든 항목에서 .selected 제거
+            document.querySelectorAll(".method-option").forEach(el => {
+                el.classList.remove("selected");
+            });
+
+            // 클릭한 항목에만 .selected 추가
+            option.classList.add("selected");
+        });
+    });
+
+    function openModal() {
+        document.getElementById("couponModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("couponModal").style.display = "none";
+    }
+
+    // 전액 사용 버튼 클릭 시
+    function useFullMileage() {
+        mileageInput.value = formatNumber(maxMileage);
+    }
+
+    // 숫자 → 콤마 추가된 문자열로 포맷
+    function formatNumber(num) {
+        return Number(num).toLocaleString(); // 5000 → "5,000"
+    }
+
+    // 콤마 제거된 숫자값 반환
+    function parseNumber(str) {
+        return Number(str.replaceAll(",", ""));
+    }
+
+    // 입력 시 콤마 자동 포맷 + 초과 제한
+    mileageInput.addEventListener("input", function () {
+        let raw = parseNumber(this.value);
+
+        if (isNaN(raw)) {
+            this.value = "";
+            return;
+        }
+
+        if (raw > maxMileage) {
+            raw = maxMileage;
+        }
+
+        this.value = formatNumber(raw);
+    });
+</script>
 
 </body>
 </html>

@@ -5,6 +5,8 @@ import com.wru.wrubookstore.dto.*;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
+import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
+import com.wru.wrubookstore.repository.AddressRepository;
 import com.wru.wrubookstore.repository.DeliveryRepository;
 import com.wru.wrubookstore.repository.OrderRepository;
 import com.wru.wrubookstore.repository.PaymentRepository;
@@ -19,11 +21,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
     private final DeliveryRepository deliveryRepository;
+    private final AddressRepository addressRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.paymentRepository = paymentRepository;
         this.deliveryRepository = deliveryRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -44,5 +48,12 @@ public class OrderServiceImpl implements OrderService {
         DeliveryDto deliveryDto = deliveryRepository.select(orderId);
 
         return new OrderDetailRequest(orderDto, paymentDto, orderBookRequestList, deliveryDto);
+    }
+
+    @Override
+    public OrderPaymentRequest selectOrderPayment(Integer memberId) throws Exception {
+        AddressDto addressDto = addressRepository.selectDefaultAddress(memberId);
+
+        return new OrderPaymentRequest(addressDto);
     }
 }

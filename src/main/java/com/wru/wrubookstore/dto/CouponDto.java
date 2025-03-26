@@ -10,6 +10,7 @@ import java.util.Date;
 @ToString
 public class CouponDto {
 
+    private Integer memberCouponId;
     private Integer couponId;
     private String name;
     private double discount;
