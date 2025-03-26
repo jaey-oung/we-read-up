@@ -31,7 +31,10 @@ function setupSelectAllCheckboxes() {
 
     // 개별 선택
     itemCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", updateSummary);
+        checkbox.addEventListener("change", () => {
+            selectAllCheckbox.checked = Array.from(itemCheckboxes).every(cb => cb.checked);
+            updateSummary();
+        });
     });
 }
 
