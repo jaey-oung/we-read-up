@@ -236,7 +236,7 @@ button[type="submit"]:hover {
 .category-title {
     font-weight: bold;
     font-size: 16px;
-    cursor: pointer;
+    /*cursor: pointer;*/
     margin-bottom: 8px;
 }
 
@@ -244,18 +244,10 @@ button[type="submit"]:hover {
     list-style: none;
     padding-left: 0;
     margin-top: 8px;
+    cursor: pointer;
 }
 
-.category-list li {
-    padding: 5px 0;
-}
-
-.category-list a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.category-list a:hover {
+.category-list :hover {
     text-decoration: underline;
 }
 

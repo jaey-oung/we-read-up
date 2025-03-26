@@ -4,6 +4,7 @@ import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
+import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -81,6 +82,21 @@ public class BookRepositoryImpl implements BookRepository {
     public void deleteByAdmin(BookListResponse bookListResponse) throws Exception{
         session.delete(namespace + "deleteByAdmin", bookListResponse);
     }
+
+    // 카테고리 조회용
+    @Override
+    public List<CategoryResponse> selectCategoryLarge() throws Exception{
+        return session.selectList(namespace + "selectCategoryLarge");
+    }
+    @Override
+    public List<CategoryResponse> selectCategoryMedium(CategoryResponse categoryResponse) throws Exception{
+        return session.selectList(namespace + "selectCategoryMedium", categoryResponse);
+    }
+    @Override
+    public List<CategoryResponse> selectCategorySmall(CategoryResponse categoryResponse) throws Exception{
+        return session.selectList(namespace + "selectCategorySmall", categoryResponse);
+    }
+    // 카테고리 조회용
 
     // 책 번호로 한개 조회
     @Override
