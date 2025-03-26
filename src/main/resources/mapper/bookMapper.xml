@@ -34,6 +34,36 @@
         FROM <include refid="sql-selectCategory" /> c
         WHERE TRUE <include refid="sql-option-category" />
     </select>
+
+    <!-- 컬럼 매핑 -->
+    <resultMap id="categoryResultMap" type="CategoryResponse">
+        <result property="categoryLargeId" column="category_large_id"/>
+        <result property="categoryLargeName" column="category_large_name"/>
+        <result property="categoryMediumId" column="category_medium_id"/>
+        <result property="categoryMediumName" column="category_medium_name"/>
+        <result property="categorySmallId" column="category_small_id"/>
+        <result property="categorySmallName" column="category_small_name"/>
+    </resultMap>
+    <!-- 카테고리 대 조회 -->
+    <select id="selectCategoryLarge" resultType="CategoryResponse" resultMap="categoryResultMap">
+        SELECT category_large_id, name AS category_large_name
+        FROM category_large
+        ORDER BY category_large_id
+    </select>
+    <!-- 카테고리 중 조회 -->
+    <select id="selectCategoryMedium" parameterType="CategoryResponse" resultType="CategoryResponse" resultMap="categoryResultMap">
+        SELECT cl.category_large_id, cm.category_medium_id, cl.name AS category_large_name, cm.name AS category_medium_name
+        FROM category_large cl, category_medium cm
+        WHERE cl.category_large_id = #{categoryLargeId} AND cm.category_large_id = #{categoryLargeId}
+        ORDER BY cm.category_medium_id
+    </select>
+    <!-- 카테고리 소 조회 -->
+    <select id="selectCategorySmall" parameterType="CategoryResponse" resultType="CategoryResponse" resultMap="categoryResultMap">
+        SELECT cm.category_medium_id, cm.name AS category_medium_name, cs.category_small_id, cs.name AS category_small_name
+        FROM category_small cs, category_medium cm
+        WHERE cm.category_medium_id = #{categoryMediumId} AND cs.category_medium_id = #{categoryMediumId}
+        ORDER BY category_small_id
+    </select>
     <!--  카테고리에 속한 책들의 수 조회 -->
     <select id="selectByCategoryCnt" parameterType="String" resultType="int">
         SELECT COUNT(*)
