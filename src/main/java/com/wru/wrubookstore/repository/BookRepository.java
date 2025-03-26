@@ -4,6 +4,7 @@ import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
+import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,11 @@ public interface BookRepository {
     int countQuantityZeroByAdmin() throws Exception;
     void deleteByAdmin(BookListResponse bookListResponse) throws Exception;
     List<BookDto> selectBook(Map map) throws Exception;
+
+    // 카테고리 조회용
+    List<CategoryResponse> selectCategoryLarge() throws Exception;
+    List<CategoryResponse> selectCategoryMedium(CategoryResponse categoryResponse) throws Exception;
+    List<CategoryResponse> selectCategorySmall(CategoryResponse categoryResponse) throws Exception;
 
     // 책 번호로 한개 조회
     BookDto select(Integer bookId) throws Exception;
