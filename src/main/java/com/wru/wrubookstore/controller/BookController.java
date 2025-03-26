@@ -100,15 +100,18 @@ public class BookController {
         try{
             int isLikeUser = 0;
             int memberId = 0;
+
             if(userId != null){
                 MemberDto memberDto = memberService.selectMember(userId);
                 System.out.println("bookDetail//memberDto = " + memberDto);
 
-                memberId = memberDto.getMemberId();
-                // 좋아요 누른 회원의 정보 조회
-                LikeDto likeDto = new LikeDto(bookId, memberId);
-                // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
-                isLikeUser = likeService.selectLikeMember(likeDto);
+                if (memberDto != null) {
+                    memberId = memberDto.getMemberId();
+                    // 좋아요 누른 회원의 정보 조회
+                    LikeDto likeDto = new LikeDto(bookId, memberId);
+                    // 0이면 좋아요 안누른 유저, 1이면 좋아요 누른 유저
+                    isLikeUser = likeService.selectLikeMember(likeDto);
+                }
             }
 
             // 책 정보 조회

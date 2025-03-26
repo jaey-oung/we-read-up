@@ -88,6 +88,15 @@
     flex: 5;
 }
 
+.book-name a {
+    text-decoration: none;
+    color: black;
+}
+
+.book-name a:hover {
+    color: rgba(0, 0, 255, 0.8);
+}
+
 .book-price {
     flex: 2;
     display: flex;
