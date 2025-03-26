@@ -4,6 +4,7 @@ import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
+import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,21 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> selectBook(Map map) throws Exception{
         return bookRepository.selectBook(map);
     }
+
+    // 카테고리 조회용
+    @Override
+    public List<CategoryResponse> selectCategoryLarge() throws Exception{
+        return bookRepository.selectCategoryLarge();
+    }
+    @Override
+    public List<CategoryResponse> selectCategoryMedium(CategoryResponse categoryResponse) throws Exception{
+        return bookRepository.selectCategoryMedium(categoryResponse);
+    }
+    @Override
+    public List<CategoryResponse> selectCategorySmall(CategoryResponse categoryResponse) throws Exception{
+        return bookRepository.selectCategorySmall(categoryResponse);
+    }
+    // 카테고리 조회용
 
     // 책 번호로 한개 조회
     @Override
