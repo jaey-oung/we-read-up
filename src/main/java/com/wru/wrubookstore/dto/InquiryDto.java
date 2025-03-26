@@ -7,21 +7,23 @@ public class InquiryDto {
 
     private Integer inquiryId;
     private Integer memberId;
-    private String inquiry_status_id;
-    private String employeeID;
+    private String inquiryStatusId;
+    private String employeeId;
     private String title;
     private String content;
     private String replyContent;
     private Date regDate;
     private Date modDate;
+    private String inquiryStatusName;
+    private String memberNickname;
 
     public InquiryDto() {}
 
-    public InquiryDto(Integer inquiryId, Integer memberId, String inquiry_status_id, String employeeID, String title, String content, String replyContent) {
+    public InquiryDto(Integer inquiryId, Integer memberId, String inquiryStatusId, String employeeId, String title, String content, String replyContent) {
         this.inquiryId = inquiryId;
         this.memberId = memberId;
-        this.inquiry_status_id = inquiry_status_id;
-        this.employeeID = employeeID;
+        this.inquiryStatusId = inquiryStatusId;
+        this.employeeId = employeeId;
         this.title = title;
         this.content = content;
         this.replyContent = replyContent;
@@ -30,12 +32,12 @@ public class InquiryDto {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof InquiryDto that)) return false;
-        return Objects.equals(inquiryId, that.inquiryId) && Objects.equals(memberId, that.memberId) && Objects.equals(inquiry_status_id, that.inquiry_status_id) && Objects.equals(employeeID, that.employeeID) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(replyContent, that.replyContent);
+        return Objects.equals(inquiryId, that.inquiryId) && Objects.equals(memberId, that.memberId) && Objects.equals(inquiryStatusId, that.inquiryStatusId) && Objects.equals(employeeId, that.employeeId) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(replyContent, that.replyContent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inquiryId, memberId, inquiry_status_id, employeeID, title, content, replyContent);
+        return Objects.hash(inquiryId, memberId, inquiryStatusId, employeeId, title, content, replyContent);
     }
 
     @Override
@@ -43,13 +45,15 @@ public class InquiryDto {
         return "InquiryDto{" +
                 "inquiryId=" + inquiryId +
                 ", memberId=" + memberId +
-                ", inquiry_status_id='" + inquiry_status_id + '\'' +
-                ", employeeID='" + employeeID + '\'' +
+                ", inquiryStatusId='" + inquiryStatusId + '\'' +
+                ", employeeId='" + employeeId + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", replyContent='" + replyContent + '\'' +
                 ", regDate=" + regDate +
                 ", modDate=" + modDate +
+                ", inquiryStatusName='" + inquiryStatusName + '\'' +
+                ", memberNickname='" + memberNickname + '\'' +
                 '}';
     }
 
@@ -69,20 +73,20 @@ public class InquiryDto {
         this.memberId = memberId;
     }
 
-    public String getInquiry_status_id() {
-        return inquiry_status_id;
+    public String getInquiryStatusId() {
+        return inquiryStatusId;
     }
 
-    public void setInquiry_status_id(String inquiry_status_id) {
-        this.inquiry_status_id = inquiry_status_id;
+    public void setInquiryStatusId(String inquiryStatusId) {
+        this.inquiryStatusId = inquiryStatusId;
     }
 
-    public String getEmployeeID() {
-        return employeeID;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getTitle() {
@@ -123,5 +127,21 @@ public class InquiryDto {
 
     public void setModDate(Date modDate) {
         this.modDate = modDate;
+    }
+
+    public String getInquiryStatusName() {
+        return inquiryStatusName;
+    }
+
+    public void setInquiryStatusName(String inquiryStatusName) {
+        this.inquiryStatusName = inquiryStatusName;
+    }
+
+    public String getMemberNickname() {
+        return memberNickname;
+    }
+
+    public void setMemberNickname(String memberNickname) {
+        this.memberNickname = memberNickname;
     }
 }

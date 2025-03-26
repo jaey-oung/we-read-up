@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class InquiryServiceImpl {
+public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepositoryImpl inquiryRepository;
 
@@ -17,12 +17,19 @@ public class InquiryServiceImpl {
         this.inquiryRepository = inquiryRepository;
     }
 
-    public List<InquiryDto> getList() throws Exception{
-        return inquiryRepository.selectAll();
+    @Override
+    public List<InquiryDto> getList(Integer memberId) throws Exception {
+
+        System.out.println("memberId = " + memberId);
+        List<InquiryDto> list = inquiryRepository.selectAll(memberId);
+        System.out.println("list size = " + (list != null ? list.size() : "null"));
+
+        return inquiryRepository.selectAll(memberId);
     }
 
+    @Override
     public int write(InquiryDto inquiryDto) throws Exception{
-        inquiryDto.setInquiry_status_id("ID_1");    // 고객 문의 등록시 상태를 "ID_1"으로 설정
+        inquiryDto.setInquiryStatusId("ID_1");    // 고객 문의 등록시 상태를 "ID_1"으로 설정
         inquiryRepository.insert(inquiryDto);
 
         Map<String, Object> params = new HashMap<>();
@@ -33,18 +40,22 @@ public class InquiryServiceImpl {
         return inquiryDto.getInquiryId();
     }
 
+    @Override
     public int remove(Integer inquiryId, Integer memberId) throws Exception{
         return inquiryRepository.delete(inquiryId, memberId);
     }
 
+    @Override
     public int removeForAdmin(Integer inquiryId) throws Exception{
         return inquiryRepository.deleteForAdmin(inquiryId);
     }
 
+    @Override
     public int modify(InquiryDto inquiryDto) throws Exception{
         return inquiryRepository.update(inquiryDto);
     }
 
+    @Override
     public int reply(InquiryDto inquiryDto) throws Exception {
         inquiryRepository.updateReply(inquiryDto);
 

@@ -9,31 +9,36 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class InquiryRepositoryImpl {
+public class InquiryRepositoryImpl implements InquiryRepository {
 
     private final SqlSessionTemplate session;
-    String namespace = "com.wru.wrubookstore.mapper.InquiryMapper";
+    String namespace = "com.wru.wrubookstore.mapper.InquiryMapper.";
 
     public InquiryRepositoryImpl(SqlSessionTemplate session) {
         this.session = session;
     }
 
+    @Override
     public InquiryDto select(Integer inquiryId) throws Exception{
         return session.selectOne(namespace + "select", inquiryId);
     }
 
-    public List<InquiryDto> selectAll() throws Exception{
+    @Override
+    public List<InquiryDto> selectAll(Integer memberId) throws Exception{
         return session.selectList(namespace + "selectAll");
     }
 
+    @Override
     public int count() throws Exception{
         return session.selectOne(namespace+"count");
     }
 
+    @Override
     public int insert(InquiryDto inquiryDto) throws Exception{
         return session.insert(namespace + "insert", inquiryDto);
     }
 
+    @Override
     public int delete(Integer inquiryId, Integer memberId) throws Exception{
         Map map = new HashMap();
         map.put("inquiryId", inquiryId);
@@ -41,20 +46,24 @@ public class InquiryRepositoryImpl {
         return session.delete(namespace+"delete", map);
     }
 
+    @Override
     public int deleteForAdmin(Integer inquiryId) throws Exception{
         Map map = new HashMap();
         map.put("inquiryId", inquiryId);
         return session.delete(namespace+"deleteForAdmin", map);
     }
 
+    @Override
     public int update(InquiryDto inquiryDto) throws Exception{
         return session.update(namespace+"update", inquiryDto);
     }
 
+    @Override
     public int updateInquiryStatus(Map<String, Object> map) throws Exception {
         return session.update(namespace + "updateInquiryStatus", map);
     }
 
+    @Override
     public int updateReply(InquiryDto inquiryDto) throws Exception{
         return session.update(namespace+"updateReply", inquiryDto);
     }
