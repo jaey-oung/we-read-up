@@ -214,4 +214,13 @@
         SELECT COUNT(DISTINCT b.book_id)
         <include refid="sql-option-cnt" />
     </select>
+
+    <select id="selectByBookIdList" parameterType="List" resultType="OrderBookRequest">
+        SELECT image, name, sale_price 'order_price'
+        FROM book
+        WHERE book_id IN
+        <foreach item="bookId" collection="list" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </select>
 </mapper>

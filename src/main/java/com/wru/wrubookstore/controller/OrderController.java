@@ -68,11 +68,12 @@ public class OrderController {
     }
 
     @GetMapping("/order")
-    public String order(@SessionAttribute Integer userId, Model model) {
+    public String order(@SessionAttribute Integer userId, @RequestParam("bookId") List<Integer> bookIdList,
+                        Model model) {
         try {
             Integer memberId = memberService.selectMember(userId).getMemberId();
 
-            OrderPaymentRequest orderPaymentRequest = orderService.selectOrderPayment(memberId);
+            OrderPaymentRequest orderPaymentRequest = orderService.selectOrderPayment(memberId, bookIdList);
 
             model.addAttribute("orderPaymentRequest", orderPaymentRequest);
         } catch (Exception e) {

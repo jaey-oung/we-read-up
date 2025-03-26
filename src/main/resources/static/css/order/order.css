@@ -105,9 +105,9 @@ body, h2 {
     position: relative;
 }
 
-.product-image img {
-    width: 80px;
-    height: 80px;
+.product-box img {
+    width: 100px;
+    height: auto;
     background-color: #f8f8f8;
     border: 1px solid #ddd;
 }
@@ -148,23 +148,10 @@ body, h2 {
     align-items: center;
 }
 
-.space-between {
-    padding: 16px;
-    justify-content: space-between;
-}
-
 .label {
+    margin-right: 40px;
     font-size: 14px;
     color: #222;
-}
-
-.coupon-area {
-    text-align: right;
-}
-
-.coupon-area .price {
-    margin-right: 8px;
-    font-weight: bold;
 }
 
 .btn-small {
@@ -173,16 +160,6 @@ body, h2 {
     border: 1px solid #ccc;
     background-color: #fff;
     cursor: pointer;
-}
-
-.sub-label {
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
-}
-
-div.label {
-    margin-right: 40px;
 }
 
 .point-input {

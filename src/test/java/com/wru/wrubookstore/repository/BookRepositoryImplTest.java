@@ -4,6 +4,7 @@ package com.wru.wrubookstore.repository;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -170,5 +169,14 @@ public class BookRepositoryImplTest {
         sc = new MainSearchCondition(1, 8, "invalid%k@eyw1ord", "all");
         count = bookRepository.selectSearchCnt(sc);
         assertEquals(0, count);
+    }
+
+    @Test
+    public void selectByBookIdListTest() throws Exception {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+
+        List<OrderBookRequest> orderBookRequestList = bookRepository.selectByBookIdList(list);
+
+        assertEquals(orderBookRequestList.size(), 3);
     }
 }

@@ -5,17 +5,21 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter @Setter
 @ToString
 public class OrderPaymentRequest {
 
-    private AddressDto addressDto;
+    private AddressDto addressDto;  // 배송지
+    private List<OrderBookRequest> orderBookRequestList;
 
     public OrderPaymentRequest() {
 
     }
 
-    public OrderPaymentRequest(AddressDto addressDto) {
+    public OrderPaymentRequest(AddressDto addressDto, List<OrderBookRequest> orderBookRequestList) {
         this.addressDto = addressDto;
+        this.orderBookRequestList = orderBookRequestList;
     }
 }

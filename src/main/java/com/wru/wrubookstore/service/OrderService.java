@@ -16,5 +16,5 @@ public interface OrderService {
     // 주문상세 조회
     OrderDetailRequest selectOrderDetail(Integer orderId) throws Exception;
     // 주문/결제 정보 조회
-    OrderPaymentRequest selectOrderPayment(Integer memberId) throws Exception;
+    OrderPaymentRequest selectOrderPayment(Integer memberId, List<Integer> bookIdList) throws Exception;
 }

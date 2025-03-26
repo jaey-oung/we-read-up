@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/order/order.css">
 </head>
-<body>
+<body onload="totalProductPrice()">
 
 <div class="container">
     <header class="top-header">
@@ -71,14 +71,12 @@
             <!-- 주문 상품 영역 -->
             <h3 class="section-title">주문상품</h3>
 
-            <div class="product-box">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/80x80?text=No+Image" alt="상품 이미지">
-                </div>
+            <div class="product-box" th:each="orderBookRequest : ${orderPaymentRequest.orderBookRequestList}">
+                <img th:src="${orderBookRequest.image}" alt="상품 이미지">
                 <div class="product-info">
-                    <div class="product-name">샘플상품 2</div>
+                    <div class="product-name" th:text="${orderBookRequest.name}">샘플상품 2</div>
                     <div class="product-qty">수량: 1개</div>
-                    <div class="product-price">10,000원</div>
+                    <div id="productPrice" class="product-price" th:text="|${#numbers.formatDecimal(orderBookRequest.orderPrice, 1, 'COMMA', 0, 'POINT')}원|">10,000원</div>
                 </div>
             </div>
 
@@ -94,23 +92,11 @@
 
             <h3 class="section-title">할인/부가결제</h3>
 
-            <!-- 쿠폰 할인 영역 -->
-            <div class="row space-between">
-                <div>
-                    <div class="label">쿠폰 할인</div>
-                </div>
-                <div class="coupon-area">
-                    <span class="price">0원</span>
-                    <button class="btn-small" onclick="openModal()">쿠폰 적용</button>
-                    <div class="sub-label">보유쿠폰 1개</div>
-                </div>
-            </div>
-
             <!-- 적립금 영역 -->
             <div class="row">
                 <div class="label">적립금</div>
                 <input type="text" name="mileageDiscount" placeholder="0" class="point-input" id="mileageInput">
-                <button type="button" class="btn-small" onclick="useFullMileage()" data-available="5000">전액 사용</button>
+                <button type="button" class="btn-small" onclick="useFullMileage()" data-available="5000" id="useAllBtn">전액 사용</button>
             </div>
 
             <div class="sub-info">보유 잔액 <strong id="availableMileageText">5,000원</strong></div>
@@ -118,7 +104,7 @@
             <!-- 적용금액 -->
             <div class="total-apply">
                 <span>적용금액</span>
-                <span class="price">-0원</span>
+                <span class="price discount">-0원</span>
             </div>
         </div>
 
@@ -129,7 +115,7 @@
 
             <div class="summary-item">
                 <span>주문상품</span>
-                <span class="totalPrice">10,000원</span>
+                <span id="totalPrice" class="totalPrice">10,000원</span>
             </div>
 
             <div class="summary-item">
@@ -144,7 +130,7 @@
 
             <div class="final-payment">
                 <span>최종 결제 금액</span>
-                <span class="actualPrice">12,500원</span>
+                <span id="actualPrice" class="actualPrice">12,500원</span>
             </div>
         </div>
 
@@ -172,71 +158,52 @@
                 주문 내용을 확인하였으며 약관에 동의합니다.
             </div>
 
-            <button class="submit-btn">12,500원 결제하기</button>
+            <button class="submit-btn"><span id="paymentPrice">10,000원</span> 결제하기</button>
         </div>
 
     </section>
 </div>
 
-<div id="couponModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>쿠폰</h2>
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-        </div>
 
-        <div class="modal-body">
-            <p><strong>샘플상품 1</strong></p>
-            <div class="price-row">
-                <span>판매가</span>
-                <span>5,000원</span>
-            </div>
-            <div class="price-row">
-                <span>할인혜택</span>
-                <span>0원</span>
-            </div>
 
-            <select class="select">
-                <option value="">선택하세요</option>
-                <option value="coupon1">첫구매 1,000원 할인</option>
-                <option value="coupon2">10% 할인</option>
-            </select>
 
-            <div class="discount-box">
-                <div>할인/적립금액</div>
-                <strong>0</strong>
-            </div>
-        </div>
-
-        <div class="coupon-button-group">
-            <button class="btn apply">적용</button>
-            <button class="btn reset">초기화</button>
-        </div>
-    </div>
-</div>
 
 <script>
-    const mileageInput = document.getElementById("mileageInput");
     const maxMileage = 5000; // 서버에서 동적으로 받아올 수도 있음
+    const mileageInput = document.getElementById("mileageInput");
+    const button = document.getElementById("useAllBtn");
+    const totalPrice = document.getElementById("totalPrice");
+    const actualPrice = document.getElementById("actualPrice");
+    const paymentPrice = document.getElementById("paymentPrice");
 
-    document.querySelectorAll(".method-option").forEach(option => {
-        option.addEventListener("click", () => {
-            // 모든 항목에서 .selected 제거
-            document.querySelectorAll(".method-option").forEach(el => {
-                el.classList.remove("selected");
-            });
+    mileageInput.addEventListener("change", updateDiscountPrice);
+    button.addEventListener("click", updateDiscountPrice);
 
-            // 클릭한 항목에만 .selected 추가
-            option.classList.add("selected");
+    // 마일리지 입력 시 최종 결제 금액, 할인 금액 반영
+    function updateDiscountPrice() {
+        const value = parseInt(mileageInput.value.replace(/,/g, "")) || 0;
+        const total = parseInt(totalPrice.textContent.replace(/,/g, "").replace("원", "")) || 0;
+
+        document.querySelectorAll(".price.discount").forEach(el => {
+            el.textContent = "-" + value.toLocaleString() + "원";
         });
-    });
-
-    function openModal() {
-        document.getElementById("couponModal").style.display = "block";
+        actualPrice.textContent = (total - value).toLocaleString() + "원";
+        paymentPrice.textContent = (total - value).toLocaleString() + "원";
     }
 
-    function closeModal() {
-        document.getElementById("couponModal").style.display = "none";
+    // 주문 총액 계산
+    function totalProductPrice() {
+        const productPrices = document.querySelectorAll("#productPrice");
+        let total = 0;
+        productPrices.forEach(p => {
+            const price = parseInt(p.textContent.replace(/,/g, "")); // 콤마 제거 처리
+            if (!isNaN(price)) {
+                total += price;
+            }
+        });
+        totalPrice.textContent = total.toLocaleString() + "원";
+        actualPrice.textContent = total.toLocaleString() + "원";
+        paymentPrice.textContent = total.toLocaleString() + "원";
     }
 
     // 전액 사용 버튼 클릭 시
@@ -247,11 +214,6 @@
     // 숫자 → 콤마 추가된 문자열로 포맷
     function formatNumber(num) {
         return Number(num).toLocaleString(); // 5000 → "5,000"
-    }
-
-    // 콤마 제거된 숫자값 반환
-    function parseNumber(str) {
-        return Number(str.replaceAll(",", ""));
     }
 
     // 입력 시 콤마 자동 포맷 + 초과 제한
@@ -268,6 +230,19 @@
         }
 
         this.value = formatNumber(raw);
+    });
+
+    // 신용카드와 위리페이 클릭 시 변경
+    document.querySelectorAll(".method-option").forEach(option => {
+        option.addEventListener("click", () => {
+            // 모든 항목에서 .selected 제거
+            document.querySelectorAll(".method-option").forEach(el => {
+                el.classList.remove("selected");
+            });
+
+            // 클릭한 항목에만 .selected 추가
+            option.classList.add("selected");
+        });
     });
 </script>
 

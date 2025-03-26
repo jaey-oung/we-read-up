@@ -6,10 +6,7 @@ import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
 import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
-import com.wru.wrubookstore.repository.AddressRepository;
-import com.wru.wrubookstore.repository.DeliveryRepository;
-import com.wru.wrubookstore.repository.OrderRepository;
-import com.wru.wrubookstore.repository.PaymentRepository;
+import com.wru.wrubookstore.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +19,14 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentRepository paymentRepository;
     private final DeliveryRepository deliveryRepository;
     private final AddressRepository addressRepository;
+    private final BookRepository bookRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository, BookRepository bookRepository) {
         this.orderRepository = orderRepository;
         this.paymentRepository = paymentRepository;
         this.deliveryRepository = deliveryRepository;
         this.addressRepository = addressRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -51,9 +50,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderPaymentRequest selectOrderPayment(Integer memberId) throws Exception {
+    public OrderPaymentRequest selectOrderPayment(Integer memberId, List<Integer> bookIdList) throws Exception {
         AddressDto addressDto = addressRepository.selectDefaultAddress(memberId);
+        List<OrderBookRequest> orderBookRequestList = bookRepository.selectByBookIdList(bookIdList);
 
-        return new OrderPaymentRequest(addressDto);
+        return new OrderPaymentRequest(addressDto, orderBookRequestList);
     }
 }

@@ -3,6 +3,7 @@ package com.wru.wrubookstore.repository;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -141,5 +142,10 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return session.selectOne(namespace + "selectSearchCnt", sc);
+    }
+
+    @Override
+    public List<OrderBookRequest> selectByBookIdList(List<Integer> bookIdList) throws Exception {
+        return session.selectList(namespace + "selectByBookIdList", bookIdList);
     }
 }

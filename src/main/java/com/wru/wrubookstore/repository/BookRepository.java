@@ -3,6 +3,7 @@ package com.wru.wrubookstore.repository;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 
@@ -57,4 +58,7 @@ public interface BookRepository {
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;
+
+    // BookIdList로 도서 조회
+    List<OrderBookRequest> selectByBookIdList(List<Integer> bookIdList) throws Exception;
 }
