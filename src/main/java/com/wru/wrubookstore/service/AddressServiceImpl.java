@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto selectOne(Integer addressId) throws Exception {
-        return addressRepository.selectOne(addressId);
+        return addressRepository.selectById(addressId);
     }
 
     @Override

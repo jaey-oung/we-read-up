@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/order/order.css">
+</head>
+<body>
+
+<div class="container">
+    <header class="top-header">
+        <div class="top-inner">
+            <div class="left">
+                <a href="/" class="icon">&larr;</a>
+            </div>
+            <div class="center">
+                <strong>쇼핑몰 프로젝트</strong>
+            </div>
+            <div class="right">
+                <a class="icon">🛒</a>
+                <a href="/myPage" class="icon">👤</a>
+            </div>
+        </div>
+
+        <!-- ✅ 검정 탭바를 header 내부로 이동 -->
+        <div class="tab-bar">
+            주문/결제
+        </div>
+    </header>
+
+    <section class="delivery-section">
+
+        <div class="form-container">
+            <h3 class="section-title">배송지</h3>
+            <div class="form-group">
+                <label for="receipt">* 받는사람</label>
+                <input type="text" id="receipt" name="receipt">
+            </div>
+            <div class="form-group">
+                <label for="zipCode">* 주소</label>
+                <div class="address-group">
+                    <input type="text" id="zipCode" name="zipCode" placeholder="우편번호">
+                </div>
+            </div>
+            <div class="form-group">
+                <label></label>
+                <input type="text" name="mainAddress" placeholder="기본주소">
+            </div>
+            <div class="form-group">
+                <label></label>
+                <input type="text" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)">
+            </div>
+            <div class="form-group">
+                <label for="phoneNum">* 휴대전화</label>
+                <input type="tel" id="phoneNum" name="phoneNum">
+            </div>
+            <div class="form-group">
+                <label for="email">* 이메일</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <select name="message">
+                    <option value="">-- 메시지 선택 (선택사항) --</option>
+                    <option value="배송 전에 미리 연락바랍니다.">배송 전에 미리 연락바랍니다.</option>
+                    <option value="부재 시 경비실에 맡겨주세요.">부재 시 경비실에 맡겨주세요.</option>
+                    <option value="부재 시 문 앞에 놓아주세요.">부재 시 문 앞에 놓아주세요.</option>
+                    <option value="빠른 배송 부탁드립니다.">빠른 배송 부탁드립니다.</option>
+                    <option value="택배함에 보관해 주세요.">택배함에 보관해 주세요.</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-container">
+
+            <!-- 주문 상품 영역 -->
+            <h3 class="section-title">주문상품</h3>
+
+            <div class="product-box">
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/80x80?text=No+Image" alt="상품 이미지">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">샘플상품 2</div>
+                    <div class="product-qty">수량: 1개</div>
+                    <div class="product-price">10,000원</div>
+                </div>
+            </div>
+
+            <!-- 배송비 -->
+            <div class="shipping-fee">
+                <span>배송비</span>
+                <span class="price">0 원</span>
+            </div>
+
+        </div>
+
+        <div class="form-container">
+
+            <h3 class="section-title">할인/부가결제</h3>
+
+            <!-- 쿠폰 할인 영역 -->
+            <div class="row space-between">
+                <div>
+                    <div class="label">쿠폰 할인</div>
+                </div>
+                <div class="coupon-area">
+                    <span class="price">0원</span>
+                    <button class="btn-small">쿠폰 적용</button>
+                    <div class="sub-label">보유쿠폰 1개</div>
+                </div>
+            </div>
+
+            <!-- 적립금 영역 -->
+            <div class="row">
+                <div class="label">적립금</div>
+                <input type="text" name="mileageDiscount" placeholder="0" class="point-input">
+                <button class="btn-small">전액 사용</button>
+            </div>
+
+            <div class="sub-info">보유 잔액 <strong>5,000원</strong></div>
+
+            <!-- 적용금액 -->
+            <div class="total-apply">
+                <span>적용금액</span>
+                <span class="price">-0원</span>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="summary-header">
+                결제정보
+                <span class="arrow">&#9650;</span>
+            </div>
+
+            <div class="summary-item">
+                <span>주문상품</span>
+                <span class="totalPrice">10,000원</span>
+            </div>
+
+            <div class="summary-item">
+                <span>배송비</span>
+                <span class="price">+0원</span>
+            </div>
+
+            <div class="summary-item">
+                <span>할인/부가결제</span>
+                <span class="price discount">-0원</span>
+            </div>
+
+            <div class="final-payment">
+                <span>최종 결제 금액</span>
+                <span class="actualPrice">12,500원</span>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="method-header">
+                <strong>결제수단</strong>
+                <span class="arrow">&#9650;</span>
+            </div>
+            <p class="method-subtitle">결제수단 선택</p>
+
+            <div class="method-option selected">
+                <span>신용카드</span>
+            </div>
+
+            <div class="method-option">
+                <span>위리페이</span>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="agreement-box">
+                <p>구매조건 확인 및 결제진행 동의</p>
+            </div>
+
+            <div class="agreement-text">
+                주문 내용을 확인하였으며 약관에 동의합니다.
+            </div>
+
+            <button class="submit-btn">12,500원 결제하기</button>
+        </div>
+
+    </section>
+</div>
+
+</body>
+</html>

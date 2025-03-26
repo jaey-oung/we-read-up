@@ -29,34 +29,6 @@ class AddressRepositoryImplTest {
 
     @Test
     @Transactional
-    public void insertTest() throws Exception {
-        AddressDto addressDto = new AddressDto(1, "테스트 배송지", "홍길동", "010-1111-2222", 12345, "서울 강남구", "미왕빌딩 10층", true);
-        int insertCnt = addressRepository.insert(addressDto);
-
-        List<AddressDto> addressDtoList = addressRepository.selectList(1);
-        AddressDto insertAddressDto = addressDtoList.getLast();
-
-        System.out.println("insertAddressDto = " + insertAddressDto);
-
-        assertEquals(addressDtoList.size(), 2);
-        assertEquals(insertAddressDto.getName(), "테스트 배송지");
-        assertTrue(insertAddressDto.isDefaultAddress());
-    }
-
-    @Test
-    public void selectOneTest() throws Exception {
-        Integer addressId = 2;
-
-        AddressDto addressDto = addressRepository.selectOne(addressId);
-
-        assertEquals(addressDto.getMemberId(), 3);
-        assertEquals(addressDto.getName(), "회사");
-        assertEquals(addressDto.getRecipient(), "채성아");
-        assertEquals(addressDto.getPhoneNum(), "010-3333-4444");
-    }
-
-    @Test
-    @Transactional
     public void updateTest() throws Exception {
         Integer addressId = 1;
 
@@ -64,7 +36,7 @@ class AddressRepositoryImplTest {
         addressDto.setAddressId(addressId);
 
         int updateCnt = addressRepository.update(addressDto);
-        AddressDto updateAddressDto = addressRepository.selectOne(addressId);
+        AddressDto updateAddressDto = addressRepository.selectById(addressId);
 
         assertEquals(updateCnt, 1);
         assertEquals(updateAddressDto.getMemberId(), 1);
@@ -72,15 +44,13 @@ class AddressRepositoryImplTest {
     }
 
     @Test
-    @Transactional
-    public void unsetDefaultAddressTest() throws Exception {
+    public void selectDefaultAddressTest() throws Exception {
         Integer memberId = 1;
 
-        int updateCnt = addressRepository.unsetDefaultAddress(memberId);
-        List<AddressDto> addressDtoList = addressRepository.selectList(memberId);
-        AddressDto addressDto = addressDtoList.getFirst();
+        AddressDto addressDto = addressRepository.selectDefaultAddress(memberId);
 
-        assertEquals(updateCnt, 1);
-        assertFalse(addressDto.isDefaultAddress());
+        assertEquals(addressDto.getAddressId(), 1);
+        assertEquals(addressDto.getMemberId(), memberId);
+        assertEquals(addressDto.getName(), "집");
     }
 }
