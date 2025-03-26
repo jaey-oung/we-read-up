@@ -24,8 +24,13 @@ public class InquiryRepositoryImpl implements InquiryRepository {
     }
 
     @Override
-    public List<InquiryDto> selectAll(Integer memberId) throws Exception{
-        return session.selectList(namespace + "selectAll");
+    public List<InquiryDto> selectAll(int memberId) throws Exception{
+        return session.selectList(namespace + "selectAll", memberId);
+    }
+
+    @Override
+    public List<InquiryDto> selectForEmp() throws Exception{
+        return session.selectList(namespace + "selectForEmp");
     }
 
     @Override

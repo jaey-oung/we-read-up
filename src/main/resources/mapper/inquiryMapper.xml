@@ -11,21 +11,16 @@
         JOIN member m on i.member_id = m.member_id
     </sql>
 
-    <select id="select" parameterType="int" resultType="InquiryDto">
+    <select id="selectAll" parameterType="int" resultType="InquiryDto">
         <include refid="selectFromInquiry"/>
-        WHERE i.inquiry_id = #{inquiryId}
-    </select>
-
-    <select id="selectAll" resultType="InquiryDto">
-        <include refid="selectFromInquiry"/>
-        <where>
-            <if test="memberId != null">
-                i.member_id = #{memberId}
-            </if>
-        </where>
+        WHERE i.member_id = #{memberId}
         ORDER BY i.reg_date DESC, i.inquiry_id DESC
     </select>
 
+    <select id="selectForEmp" resultType="InquiryDto">
+        <include refid="selectFromInquiry"/>
+        ORDER BY i.reg_date DESC, i.inquiry_id DESC
+    </select>
 
     <select id="count" resultType="int">
         SELECT count(*) FROM inquiry

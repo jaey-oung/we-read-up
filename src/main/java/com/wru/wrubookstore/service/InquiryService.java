@@ -5,7 +5,9 @@ import com.wru.wrubookstore.dto.InquiryDto;
 import java.util.List;
 
 public interface InquiryService {
-    List<InquiryDto> getList(Integer memberId) throws Exception;
+    List<InquiryDto> getList(int memberId) throws Exception;
+
+    List<InquiryDto> getAllList()throws Exception;
 
     int write(InquiryDto inquiryDto) throws Exception;
 

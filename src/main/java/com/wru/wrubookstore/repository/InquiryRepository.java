@@ -8,7 +8,9 @@ import java.util.Map;
 public interface InquiryRepository {
     InquiryDto select(Integer inquiryId) throws Exception;
 
-    List<InquiryDto> selectAll(Integer memberId) throws Exception;
+    List<InquiryDto> selectAll(int memberId) throws Exception;
+
+    List<InquiryDto> selectForEmp() throws Exception;
 
     int count() throws Exception;
 

@@ -18,13 +18,18 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public List<InquiryDto> getList(Integer memberId) throws Exception {
+    public List<InquiryDto> getList(int memberId) throws Exception {
 
-        System.out.println("memberId = " + memberId);
+        System.out.println("Service_memberId = " + memberId);
         List<InquiryDto> list = inquiryRepository.selectAll(memberId);
-        System.out.println("list size = " + (list != null ? list.size() : "null"));
+        System.out.println("Service_list = " + list);
 
-        return inquiryRepository.selectAll(memberId);
+        return list;
+    }
+
+    @Override
+    public List<InquiryDto> getAllList()throws Exception{
+        return inquiryRepository.selectForEmp();
     }
 
     @Override
@@ -61,7 +66,7 @@ public class InquiryServiceImpl implements InquiryService {
 
         Map<String, Object> params = new HashMap<>();
         params.put("inquiryId", inquiryDto.getInquiryId());
-        params.put("inquiryStatusId", "ID_2");
+        params.put("inquiryStatusId", "inq_2");
         inquiryRepository.updateInquiryStatus(params);
 
         return inquiryDto.getInquiryId();

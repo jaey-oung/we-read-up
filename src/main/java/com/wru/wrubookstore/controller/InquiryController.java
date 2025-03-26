@@ -23,16 +23,23 @@ public class InquiryController {
     @GetMapping("/list")
     public String list(Model m, HttpSession session){
 //        Integer memberId = (Integer) session.getAttribute("id");
-        Integer memberId = 2;
+        int memberId = 3;
+        String currentUserId = "3";
+
+        System.out.println("Controller_currentUserId = " + currentUserId);
 
         try {
-            List<InquiryDto> list = inquiryService.getList(memberId);
-
-//            System.out.println("memberId = " + memberId);
-//            System.out.println("list = " + list);
+            List<InquiryDto> list; // = inquiryService.getList(memberId);
+            if(currentUserId.startsWith("emp_"))            // 직원인 경우
+                list = inquiryService.getAllList();         // 모든 게시물 조회
+            else
+                list = inquiryService.getList(memberId);    // 회원이 작성한 게시물만 조회
+            System.out.println("Controller_memberId = " + memberId);
+            System.out.println("Controller_list = " + list);
 
             m.addAttribute("list", list);
-            m.addAttribute("mode", "read");
+//            m.addAttribute("mode", read);
+            m.addAttribute("currentUserId", currentUserId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,7 +49,7 @@ public class InquiryController {
     @PostMapping("/remove")
     public String remove(@RequestParam("inquiryId") Integer inquiryId, HttpSession session, RedirectAttributes rdatt) {
 //        Integer memberId = (Integer) session.getAttribute("id");
-        Integer memberId = 2;
+        Integer memberId = 3;
 
         try {
             int rowCnt = inquiryService.remove(inquiryId, memberId);
@@ -65,7 +72,7 @@ public class InquiryController {
     @PostMapping("/write")
     public String write(@RequestBody InquiryDto inquiryDto, Model m, HttpSession session, RedirectAttributes rdatt){
         //        Integer memberId = (Integer) session.getAttribute("id");
-        Integer memberId = 2;
+        Integer memberId = 3;
         inquiryDto.setMemberId(memberId);
         inquiryDto.setEmployeeId("emp_4");
         inquiryDto.setInquiryStatusId("inq_1");
@@ -82,7 +89,7 @@ public class InquiryController {
             m.addAttribute("inquiryDto", inquiryDto);
             rdatt.addFlashAttribute("msg", "WRT_ERR");
         }
-        return "board/inquiry-list";
+        return "redirect:/inquiryboard/list";
     }
 
     @PostMapping("/modify")
@@ -93,16 +100,18 @@ public class InquiryController {
         inquiryDto.setEmployeeId(employeeId);
 
         try {
-            int rowCnt = inquiryService.modify(inquiryDto);
+            int rowCnt = inquiryService.reply(inquiryDto);
 
             if(rowCnt!=1)
                 throw new Exception("Modify failed");
             rdatt.addFlashAttribute("msg","MOD_OK");
+            // 답변 내용 모델에 추가
+            m.addAttribute("replyContent", inquiryDto.getReplyContent());
             return "redirect:/board/inquiry-list";
         } catch (Exception e) {
             e.printStackTrace();
             rdatt.addFlashAttribute("msg","MOD_ERR");
         }
-        return "board/inquiry-list";
+        return "redirect:/inquiryboard/list";
     }
 }
