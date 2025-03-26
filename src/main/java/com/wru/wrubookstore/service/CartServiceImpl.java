@@ -57,14 +57,47 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public String insert(CartDto cartDto) throws Exception {
+    public int addOne(CartDto cartDto) throws Exception {
         CartDto existing = cartRepository.selectByUserIdAndBookId(cartDto.getUserId(), cartDto.getBookId());
-        if (existing != null)
-            return "이미 장바구니에 담긴 도서입니다";
 
-        int rowCnt = cartRepository.insert(cartDto);
-        return rowCnt == 1 ? "도서를 장바구니에 추가했습니다" : "장바구니 추가에 실패했습니다";
+        if (existing != null) {
+            // 기존 수량에 1 더하기
+            existing.setQuantity(existing.getQuantity() + 1);
+            existing.setPrice(existing.getPrice() + cartDto.getPrice());
+            return cartRepository.update(existing);
+        }
+
+        return cartRepository.insert(cartDto);
     }
+
+    @Override
+    public int addMultiple(CartDto cartDto) throws Exception {
+        CartDto existing = cartRepository.selectByUserIdAndBookId(cartDto.getUserId(), cartDto.getBookId());
+
+        if (existing != null) {
+            // 기존 수량과 기존 가격에 현재 수량과 가격 더하기
+            existing.setQuantity(existing.getQuantity() + cartDto.getQuantity());
+            existing.setPrice(existing.getPrice() + cartDto.getPrice());
+            return cartRepository.update(existing);
+        }
+
+        return cartRepository.insert(cartDto);
+    }
+
+//    @Override
+//    public int insert(CartDto cartDto) throws Exception {
+//        CartDto existing = cartRepository.selectByUserIdAndBookId(cartDto.getUserId(), cartDto.getBookId());
+//
+//        if (existing != null) {
+//            // 기존 장바구니에 있으면 수량 만큼 추가
+//            existing.setQuantity(existing.getQuantity() + cartDto.getQuantity());
+//            // 단일 도서 가격 추가
+//            existing.setPrice(existing.getPrice() + cartDto.getPrice());
+//            return cartRepository.update(existing);
+//        }
+//
+//        return cartRepository.insert(cartDto);
+//    }
 
     @Override
     public int update(CartDto cartDto) throws Exception {

@@ -76,7 +76,12 @@
 
                     <form class="button-group" id="btnForm">
                         <button class="buy-now">BUY IT NOW</button>
-                        <button class="cart">CART</button>
+                        <button type="button" class="cart"
+                            th:attr="data-book-id=${bookDto.bookId},
+                            data-quantity=1,
+                            data-price=${bookDto.salePrice}">
+                            CART
+                        </button>
 
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
@@ -130,9 +135,6 @@
                 </div>
                 </div>
             </div>
-
-
-
 
             <div class="review-container">
                 <div class="info-title" style="color:#007BFF; position:absolute">리뷰</div>
@@ -310,6 +312,7 @@
             $('#total-price').text(totalPrice.toLocaleString()+"원");
         }
 
+        // 수량 변경될 때
         $('#quantity').on('input', function(){
             let value = $(this).val().replace(/[^0-9]/g,'');
             $(this).val(value);
@@ -328,25 +331,62 @@
                 alert("1개 이상만 주문이 가능합니다.")
             }
 
+            $('.cart').attr('data-quantity', quantity);
+
             updateTotal();
         });
 
+        // - 버튼 누를 때
         $('#decrease').click(function(){
             if(quantity > 1){
                 quantity--;
                 $('#quantity').val(quantity);
+                $('.cart').attr('data-quantity', quantity);
                 updateTotal();
             }
         });
 
+        // + 버튼 누를 때
         $('#increase').click(function(){
             if(quantity < 999){
                 quantity++;
                 $('#quantity').val(quantity);
+                $('.cart').attr('data-quantity', quantity);
                 updateTotal();
             }
         });
         updateTotal();
+
+        // 장바구니 버튼
+        const addCartButtons = document.querySelectorAll(".cart");
+
+        addCartButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // 장바구니 추가 버튼에 묶은 속성 가져옴
+                const bookId = button.dataset.bookId;
+                const quantity = button.dataset.quantity;
+                const price = button.dataset.price;
+
+                axios.post("/cart/add/multiple", {
+                    bookId: bookId,
+                    quantity: quantity,
+                    price: price
+                }).then(response => {
+                    const message = response.data;
+
+                    if (message === "LOGIN_REQUIRED") {
+                        if (confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                            window.location.href = "/login/login";
+                        }
+                    } else {
+                        alert(message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    alert("장바구니 요청 중 문제가 발생했습니다.");
+                });
+            });
+        });
 
         // 좋아요 버튼
         $('#likeButton').click(function(event) {
@@ -511,10 +551,9 @@
                     .catch(function(error) {
                         alert('Error: ' + error);
                     });
-                }
-
-            });
+            }
         });
+    });
 </script>
 
 
