@@ -24,7 +24,7 @@ public class CartController {
 
     // 특정 사용자의 전체 장바구니 목록 조회
     @GetMapping("/list")
-    public String cartList(@SessionAttribute(value = "userId", required = false) Integer userId,
+    public String list(@SessionAttribute(value = "userId", required = false) Integer userId,
                            HttpServletRequest request, Model model) {
         // 로그인 하지 않았다면 로그인 화면으로 이동
         if (userId == null)
@@ -80,5 +80,23 @@ public class CartController {
         }
     }
 
+    // 특정 사용자의 장바구니에 도서 수량 조절
+    @PostMapping("/update")
+    @ResponseBody
+    public String update(@SessionAttribute(value = "userId", required = false) Integer userId,
+                         @RequestBody CartDto cartDto) {
+
+        // 로그인 하지 않았다면 로그인이 필요하다는 메시지 반환
+        if (userId == null)
+            return "LOGIN_REQUIRED";
+
+        cartDto.setUserId(userId);
+        try {
+            int result = cartService.update(cartDto);
+            return result == 1 ? "장바구니가 성공적으로 수정되었습니다" : "장바구니 수정에 실패했습니다";
+        } catch (Exception e) {
+            return "장바구니 수정 중 오류가 발생했습니다";
+        }
+    }
 }
 
