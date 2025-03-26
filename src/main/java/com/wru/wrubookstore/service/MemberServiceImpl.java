@@ -52,8 +52,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto select(String email) throws Exception {
-        return memberRepository.select(email);
+    public MemberDto select(Integer userId) throws Exception {
+        return memberRepository.select(userId);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int updateUser(UserDto userDto) throws Exception {
-        return memberRepository.updateUser(userDto);
+    public int updateUser(MemberDto memberDto) throws Exception {
+        return memberRepository.updateUser(memberDto);
     }
 
     @Override
@@ -72,18 +72,43 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int deleteMember(String email) throws Exception {
-        return memberRepository.deleteMember(email);
+    public int deleteMember(Integer userId) throws Exception {
+        return memberRepository.deleteMember(userId);
     }
 
     @Override
-    public int deleteUser(String email) throws Exception {
-        return memberRepository.deleteUser(email);
+    public int deleteUser(Integer userId) throws Exception {
+        return memberRepository.deleteUser(userId);
     }
 
     @Override
     public int countMembers() throws Exception {
         return memberRepository.countMembers();
+    }
+
+    @Override
+    @Transactional
+    public void editMember(MemberDto memberDto) throws Exception {
+        memberRepository.updateUser(memberDto);
+        memberRepository.updateMember(memberDto);
+    }
+
+    @Override
+    @Transactional
+    public void withdraw(Integer userId) throws Exception {
+        memberRepository.deleteUser(userId);
+        memberRepository.deleteMember(userId);
+    }
+
+    @Override
+    @Transactional
+    public void convertToMember(MemberDto memberDto) throws Exception {
+        // 기존 사용자 삭제
+        memberRepository.deleteUser(memberDto.getUserId());
+        // 새로운 사용자 생성
+        memberRepository.insertUserWithId(memberDto);
+        // 새로운 회원 생성
+        memberRepository.insertMember(memberDto);
     }
 
 }

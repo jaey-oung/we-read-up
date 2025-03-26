@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto select(String email) throws Exception {
-        return userRepository.select(email);
+    public UserDto select(Integer userId) throws Exception {
+        return userRepository.select(userId);
     }
 
     @Override

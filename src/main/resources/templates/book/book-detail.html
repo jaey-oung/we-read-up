@@ -76,7 +76,12 @@
 
                     <form class="button-group" id="btnForm">
                         <button class="buy-now">BUY IT NOW</button>
-                        <button class="cart">CART</button>
+                        <button type="button" class="cart"
+                            th:attr="data-book-id=${bookDto.bookId},
+                            data-quantity=1,
+                            data-price=${bookDto.salePrice}">
+                            CART
+                        </button>
 
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
@@ -131,9 +136,6 @@
                 </div>
             </div>
 
-
-
-
             <div class="review-container">
                 <div class="info-title" style="color:#007BFF; position:absolute">리뷰</div>
                     <input type="hidden" id="rating" th:value="0">
@@ -149,7 +151,8 @@
                             </div>
                         </div>
                         <div class="custom-review-right">
-                            <textarea class="custom-review-content" placeholder="리뷰를 작성해주세요..." id="content"></textarea>
+
+                            <textarea class="custom-review-content" th:placeholder="${memberId == 0 ? '로그인 후 이용해주세요.' : '리뷰를 작성해주세요...'}" id="content" th:readonly="${memberId == 0 ? 'readonly' : 'false'}"></textarea>
                             <div class="custom-review-action">
                                 <button class="custom-submit-btn" id="reviewBtn">등록</button>
                             </div>
@@ -309,6 +312,7 @@
             $('#total-price').text(totalPrice.toLocaleString()+"원");
         }
 
+        // 수량 변경될 때
         $('#quantity').on('input', function(){
             let value = $(this).val().replace(/[^0-9]/g,'');
             $(this).val(value);
@@ -327,25 +331,62 @@
                 alert("1개 이상만 주문이 가능합니다.")
             }
 
+            $('.cart').attr('data-quantity', quantity);
+
             updateTotal();
         });
 
+        // - 버튼 누를 때
         $('#decrease').click(function(){
             if(quantity > 1){
                 quantity--;
                 $('#quantity').val(quantity);
+                $('.cart').attr('data-quantity', quantity);
                 updateTotal();
             }
         });
 
+        // + 버튼 누를 때
         $('#increase').click(function(){
             if(quantity < 999){
                 quantity++;
                 $('#quantity').val(quantity);
+                $('.cart').attr('data-quantity', quantity);
                 updateTotal();
             }
         });
         updateTotal();
+
+        // 장바구니 버튼
+        const addCartButtons = document.querySelectorAll(".cart");
+
+        addCartButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // 장바구니 추가 버튼에 묶은 속성 가져옴
+                const bookId = button.dataset.bookId;
+                const quantity = button.dataset.quantity;
+                const price = button.dataset.price;
+
+                axios.post("/cart/add/multiple", {
+                    bookId: bookId,
+                    quantity: quantity,
+                    price: price
+                }).then(response => {
+                    const message = response.data;
+
+                    if (message === "LOGIN_REQUIRED") {
+                        if (confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                            window.location.href = "/login/login";
+                        }
+                    } else {
+                        alert(message);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    alert("장바구니 요청 중 문제가 발생했습니다.");
+                });
+            });
+        });
 
         // 좋아요 버튼
         $('#likeButton').click(function(event) {
@@ -355,9 +396,14 @@
             let {text} = $(this); // 현재 클릭된 버튼
             let isLikeUser = parseInt($('#isLikeUser').val());
             console.log(isLikeUser);
+            console.log(memberId);
+
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+            }
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
-            if (isLikeUser === 0) {
+            if (isLikeUser === 0 && memberId !== '0') {
                 $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
                 $('#isLikeUser').val(1);
             } else{
@@ -365,28 +411,35 @@
                 $('#isLikeUser').val(0);
             }
 
-            // 서버에 bookId만 전송
-            axios.post('/book/like', {bookId, memberId}, {
-                headers: { "content-type": "application/json" }
-            })
-            .then(function(response) {
-                if (response.data === 'success') {
-                    // 성공 시 아무런 추가 작업 필요
-                } else {
-                    alert('Error: ' + response.data);
-                    // 오류 발생 시 버튼을 원래 상태로 복원
-                    $(this).text('LIKE').css('background-color', '#fff');
-                }
-            })
-            .catch(function(error) {
-                alert('Error: ' + error);
-                // 오류 발생 시 버튼을 원래 상태로 복원
-                $(this).text('LIKE').css('background-color', '#fff');
-            });
+            if(memberId !== '0'){
+                // 서버에 bookId만 전송
+                axios.post('/book/like', {bookId, memberId}, {
+                    headers: { "content-type": "application/json" }
+                })
+                    .then(function(response) {
+                        if (response.data === 'success') {
+                            // 성공 시 아무런 추가 작업 필요
+                        } else {
+                            alert('Error: ' + response.data);
+                            // 오류 발생 시 버튼을 원래 상태로 복원
+                            $(this).text('LIKE').css('background-color', '#fff');
+                        }
+                    })
+                    .catch(function(error) {
+                        alert('Error: ' + error);
+                        // 오류 발생 시 버튼을 원래 상태로 복원
+                        $(this).text('LIKE').css('background-color', '#fff');
+                    });
+            }
         });
 
+        let memberId = $('#memberId').val();
         // 별점 1
         $('#star1').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
 
@@ -399,6 +452,10 @@
         });
         // 별점 2
         $('#star2').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -411,6 +468,10 @@
         });
         // 별점 3
         $('#star3').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -423,6 +484,10 @@
         });
         // 별점 4
         $('#star4').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -435,6 +500,10 @@
         });
         // 별점 5
         $('#star5').click(function(){
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
             let star = $(this).data('value');
             $('#star1').html('★').css('color', '#ff1493');
             $('#star2').html('★').css('color', '#ff1493');
@@ -451,33 +520,40 @@
             let content = $('#content').val();
             let rating = $('#rating').val();
 
-            axios.post('/reviewInsert', {memberId, bookId, content, rating},{
-                headers: { "content-type": "application/json" }
-            })
-                .then(function(response) {
-                    if (response.data === 'success') {
-                        alert("리뷰 등록에 성공했습니다..");
-                        location.reload();
-                        // 성공 시 아무런 추가 작업 필요
-                    } else if(response.data === 'all') {
-                        alert("리뷰 내용과 별점을 눌러주세요.");
-                        location.reload();
-                    } else if(response.data === 'rating') {
-                        alert("별점을 눌러주세요.");
-                        location.reload();
-                    } else if(response.data === 'content') {
-                        alert("내용을 입력해주세요.");
-                        location.reload();
-                    } else if(response.data === 'error') {
-                        alert("리뷰 등록에 실패했습니다.");
-                        location.reload();
-                    }
+            if(memberId === '0'){
+                alert('로그인 해주세요.');
+                location.reload();
+            }
+
+            if(memberId !== '0'){
+                axios.post('/reviewInsert', {memberId, bookId, content, rating},{
+                    headers: { "content-type": "application/json" }
                 })
-                .catch(function(error) {
-                    alert('Error: ' + error);
-                });
-            });
+                    .then(function(response) {
+                        if (response.data === 'success') {
+                            alert("리뷰 등록에 성공했습니다..");
+                            location.reload();
+                            // 성공 시 아무런 추가 작업 필요
+                        } else if(response.data === 'all') {
+                            alert("리뷰 내용과 별점을 눌러주세요.");
+                            location.reload();
+                        } else if(response.data === 'rating') {
+                            alert("별점을 눌러주세요.");
+                            location.reload();
+                        } else if(response.data === 'content') {
+                            alert("내용을 입력해주세요.");
+                            location.reload();
+                        } else if(response.data === 'error') {
+                            alert("리뷰 등록에 실패했습니다.");
+                            location.reload();
+                        }
+                    })
+                    .catch(function(error) {
+                        alert('Error: ' + error);
+                    });
+            }
         });
+    });
 </script>
 
 

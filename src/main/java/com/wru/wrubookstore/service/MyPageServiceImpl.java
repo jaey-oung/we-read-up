@@ -8,6 +8,7 @@ import com.wru.wrubookstore.dto.request.MyPageRequest;
 import com.wru.wrubookstore.repository.*;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -68,12 +69,13 @@ public class MyPageServiceImpl implements MyPageService {
 
     // userId, startDate, endDate 6개월 차이로 만드는 Map 출력
     private static Map<String, Object> getSixMonthSummaryMap(Integer userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -6);
         cal.add(Calendar.DAY_OF_WEEK, 1);
         Date startDate = new Date(cal.getTimeInMillis());
         Date endDate = new Date();
 
-        return Map.of("userId", userId, "startDate", startDate, "endDate", endDate);
+        return Map.of("userId", userId, "startDate", df.format(startDate), "endDate", df.format(endDate));
     }
 }

@@ -10,7 +10,7 @@ public interface UserRepository {
     List<UserDto> selectAll() throws Exception;
     void deleteAll() throws Exception;
     int insert(UserDto userDto) throws Exception;
-    UserDto select(String email) throws Exception;
+    UserDto select(Integer userId) throws Exception;
     UserDto selectByEmailAndPassword(String email, String password) throws Exception;
     int update(UserDto userDto) throws Exception;
     int delete(String email) throws Exception;

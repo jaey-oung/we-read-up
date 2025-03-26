@@ -3,6 +3,64 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wru.wrubookstore.mapper.BookMapper">
+    <sql id="sql-selectCategory">
+        (SELECT lm.*, c.category_small_id, c.name category_small_name
+        FROM (
+                 SELECT cl.category_large_id, cl.name category_large_name, cm.category_medium_id, cm.name category_medium_name
+                 FROM category_large cl, category_medium cm
+                 WHERE cl.category_large_id = cm.category_large_id) lm, category_small c
+        WHERE lm.category_medium_id = c.category_medium_id)
+    </sql>
+    <sql id="sql-option-category">
+        <choose>
+            <when test='category.startsWith("cl")'>
+                AND c.category_large_id = #{category}
+            </when>
+            <when test='category.startsWith("cm")'>
+                AND c.category_medium_id = #{category}
+            </when>
+            <otherwise>
+                AND c.category_small_id = #{category}
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="sql-part-selectByCategory">
+        FROM book b, <include refid="sql-selectCategory" /> c
+        WHERE b.category_small_id = c.category_small_id
+    </sql>
+    <!-- 카테고리 정보 조회 -->
+    <select id="selectCategoryInfo" parameterType="String" resultType="CategoryDto">
+        SELECT *
+        FROM <include refid="sql-selectCategory" /> c
+        WHERE TRUE <include refid="sql-option-category" />
+    </select>
+    <!--  카테고리에 속한 책들의 수 조회 -->
+    <select id="selectByCategoryCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+    </select>
+    <!--  카테고리에 속한 책들의 정보 조회 -->
+    <select id="selectByCategory" parameterType="MainSearchCondition" resultType="CategoryDto">
+        SELECT *
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 관리자용: 전체 책 잘라서 가져오기 -->
+    <select id="selectBook" parameterType="map" resultType="BookDto">
+        SELECT *
+        FROM book
+        ORDER BY book_id desc
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 관리자용: 판매중인 책 개수(0인거) 조회 -->
+    <select id="countQuantityZeroByAdmin" resultType="int">
+        SELECT count(*)
+        FROM book
+        WHERE stock_quantity = 0
+    </select>
+
     <!-- 관리자용: 전체 책 개수 조회 -->
     <select id="countAllByAdmin" resultType="int">
         SELECT COUNT(*)
@@ -13,7 +71,7 @@
     <select id="selectAllByAdmin" resultType="BookDto">
         SELECT book_id, publisher_id, category_small_id, name, translator, original_price, discount_percent,
                discount_price, sale_price, release_date, reg_date, table_of_content, description, isbn, stock_quantity,
-               size, weight, page, image
+            size, weight, page, image
         FROM book
     </select>
 
@@ -23,25 +81,25 @@
         FROM book
     </delete>
 
-    <!--  카테고리에 속한 책 들의 수  -->
-    <select id="sCategoryCnt" parameterType="String" resultType="int">
-        SELECT count(*)
+    <!-- 관리자용: 책 한권 삭제 -->
+    <delete id="deleteByAdmin" parameterType="BookListResponse">
+        DELETE
         FROM book
-        WHERE category_small_id=#{category}
-    </select>
-    <!--  책 한권의 정보 조회  -->
+        WHERE book_id=#{bookId}
+    </delete>
+
+    <!-- 관리자용: 재고 관리 -->
+    <update id="updateByAdmin" parameterType="BookListResponse">
+        UPDATE book
+        SET stock_quantity=#{stockQuantity}
+        WHERE book_id=#{bookId}
+    </update>
+
+     <!--  책 한 권의 정보 조회  -->
     <select id="select" parameterType="int" resultType="BookDto">
         SELECT *
         FROM book
         WHERE book_id=#{bookId}
-    </select>
-    <!--  책 여러권의 정보 조회 (카테고리별 등록순) -->
-    <select id="selectRegList" parameterType="map" resultType="BookDto">
-        SELECT *
-        FROM book
-        WHERE category_small_id=#{category}
-        ORDER BY category_small_id desc, reg_date desc
-        LIMIT #{offset}, #{limit}
     </select>
     <!--  책 하나의 지은이들 조회 (bookId별 지은이) -->
     <select id="selectWriter" parameterType="int" resultType="String">
@@ -68,7 +126,6 @@
     <sql id="sql-part-searchByTitle">
         FROM book b
         WHERE name LIKE concat('%', #{keyword}, '%')
-        LIMIT #{offset}, #{pageSize}
     </sql>
     <sql id="sql-part-searchByWriter">
         FROM
@@ -79,7 +136,6 @@
                 WHERE name LIKE concat('%', #{keyword}, '%')) w, writer_book wb
         WHERE w.writer_id = wb.writer_id) wwb, book b
         WHERE wwb.book_id = b.book_id
-        LIMIT #{offset}, #{pageSize}
     </sql>
     <sql id="sql-searchByTitle">
         (SELECT *
@@ -111,18 +167,21 @@
         <include refid="sql-searchByTitle" />
         UNION
         <include refid="sql-searchByWriter" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 도서 제목으로 검색 -->
     <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByTitle" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 저자 이름으로 검색 -->
     <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByWriter" />
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 검색 결과 개수 조회 -->
     <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
-        SELECT count(DISTINCT b.book_id)
+        SELECT COUNT(DISTINCT b.book_id)
         <include refid="sql-option-cnt" />
     </select>
 </mapper>

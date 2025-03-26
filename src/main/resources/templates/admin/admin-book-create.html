@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>상품 등록</title>
+    <link rel="stylesheet" href="/css/admin/admin-book-create.css">
+</head>
+<body>
+<!-- 사이드바 -->
+<div id="sidebar">
+    <div id="logo">
+        <a th:href="@{'/admin/bookList'}"><h2>We Read Up</h2></a>
+    </div>
+    <ul id="menu">
+        <li><a href="/admin/bookList">상품 대시보드</a></li>
+        <li><a href="/admin/bookCreate">상품 등록</a></li>
+        <li><a href="#">주문 관리</a></li>
+        <li><a href="#">재고 관리</a></li>
+    </ul>
+</div>
+
+<form class="product-form">
+    <!-- 상품 기본 정보 섹션 -->
+    <div class="section">
+        <h3>상품 기본 정보</h3>
+        <table class="form-table">
+            <tr>
+                <th>상품명</th>
+                <td><input type="text" name="product_name" class="long" /></td>
+            </tr>
+            <tr>
+                <th>카테고리</th>
+                <td>
+                    <div class="category-container">
+                        <div class="category-item" id="categoryLarge">
+                            <div class="category-title">대분류</div>
+                            <ul class="category-list">
+                                <li><a href="#">Outerwear</a></li>
+                                <li><a href="#">Tops</a></li>
+                                <li><a href="#">Dresses</a></li>
+                                <li><a href="#">Dresses</a></li>
+                                <li><a href="#">Dresses</a></li>
+                                <li><a href="#">Dresses</a></li>
+                                <li><a href="#">Dresses</a></li>
+                                <li><a href="#">Dresses</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="category-item" id="categoryMedium">
+                            <div class="category-title">중분류</div>
+                            <ul class="category-list">
+                                <li><a href="#">Tees</a></li>
+                                <li><a href="#">Shirts</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="category-item" id="categorySmall">
+                            <div class="category-title">소분류</div>
+                            <ul class="category-list">
+                                <li><a href="#">Short Sleeve</a></li>
+                                <li><a href="#">Long Sleeve</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="category-last">카테고리</div>
+                </td>
+            </tr>
+            <tr>
+                <th>ISBN</th>
+                <td><input type="text" name="isbn" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>역자</th>
+                <td><input type="text" name="translator" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>가격 정보</th>
+                <td class="multi-field">
+                    <div class="inline-field" style="width:150px">정가 <input type="text" name="price_original" class="short" /> </div>
+                    <div class="inline-field" style="width:150px">할인율 <input type="text" name="discount_rate" class="short" /> </div>
+                    <div class="inline-field" style="width:150px">할인가격 <input type="text" name="price_discounted" class="short" /> </div>
+
+                    <div class="inline-field" style="width:150px">판매가 <input type="text" name="price_sale" class="short" /> </div>
+                </td>
+            </tr>
+            <tr>
+                <th>등록일</th>
+                <td><input type="date" name="reg_date" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>상품 이미지</th>
+                <td>
+                    <input type="file" name="product_image" accept="image/*" /><br />
+                    <div class="img-preview"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>상품 소개</th>
+                <td>
+                    <textarea name="product_description" rows="5" class="long"></textarea><br />
+                    <input type="file" name="description_image" accept="image/*" />
+                </td>
+            </tr>
+            <tr>
+                <th>상품 목차</th>
+                <td><textarea name="product_contents" rows="4" class="long"></textarea></td>
+            </tr>
+            <tr>
+                <th>기타 정보</th>
+                <td class="multi-field">
+                    <div class="inline-field">재고 <input type="text" name="stock" class="short" /></div>
+                    <div class="inline-field">사이즈 <input type="text" name="size" class="short" /></div>
+                    <div class="inline-field">무게 <input type="text" name="weight" class="short" /></div>
+                    <div class="inline-field">페이지 수 <input type="text" name="pages" class="short" /></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 저자 정보 섹션 -->
+    <div class="section">
+        <h3>저자 정보</h3>
+        <table class="form-table">
+            <tr>
+                <th>지은이</th>
+                <td>
+                    <input type="text" name="author_name[]" class="medium" />
+                    <button type="button" class="add-author">추가</button>
+                </td>
+            </tr>
+            <tr>
+                <th>작가 성별</th>
+                <td>
+                    <select name="author_gender" class="medium">
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>작가 소개</th>
+                <td><textarea name="author_bio" rows="4" class="long"></textarea></td>
+            </tr>
+            <tr>
+                <th>작가 국적</th>
+                <td><input type="text" name="author_nationality" class="medium" /></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 출판사 정보 섹션 -->
+    <div class="section">
+        <h3>출판사 정보</h3>
+        <table class="form-table">
+            <tr>
+                <th>출판사명</th>
+                <td><input type="text" name="publisher_name" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>대표명</th>
+                <td><input type="text" name="publisher_ceo" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>사업자번호</th>
+                <td><input type="text" name="business_number" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>기본 주소</th>
+                <td><input type="text" name="address1" class="long" /></td>
+            </tr>
+            <tr>
+                <th>상세 주소</th>
+                <td><input type="text" name="address2" class="long" /></td>
+            </tr>
+            <tr>
+                <th>우편번호</th>
+                <td><input type="text" name="zipcode" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td><input type="text" name="phone" class="medium" /></td>
+            </tr>
+            <tr>
+                <th>국적</th>
+                <td><input type="text" name="publisher_nationality" class="medium" /></td>
+            </tr>
+        </table>
+    </div>
+
+<script>
+    // 자바스크립트로 추가적인 기능을 작성할 수 있습니다.
+</script>
+</body>
+</html>
