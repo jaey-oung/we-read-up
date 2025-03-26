@@ -144,27 +144,3 @@ h1 {
 .btn.submit:hover {
     background-color: #333;
 }
-
-.third-category {
-    display: flex;
-    justify-content: space-between;
-    margin: 50px 0;
-    width: 600px;
-}
-
-.third-category form {
-    display: inline-block;
-}
-
-.third-category input {
-    width: 80px;
-    height: 40px;
-    font-size: 14px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    background-color: white;
-}
-
-.third-category input:hover {
-    border-color: black;
-}
