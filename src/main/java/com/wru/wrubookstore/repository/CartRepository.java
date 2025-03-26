@@ -1,6 +1,7 @@
 package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.CartDto;
+import com.wru.wrubookstore.dto.response.cart.CartListResponse;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface CartRepository {
     // 사용자용
     int countAllByUserId(int userId) throws Exception;
     List<CartDto> selectAllByUserId(int userId) throws Exception;
+    List<CartListResponse> selectCartListByUserId(int userId) throws Exception;
+    CartListResponse selectCartByCartId(int cartId)  throws Exception;
     CartDto selectByUserIdAndBookId(int userId, int bookId) throws Exception;
     int insert(CartDto cartDto) throws Exception;
     int update(CartDto cartDto) throws Exception;

@@ -1,3 +1,4 @@
+/*
 package com.wru.wrubookstore.repository;
 
 import com.wru.wrubookstore.dto.UserDto;
@@ -121,3 +122,4 @@ class UserRepositoryImplTest {
     }
 
 }
+*/

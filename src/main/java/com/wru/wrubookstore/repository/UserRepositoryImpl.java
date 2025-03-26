@@ -39,8 +39,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserDto select(String email) throws Exception {
-        return session.selectOne(namespace+"select", email);
+    public UserDto select(Integer userId) throws Exception {
+        return session.selectOne(namespace+"select", userId);
     }
 
     @Override
