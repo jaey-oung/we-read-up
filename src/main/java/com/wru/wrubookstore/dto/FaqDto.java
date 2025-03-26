@@ -13,10 +13,12 @@ public class FaqDto {
     private Date modDate;
 
     public FaqDto() {}
+
     public FaqDto(Integer faqId, String employeeId, String title, String content) {
         this.faqId = faqId;
         this.employeeId = employeeId;
         this.title = title;
+        this.content = content;
     }
 
     @Override
