@@ -2,16 +2,24 @@ package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.BookDto;
+import com.wru.wrubookstore.dto.response.admin.AdminResponse;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
+import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.service.BookService;
+import jdk.jfr.Category;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,8 +30,93 @@ public class AdminController {
         this.bookService = bookService;
     }
 
+    // 업로드 경로
+    private final String UPLOAD_DIR = "src/main/resources/static/img/book/";
+
+    @PostMapping("/upload")
+    @ResponseBody
+    @Transactional
+    public String upload(@RequestParam("image") MultipartFile formData) {
+        System.out.println("file = " + formData.getOriginalFilename());
+        System.out.println("formData.getResource() = " + formData.getResource());
+        System.out.println("formData.getName() = " + formData.getName());
+        System.out.println("formData.getSize() = " + formData.getSize());
+
+        if(formData.isEmpty()){
+            System.out.println("formData is empty");
+            return "formData is empty";
+        }
+
+        try{
+            String fileName = System.currentTimeMillis()+"_"+formData.getOriginalFilename();
+
+            Path path = Paths.get(UPLOAD_DIR + fileName);
+
+            System.out.println("path.getFileName().toString() = " + path.getFileName().toString());
+            System.out.println("path.toString() = " + path.toString());
+
+            formData.transferTo(path);
+
+            String imagePath = "/img/book/"+fileName;
+            System.out.println("imagePath = " + imagePath);
+
+            Thread.sleep(2000);
+
+            return imagePath;
+        }catch(Exception e){
+            e.printStackTrace();
+            return "upload failed";
+        }
+    }
+
+    @PostMapping("/bookCreate")
+    @Transactional
+    @ResponseBody
+    public String bookCreate(@RequestBody AdminResponse adminResponse){
+        System.out.println("\n\nadmin//bookCreate//adminResponse = " + adminResponse);
+
+        return "success";
+    }
+    @PostMapping("/bookCategory")
+    @ResponseBody
+    public List<CategoryResponse> bookCategory(@RequestBody CategoryResponse[] categoryResponse, Model m){
+        try{
+
+            System.out.println("admin//categoryResponse = " + Arrays.toString(categoryResponse));
+            for(CategoryResponse category : categoryResponse){
+                List<CategoryResponse> list;
+                if (category.getCategoryMediumId() == null) {
+                    list = bookService.selectCategoryMedium(category);
+                    System.out.println("\n\nadmin//Medium//List<CategoryResponse> = " + list.toString()+"\n\n");
+
+                    return list;
+                }
+
+                list = bookService.selectCategorySmall(category);
+                System.out.println("\n\nadmin//Small//List<CategoryResponse> = " + list.toString()+"\n\n");
+
+                return list;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return null;
+    }
+
     @GetMapping("/bookCreate")
-    public String bookCreate(){
+    public String bookCategory(Model m){
+        try{
+            List<CategoryResponse> categoryResponse = bookService.selectCategoryLarge();
+
+//            System.out.println("\n\nadmin//Large//categoryResponse = " + Arrays.toString(categoryResponse.toArray())+"\n\n");
+            m.addAttribute("cl", categoryResponse);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
         return "admin/admin-book-create";
     }
 

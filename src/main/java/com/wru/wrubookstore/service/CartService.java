@@ -18,7 +18,9 @@ public interface CartService {
     List<CartListResponse> selectCartListByUserId(int userId) throws Exception;
     CartListResponse selectCartByCartId(int cartId)  throws Exception;
     CartDto selectByUserIdAndBookId(int userId, int bookId) throws Exception;
-    String insert(CartDto cartDto) throws Exception;
+//    int insert(CartDto cartDto) throws Exception;
+    int addOne(CartDto cartDto) throws Exception;
+    int addMultiple(CartDto cartDto) throws Exception;
     int update(CartDto cartDto) throws Exception;
     int delete(int cartId) throws Exception;
 

@@ -60,6 +60,15 @@ body {
     align-items: center;
 }
 
+.product-info a {
+    text-decoration: none;
+    color: black;
+}
+
+.product-info a:hover {
+    color: rgba(0, 0, 255, 0.8);
+}
+
 .wishlist-item input[type="checkbox"] {
     margin-right: 10px;
     width: 15px;
