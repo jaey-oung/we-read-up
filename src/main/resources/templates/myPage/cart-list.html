@@ -62,24 +62,25 @@
                       th:text="${#strings.replace(#numbers.formatDecimal(item.discountPercent * 100, 0, 1), '.0', '') + '%'}"></span>
 
                 <span class="sale-price"
-                      th:text="${#numbers.formatInteger(item.salePrice, 0)} + '원'"></span>
+                      th:attr="data-sale-price=${item.salePrice}"
+                      th:text="${#numbers.formatInteger(item.salePrice, 3, 'COMMA')} + '원'"></span>
 
                 <span class="original-price"
-                      th:text="${#numbers.formatInteger(item.originalPrice, 0)} + '원'"></span>
+                      th:text="${#numbers.formatInteger(item.originalPrice, 3, 'COMMA')} + '원'"></span>
             </div>
 
             <!-- 수량 수정 -->
             <div class="book-quantity">
                 <div class="quantity-container" th:attr="data-cart-id=${item.cartId}">
                     <div class="decrease-btn">−</div>
-                    <span class="quantity-number" th:text="${item.quantity}">1</span>
+                    <span class="quantity-number" th:text="${item.quantity}"></span>
                     <div class="increase-btn">＋</div>
                 </div>
             </div>
 
             <div class="book-price">
                 <span class="price" th:attr="data-price=${item.price}"
-                      th:text="${#numbers.formatInteger(item.price, 0)} + '원'"></span>
+                      th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'"></span>
             </div>
 
             <!-- 장바구니 삭제 버튼 -->
@@ -89,13 +90,17 @@
             </div>
         </div>
     </div>
+
     <!-- 장바구니 요약 -->
     <div class="cart-summary" th:if="${not #lists.isEmpty(list)}">
-        <p>총 상품 수: <span th:text="${list.size()}"></span>개</p>
-        <p>
-            총 주문 금액:
-            <span id="totalPrice"></span>
-        </p>
+        <div class="summary-row">
+            <span class="summary-label">총 상품 수:</span>
+            <span class="summary-value total-cnt" th:text="${list.size()} + '개'"></span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">총 주문 금액:</span>
+            <span class="summary-value total-price" id="total-price"></span>
+        </div>
         <button type="submit" class="order-btn">주문하기</button>
     </div>
 </main>

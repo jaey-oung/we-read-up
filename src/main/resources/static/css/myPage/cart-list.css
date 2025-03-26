@@ -160,20 +160,47 @@
 }
 
 .cart-summary {
+    margin-top: 20px;
     padding-top: 20px;
-    text-align: right;
+    font-size: 16px;
     border-top: 2px solid black;
 }
 
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.summary-label {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.summary-value {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.total-cnt {
+    color: black;
+    font-weight: bold;
+}
+
+.total-price {
+    color: red;
+    font-weight: bold;
+}
+
 .order-btn {
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
     background-color: rgba(0, 0, 255, 0.8);
     color: white;
-    padding: 10px 20px;
+    padding: 10px 24px;
+    font-size: 16px;
     border: none;
-    margin-top: 10px;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1em;
 }
 
 .order-btn:hover {
