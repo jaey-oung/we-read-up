@@ -5,10 +5,11 @@
 <mapper namespace="com.wru.wrubookstore.mapper.InquiryMapper">
 
     <sql id="selectFromInquiry">
-        SELECT i.inquiry_id as inquiryId, i.member_id as memberId, m.nickname as memberNickname, i.inquiry_status_id as inquiryStatusId, i.employee_id as employeeId, i.title, i.content, i.reply_content as replyContent, i.reg_date as regDate, i.mod_date as modDate, ist.name as inquiryStatusName
+        SELECT i.inquiry_id as inquiryId, i.member_id as memberId, m.nickname as memberNickname, i.inquiry_status_id as inquiryStatusId, i.employee_id as employeeId, i.title, i.content, i.reply_content as replyContent, i.reg_date as regDate, i.mod_date as modDate, ist.name as inquiryStatusName, e.name as employeeName
         FROM inquiry i
         JOIN inquiry_status ist on i.inquiry_status_id = ist.inquiry_status_id
         JOIN member m on i.member_id = m.member_id
+        JOIN employee e on i.employee_id = e.employee_id
     </sql>
 
     <select id="selectAll" parameterType="int" resultType="InquiryDto">

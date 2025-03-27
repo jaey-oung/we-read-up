@@ -5,8 +5,9 @@
 <mapper namespace="com.wru.wrubookstore.dao.noticeMapper">
 
     <sql id="selectFromNotice">
-        SELECT notice_id AS noticeId, employee_id AS employeeId, title, content, view_cnt, mod_date, reg_date
-        FROM notice
+        SELECT n.notice_id AS noticeId, n.employee_id AS employeeId, n.title, n.content, n.view_cnt, n.mod_date, n.reg_date, e.name AS employeeName
+        FROM notice n
+        JOIN employee e on n.employee_id = e.employee_id
     </sql>
 
     <select id="select" parameterType="int" resultType="NoticeDto">
@@ -36,8 +37,7 @@
     </insert>
 
     <select id="selectAll" resultType="NoticeDto">
-        SELECT notice_id, title, content, employee_id, view_cnt, mod_date, reg_date
-        FROM notice
+        <include refid="selectFromNotice"/>
         ORDER BY reg_date DESC, notice_id DESC
     </select>
 
@@ -71,8 +71,7 @@
     </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="NoticeDto">
-        SELECT notice_id, title, content, employee_id, view_cnt, mod_date, reg_date
-        FROM notice
+        <include refid="selectFromNotice"/>
         WHERE true
         <include refid="searchCondition"/>
         ORDER BY reg_date DESC, notice_id DESC

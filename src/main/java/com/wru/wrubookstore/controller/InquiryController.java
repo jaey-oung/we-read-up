@@ -22,9 +22,10 @@ public class InquiryController {
 
     @GetMapping("/list")
     public String list(Model m, HttpSession session){
-//        Integer memberId = (Integer) session.getAttribute("id");
-        int memberId = 2;
-        String currentUserId = "2";
+        Integer memberId = (Integer) session.getAttribute("userId");
+        String currentUserId = memberId.toString();
+//        int memberId = 2;
+//        String currentUserId = "2";
 
         System.out.println("Controller_currentUserId = " + currentUserId);
 
@@ -48,8 +49,8 @@ public class InquiryController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam("inquiryId") Integer inquiryId, HttpSession session, RedirectAttributes rdatt) {
-//        Integer memberId = (Integer) session.getAttribute("id");
-        Integer memberId = 2;
+        Integer memberId = (Integer) session.getAttribute("userId");
+//        Integer memberId = 2;
 
         try {
             int rowCnt = inquiryService.remove(inquiryId, memberId);
@@ -71,8 +72,8 @@ public class InquiryController {
 
     @PostMapping("/write")
     public String write(@RequestBody InquiryDto inquiryDto, Model m, HttpSession session, RedirectAttributes rdatt){
-        //        Integer memberId = (Integer) session.getAttribute("id");
-        Integer memberId = 2;
+        Integer memberId = (Integer) session.getAttribute("userId");
+//        Integer memberId = 2;
         inquiryDto.setMemberId(memberId);
         inquiryDto.setEmployeeId("emp_4");
         inquiryDto.setInquiryStatusId("inq_1");

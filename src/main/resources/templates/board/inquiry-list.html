@@ -64,7 +64,7 @@
                     <td th:text="${inquiryDto.inquiryStatusName}"></td>
                     <td th:text="${inquiryDto.replyContent}"></td>
                     <td th:text="${inquiryDto.memberNickname}"></td>
-                    <td th:text="${inquiryDto.employeeId}"></td>
+                    <td th:text="${inquiryDto.employeeName}"></td>
                     <td th:text="${#dates.format(inquiryDto.regDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${#dates.format(inquiryDto.modDate, 'yyyy-MM-dd')}"></td>
 
@@ -147,7 +147,7 @@
                 const title = this.querySelector('.title').textContent;
                 const content = this.querySelector('.content').textContent;
                 // 답변 내용 표시
-                const replyContent = this.querySelector('td:nth-child(5)').textContent; // 답변 내용이 있는 열의 인덱스를 수정해야 할 수 있습니다.
+                const replyContent = this.querySelector('td:nth-child(5)').textContent; // 답변 내용이 있는 열
                 document.getElementById('detailReplyContent').textContent = replyContent;
 
                 inquiryDetail.style.display = 'block';
