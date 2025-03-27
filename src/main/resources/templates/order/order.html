@@ -75,7 +75,7 @@
                 <img th:src="${orderBookRequest.image}" alt="상품 이미지">
                 <div class="product-info">
                     <div class="product-name" th:text="${orderBookRequest.name}">샘플상품 2</div>
-                    <div class="product-qty">수량: 1개</div>
+                    <div class="product-qty" th:text="|수량: ${orderBookRequest.quantity}개|">수량: 1개</div>
                     <div id="productPrice" class="product-price" th:text="|${#numbers.formatDecimal(orderBookRequest.orderPrice, 1, 'COMMA', 0, 'POINT')}원|">10,000원</div>
                 </div>
 
@@ -185,7 +185,7 @@
 
 
 <script>
-    const maxMileage = document.getElementById("availableMileage");
+    const availableMileage = parseInt(document.getElementById("availableMileage").textContent.replace(/,/g, "")) || 0;
     const mileageInput = document.getElementById("mileageInput");
     const button = document.getElementById("useAllBtn");
     const totalPrice = document.getElementById("totalPrice");
@@ -224,8 +224,7 @@
 
     // 전액 사용 버튼 클릭 시
     function useFullMileage() {
-        const mileage = parseInt(maxMileage.textContent.replace(/,/g, "")) || 0;
-        mileageInput.value = formatNumber(mileage);
+        mileageInput.value = formatNumber(availableMileage);
     }
 
     // 숫자 → 콤마 추가된 문자열로 포맷
@@ -242,8 +241,8 @@
             return;
         }
 
-        if (raw > maxMileage) {
-            raw = maxMileage;
+        if (raw > availableMileage) {
+            raw = availableMileage;
         }
 
         this.value = formatNumber(raw);
