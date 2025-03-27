@@ -91,13 +91,13 @@
           <td class="employeeId" th:text="${faqDto.employeeId}"></td>
           <td class="regDate">
             <span th:if="${faqDto.regDate != null and faqDto.regDate.time >= startOfToday}"
-                  th:text="${#dates.format(faqDto.regDate, 'HH:mm')}"></span>
+                  th:text="${#dates.format(faqDto.regDate, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:unless="${faqDto.regDate != null and faqDto.regDate.time >= startOfToday}"
                   th:text="${#dates.format(faqDto.regDate, 'yyyy-MM-dd')}"></span>
           </td>
           <td class="modDate">
             <span th:if="${faqDto.modDate != null and faqDto.modDate.time >= startOfToday}"
-                  th:text="${#dates.format(faqDto.modDate, 'HH:mm')}"></span>
+                  th:text="${#dates.format(faqDto.modDate, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:unless="${faqDto.modDate != null and faqDto.modDate.time >= startOfToday}"
                   th:text="${#dates.format(faqDto.modDate, 'yyyy-MM-dd')}"></span>
           </td>
