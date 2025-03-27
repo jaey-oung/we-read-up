@@ -18,4 +18,9 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     public PaymentDto select(Integer orderId) throws Exception {
         return session.selectOne(namespace + "select", orderId);
     }
+
+    @Override
+    public int insert(PaymentDto paymentDto) throws Exception {
+        return session.insert(namespace + "insert", paymentDto);
+    }
 }

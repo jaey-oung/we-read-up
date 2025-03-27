@@ -18,4 +18,9 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
     public DeliveryDto select(Integer orderId) throws Exception {
         return session.selectOne(namespace + "select", orderId);
     }
+
+    @Override
+    public int insert(DeliveryDto deliveryDto) throws Exception {
+        return session.insert(namespace + "insert", deliveryDto);
+    }
 }

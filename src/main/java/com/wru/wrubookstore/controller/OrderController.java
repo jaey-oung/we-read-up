@@ -2,9 +2,11 @@ package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.domain.OrderSearchCondition;
 import com.wru.wrubookstore.domain.PageHandler;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
-import com.wru.wrubookstore.service.MemberService;
+import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
+import com.wru.wrubookstore.dto.response.order.OrderPaymentResponse;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/myPage")
 public class OrderController {
 
     private final OrderService orderService;
@@ -22,7 +23,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/orderList")
+    @GetMapping("/myPage/orderList")
     public String orderList(@SessionAttribute Integer userId, Model model, @ModelAttribute OrderSearchCondition osc) {
         try {
             // 주문 상태와 날짜 조건에 따른 총 게시물 개수
@@ -44,7 +45,7 @@ public class OrderController {
         return "myPage/order-list";
     }
 
-    @GetMapping("/orderDetail/{orderId}")
+    @GetMapping("/myPage/orderDetail/{orderId}")
     public String orderDetail(@PathVariable Integer orderId, Model model) {
         try {
             // 주문 상세 정보를 위한 Dto 생성
@@ -58,9 +59,36 @@ public class OrderController {
         return "myPage/order-detail";
     }
 
-    @GetMapping("/exchangeRefundList")
+    @GetMapping("/myPage/exchangeRefundList")
     public String exchangeRefundList() {
 
         return "myPage/exchange-refund-list";
+    }
+
+    @PostMapping("/orderForm")
+    public String orderPaymentForm(@SessionAttribute Integer userId, @ModelAttribute OrderPaymentRequest orderPaymentRequest,
+                        Model model) {
+
+        try {
+            model.addAttribute("orderPaymentRequest", orderService.selectOrderPayment(userId, orderPaymentRequest));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "order/order";
+    }
+
+    @PostMapping("/order")
+    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse) {
+
+        System.out.println("orderPaymentResponse = " + orderPaymentResponse);
+
+        try {
+            orderService.processOrder(orderPaymentResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/";
     }
 }

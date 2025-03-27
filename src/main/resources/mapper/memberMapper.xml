@@ -91,6 +91,14 @@
         WHERE user_id = #{userId}
     </update>
 
+    <!-- 사용 마일리지 차감 및 구매로 인한 마일리지 추가 -->
+    <update id="updateMileage" parameterType="Map">
+        UPDATE member m
+        JOIN membership ms ON m.membership_id = ms.membership_id
+        SET m.mileage = m.mileage - #{mileageDiscount}, m.mileage = m.mileage + (#{actualPrice} * ms.mileage_percent)
+        WHERE m.user_id = #{userId}
+    </update>
+
     <!-- Member 테이블에서 회원 상세 정보 삭제 -->
     <delete id="deleteMember" parameterType="Integer">
         DELETE

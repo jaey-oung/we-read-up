@@ -7,4 +7,8 @@ public interface DeliveryRepository {
     /* select */
     // 주문번호로 배송 한 개 검색
     DeliveryDto select(Integer orderId) throws Exception;
+
+    /* insert */
+    // 배송 생성
+    int insert(DeliveryDto deliveryDto) throws Exception;
 }

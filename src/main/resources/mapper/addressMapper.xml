@@ -4,15 +4,22 @@
 
 <mapper namespace="com.wru.wrubookstore.mapper.AddressMapper">
     <select id="selectList" parameterType="Integer" resultType="AddressDto">
-        SELECT a.address_id, m.member_id, a.name, a.recipient, a.zip_code, a.main_address, a.detail_address, a.phone_num, a.default_address
-        FROM member m, address a
-        WHERE m.member_id = a.member_id AND m.member_id = #{memberId}
+        SELECT *
+        FROM address
+        WHERE member_id = #{memberId}
     </select>
 
-    <select id="selectOne" parameterType="Integer" resultType="AddressDto">
+    <select id="selectById" parameterType="Integer" resultType="AddressDto">
         SELECT *
         FROM address
         WHERE address_id = #{addressId}
+    </select>
+
+    <!-- 회원의 기본 주소 조회 -->
+    <select id="selectDefaultAddress" parameterType="Integer" resultType="AddressDto">
+        SELECT a.*
+        FROM address a, member m
+        WHERE a.member_id = m.member_id AND m.user_id = #{userId} AND default_address = true
     </select>
 
     <insert id="insert" parameterType="AddressDto">

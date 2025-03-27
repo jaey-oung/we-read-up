@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.dto.OrderBookDto;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.OrderDto;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
@@ -47,5 +48,15 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<OrderBookRequest> selectOrderBook(Integer orderId) throws Exception {
         return session.selectList(namespace + "selectOrderBook", orderId);
+    }
+
+    @Override
+    public int insertOrder(OrderDto orderDto) throws Exception {
+        return session.insert(namespace + "insertOrder", orderDto);
+    }
+
+    @Override
+    public int insertOrderBook(OrderBookDto orderBookDto) throws Exception {
+        return session.insert(namespace + "insertOrderBook", orderBookDto);
     }
 }

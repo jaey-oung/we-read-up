@@ -22,8 +22,13 @@ public class AddressRepositoryImpl implements AddressRepository {
     }
 
     @Override
-    public AddressDto selectOne(Integer addressId) throws Exception {
-        return session.selectOne(namespace + "selectOne", addressId);
+    public AddressDto selectById(Integer addressId) throws Exception {
+        return session.selectOne(namespace + "selectById", addressId);
+    }
+
+    @Override
+    public AddressDto selectDefaultAddress(Integer userId) throws Exception {
+        return session.selectOne(namespace + "selectDefaultAddress", userId);
     }
 
     @Override
