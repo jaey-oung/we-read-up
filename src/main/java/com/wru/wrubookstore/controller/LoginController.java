@@ -1,7 +1,9 @@
 package com.wru.wrubookstore.controller;
 
 
+import com.wru.wrubookstore.dto.EmployeeDto;
 import com.wru.wrubookstore.dto.UserDto;
+import com.wru.wrubookstore.service.EmployeeService;
 import com.wru.wrubookstore.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,9 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/login")
 public class LoginController {
 
+    private final EmployeeService employeeService;
     private final UserService userService;
 
-    LoginController(UserService userService) {
+    LoginController(EmployeeService employeeService, UserService userService) {
+        this.employeeService = employeeService;
         this.userService = userService;
     }
 
@@ -36,22 +40,37 @@ public class LoginController {
     public String login(String email, String password, String redirectUrl, boolean rememberId, RedirectAttributes rattr,
                         HttpServletRequest request, HttpServletResponse response) {
 
-        boolean isFieldNullOrEmpty = email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty();
-        UserDto userDto = userService.login(email, password);
+        boolean isFieldNullOrEmpty = email == null || email.isBlank() || password == null || password.isBlank();
 
         // 로그인 실패 시 이메일, 비밀번호, 메시지를 리다이렉트로 전달
-        if(isFieldNullOrEmpty || userDto == null) {
+        if (isFieldNullOrEmpty) {
             rattr.addFlashAttribute("email", email);
             rattr.addFlashAttribute("password", password);
-            rattr.addFlashAttribute("msg", isFieldNullOrEmpty ? "EMPTY_FIELD" : "LOGIN_ERR");
-            return "redirect:/login/login?redirectUrl="+redirectUrl;
+            rattr.addFlashAttribute("msg", "EMPTY_FIELD");
+            return "redirect:/login/login?redirectUrl=" + redirectUrl;
         }
 
-        // 세션에 사용자 정보 저장
+        // 세션 가져오기
         HttpSession session = request.getSession();
-        session.setAttribute("userId", userDto.getUserId());
-        session.setAttribute("name", userDto.getName());
-        session.setAttribute("isMember", userDto.getIsMember());
+
+        // 직원 로그인 시도
+        EmployeeDto employeeDto = employeeService.login(email, password);
+        if (employeeDto != null) {
+            session.setAttribute("employeeId", employeeDto.getEmployeeId());
+            session.setAttribute("name", employeeDto.getName());
+        } else {
+            // 2. 비회원 또는 회원 로그인 시도
+            UserDto userDto = userService.login(email, password);
+            if (userDto == null) {
+                rattr.addFlashAttribute("msg", "LOGIN_ERR");
+                rattr.addFlashAttribute("email", email);
+                rattr.addFlashAttribute("password", password);
+                return "redirect:/login/login?redirectUrl=" + redirectUrl;
+            }
+            session.setAttribute("userId", userDto.getUserId());
+            session.setAttribute("name", userDto.getName());
+            session.setAttribute("isMember", userDto.getIsMember());
+        }
 
         // 쿠키 저장
         Cookie cookie = new Cookie("email", email);
@@ -62,10 +81,11 @@ public class LoginController {
         response.addCookie(cookie);
 
         // 리다이렉트 URL 설정
-        redirectUrl = (redirectUrl == null || redirectUrl.isEmpty()) ? "/" : redirectUrl;
+        redirectUrl = (redirectUrl == null || redirectUrl.isBlank()) ? "/" : redirectUrl;
 
         return "redirect:"+redirectUrl;
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
