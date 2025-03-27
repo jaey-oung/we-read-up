@@ -817,6 +817,7 @@
                     return author.writerId === id;
                 });
                 if(selectedAuthor){
+                    console.log('2번 자동입력');
                     $(this).closest($('.writer-list')).find($('.writer-medium-name')).val(selectedAuthor.name).prop('readonly', true);
                     $(this).closest($('.writer-list')).find($('.writer-long')).val(selectedAuthor.description).prop('readonly', true);
                     $(this).closest($('.writer-list')).find($('.writer-medium-gender')).val(selectedAuthor.gender).css('pointer-events', 'none');
@@ -824,7 +825,8 @@
                     $(this).closest($('.writer-list')).find($('.writer-medium-nickname')).val(selectedAuthor.nickname).prop('readonly', true);
                 }
 
-                if($('.writer-medium-id').val() === '직접 입력'){
+                if($(this).val() === '직접 입력'){
+                    console.log('2번 직접입력');
                     $(this).closest($('.writer-list')).find($('.writer-medium-name')).prop('readonly', false);
                     $(this).closest($('.writer-list')).find($('.writer-long')).prop('readonly', false);
                     $(this).closest($('.writer-list')).find($('.writer-medium-gender')).css('pointer-events', 'auto');
@@ -840,6 +842,7 @@
                 return author.writerId === id;
             });
             if(selectedAuthor){
+                console.log('1번 자동입력');
                 $(this).closest($('.writer-list')).find($('.writer-medium-name')).val(selectedAuthor.name).prop('readonly', true);
                 $(this).closest($('.writer-list')).find($('.writer-long')).val(selectedAuthor.description).prop('readonly', true);
                 $(this).closest($('.writer-list')).find($('.writer-medium-gender')).val(selectedAuthor.gender).css('pointer-events', 'none');
@@ -848,6 +851,7 @@
             }
 
             if($('.writer-medium-id').val() === '직접 입력'){
+                console.log('1번 직접입력');
                 $(this).closest($('.writer-list')).find($('.writer-medium-name')).prop('readonly', false);
                 $(this).closest($('.writer-list')).find($('.writer-long')).prop('readonly', false);
                 $(this).closest($('.writer-list')).find($('.writer-medium-gender')).css('pointer-events', 'auto');
