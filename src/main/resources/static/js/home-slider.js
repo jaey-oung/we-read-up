@@ -63,4 +63,43 @@
 
      setNumberText(); /* 슬라이드 1번에도 slide-number 보이도록 설정 */
 
+     const showSlides = () => {
+         if (slide_index > images.length - 1) {
+             slide_index = 0;
+         }
+         if (slide_index < 0) {
+             slide_index = images.length - 1;
+         }
+         for (let i = 0; i < images.length; i++) {
+             images[i].style.display = "none";
+             if (i === slide_index) {
+                 images[i].style.display = "flex";
+             }
+         }
+         setNumberText();
+     }
+
+     prev_button.addEventListener("click", event => {
+         event.preventDefault();
+         slide_index--;
+         showSlides();
+     });
+
+     next_button.addEventListener("click", event => {
+         event.preventDefault();
+         slide_index++;
+         showSlides();
+     });
+
+     let intervalId; /* 밖에서 호출할 수 있도록 변수를 함수 바깥에서 선언 */
+
+     /* 슬라이드 자동 재생 함수 정의 */
+     function startInterval() {
+         intervalId = setInterval(() => {
+             slide_index++;
+             showSlides();
+         }, 7 * 1000);
+     }
+
+     startInterval(); /* 처음에 슬라이드 자동 재생 */
  })();
