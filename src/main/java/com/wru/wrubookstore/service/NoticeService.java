@@ -34,9 +34,9 @@ public class NoticeService {
         return noticeRepositoryImpl.selectAll();
     }
 
-    public NoticeDto read(Integer bno) throws Exception {
-        NoticeDto noticeDto = noticeRepositoryImpl.select(bno);
-        noticeRepositoryImpl.increaseViewCnt(bno);
+    public NoticeDto read(Integer noticeId) throws Exception {
+        NoticeDto noticeDto = noticeRepositoryImpl.select(noticeId);
+        noticeRepositoryImpl.increaseViewCnt(noticeId);
 
         return noticeDto;
     }
