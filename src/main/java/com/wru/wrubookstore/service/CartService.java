@@ -22,6 +22,8 @@ public interface CartService {
     int addOne(CartDto cartDto) throws Exception;
     int addMultiple(CartDto cartDto) throws Exception;
     int update(CartDto cartDto) throws Exception;
-    int delete(int cartId) throws Exception;
+    int deleteByCartId(int cartId, int userId) throws Exception;
+    int deleteBySelectedCartIds(int userId,  List<Integer> cartIdList) throws Exception;
+    int deleteAllByUserId(int userId) throws Exception;
 
 }
