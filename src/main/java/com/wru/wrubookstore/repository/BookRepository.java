@@ -3,6 +3,7 @@ package com.wru.wrubookstore.repository;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 

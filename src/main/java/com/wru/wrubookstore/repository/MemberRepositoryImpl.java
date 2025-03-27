@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
@@ -70,6 +71,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public int updateMember(MemberDto memberDto) throws Exception {
         return session.update(namespace+"updateMember", memberDto);
+    }
+
+    @Override
+    public int updateMileage(Map<String, Integer> map) throws Exception {
+        return session.update(namespace + "updateMileage", map);
     }
 
     @Override

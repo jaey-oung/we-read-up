@@ -7,8 +7,12 @@ import java.util.List;
 public interface AddressRepository {
 
     /* select */
+    // 회원 배송지 리스트 조회
     List<AddressDto> selectList(Integer memberId) throws Exception;
-    AddressDto selectOne(Integer addressId) throws Exception;
+    // AddressId로 배송지 조회
+    AddressDto selectById(Integer addressId) throws Exception;
+    // 회원의 기본 배송지 조회
+    AddressDto selectDefaultAddress(Integer userId) throws Exception;
 
     /* insert */
     int insert(AddressDto addressDto) throws Exception;
