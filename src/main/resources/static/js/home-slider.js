@@ -36,4 +36,18 @@
             "link": "/login/login"
         }
     ];
-})();
+
+     let slider_id = document.querySelector("#h-slider-1");
+     let images_div = "";
+
+     /* 이미지 슬라이드 태그 생성, img의 alt 값은 name과 동일 */
+     for (let i = 0; i < images_list.length; i++) {
+         let href = (images_list[i].link === "" ? "":' href="'+images_list[i].link+'"');
+         images_div += '<a' + href + ' class="h-slides"' + (i === 0 ? ' style="display:flex"' : ' style="display:none"') + '>' +
+             '<img src="' + images_list[i].url + '" alt="' + images_list[i].name + '">'
+             + '</a>';
+     }
+
+     slider_id.querySelector(".h-slider-body").innerHTML = images_div;
+
+ })();
