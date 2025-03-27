@@ -87,7 +87,7 @@
         UPDATE cart
         SET quantity = #{quantity},
             price = #{price}
-        WHERE cart_id = #{cartId}
+        WHERE cart_id = #{cartId} AND user_id = #{userId}
     </update>
 
     <!-- 사용자용: 특정 사용자의 특정 장바구니 삭제 -->
