@@ -79,10 +79,22 @@ public class LoginController {
         return "login/find-id";
     }
 
+    @PostMapping("/findId")
+    public String findId() {
+
+        return "login/find-id-result";
+    }
+
     @GetMapping("/findPw")
     public String findPwForm() {
 
         return "login/find-pw";
+    }
+
+    @PostMapping("/findPw")
+    public String findPw() {
+
+        return "login/find-pw-result";
     }
 
 }
