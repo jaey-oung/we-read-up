@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -89,6 +90,9 @@ public class AdminController {
             String fileName = System.currentTimeMillis()+"_"+formData.getOriginalFilename();
 
             Path path = Paths.get(UPLOAD_DIR + fileName);
+
+            // 디렉토리가 없으면 생성
+            Files.createDirectories(path.getParent()); // 디렉토리 생성
 
             System.out.println("path.getFileName().toString() = " + path.getFileName().toString());
             System.out.println("path.toString() = " + path.toString());
