@@ -69,20 +69,20 @@
         WHERE c.book_id = b.book_id AND c.cart_id = #{cartId}
     </select>
 
-    <!-- 사용자용: 특정 사용자의 특정 장바구니 조회 -->
+    <!-- 사용자용: 특정 사용자의 특정 장바구니 항목 조회 -->
     <select id="selectByUserIdAndBookId" parameterType="map" resultType="CartDto">
         SELECT cart_id, book_id, user_id, quantity, price, reg_date
         FROM cart
         WHERE user_id = #{userId} AND book_id = #{bookId}
     </select>
 
-    <!-- 사용자용: 특정 사용자의 장바구니 추가 -->
+    <!-- 사용자용: 특정 사용자의 장바구니 항목 추가 -->
     <insert id="insert" parameterType="CartDto">
         INSERT INTO cart (book_id, user_id, quantity, price)
         VALUES (#{bookId}, #{userId}, #{quantity}, #{price})
     </insert>
 
-    <!-- 사용자용: 특정 사용자의 특정 장바구니 수정 -->
+    <!-- 사용자용: 특정 사용자의 특정 장바구니 항목 수정 -->
     <update id="update" parameterType="CartDto">
         UPDATE cart
         SET quantity = #{quantity},
@@ -90,10 +90,28 @@
         WHERE cart_id = #{cartId} AND user_id = #{userId}
     </update>
 
-    <!-- 사용자용: 특정 사용자의 특정 장바구니 삭제 -->
-    <delete id="delete" parameterType="int">
+    <!-- 사용자용: 특정 사용자의 장바구니에서 하나의 항목 삭제 -->
+    <delete id="deleteByCartId" parameterType="map">
+        DELETE
+        FROM cart
+        WHERE cart_id = #{cartId} AND user_id = #{userId}
+    </delete>
+
+    <!-- 사용자용: 특정 사용자의 장바구니에서 선택된 항목들 삭제 -->
+    <delete id="deleteBySelectedCartIds" parameterType="map">
         DELETE FROM cart
-        WHERE cart_id = #{cartId}
+        WHERE user_id = #{userId}
+        AND cart_id IN
+        <foreach item="id" collection="cartIdList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 사용자용: 특정 사용자의 장바구니에서 모든 항목 삭제 -->
+    <delete id="deleteAllByUserId" parameterType="int">
+        DELETE
+        FROM cart
+        WHERE user_id = #{userId}
     </delete>
 
 </mapper>
