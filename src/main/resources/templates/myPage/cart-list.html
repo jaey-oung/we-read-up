@@ -39,7 +39,8 @@
         </div>
 
         <div class="cart-item" th:each="item : ${list}"
-             th:attr="data-cart-id=${item.cartId}, data-book-id=${item.bookId}, data-sale-price=${item.salePrice}">
+             th:attr="data-cart-id=${item.cartId}, data-book-id=${item.bookId}, data-sale-price=${item.salePrice},
+                      data-image=${item.image}, data-name=${item.name}, data-quantity=${item.quantity}">
             <!-- 개별 선택 -->
             <div class="cart-check">
                 <label>
