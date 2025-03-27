@@ -50,4 +50,17 @@
 
      slider_id.querySelector(".h-slider-body").innerHTML = images_div;
 
+     let slide_index = 0; /* 현재 슬라이드 번호 */
+     let slider_number = slider_id.querySelector("#h-slide-number");
+
+     function setNumberText() {
+         slider_number.innerHTML = (slide_index < 10 ? "0" : "") + (slide_index + 1) + ' - ' + (images_list.length < 10 ? "0" : "") + images_list.length;
+     }
+
+     const images = slider_id.querySelectorAll(".h-slides");
+     const prev_button = slider_id.querySelector("#h-slide-prev");
+     const next_button = slider_id.querySelector("#h-slide-next");
+
+     setNumberText(); /* 슬라이드 1번에도 slide-number 보이도록 설정 */
+
  })();
