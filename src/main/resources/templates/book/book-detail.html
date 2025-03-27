@@ -75,7 +75,11 @@
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
                     <form class="button-group" id="btnForm">
-                        <button class="buy-now">BUY IT NOW</button>
+                        <button type="button" class="buy-now" onclick="buyNow(this)"
+                            th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
+                            data-name=${bookDto.name}, data-price=${bookDto.salePrice}">
+                            BUY IT NOW
+                        </button>
                         <button type="button" class="cart"
                             th:attr="data-book-id=${bookDto.bookId},
                             data-quantity=1,
@@ -554,6 +558,39 @@
             }
         });
     });
+
+    // 구매 버튼
+    function buyNow(button) {
+        const quantity = parseInt(document.getElementById("quantity").value, 10);
+        const bookId = button.dataset.bookId;
+        const image = button.dataset.image;
+        const name = button.dataset.name;
+        const orderPrice = button.dataset.price * quantity;
+        console.log("quantity : " +  quantity);
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/orderForm";
+
+        form.appendChild(makeHiddenInput("orderBookRequestList[0].bookId", bookId));
+        form.appendChild(makeHiddenInput("orderBookRequestList[0].image", image));
+        form.appendChild(makeHiddenInput("orderBookRequestList[0].name", name));
+        form.appendChild(makeHiddenInput("orderBookRequestList[0].orderPrice", orderPrice));
+        form.appendChild(makeHiddenInput("orderBookRequestList[0].quantity", quantity));
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function makeHiddenInput(name, value) {
+        const input = document.createElement("input");
+
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+
+        return input;
+    }
 </script>
 
 

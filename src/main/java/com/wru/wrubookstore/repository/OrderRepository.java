@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.repository;
 
+import com.wru.wrubookstore.dto.OrderBookDto;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.OrderDto;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
@@ -22,4 +23,10 @@ public interface OrderRepository {
     int selectCntByOsc(Map<String, Object> map) throws Exception;
     // 주문상세조회 -> 주문상품 정보
     List<OrderBookRequest> selectOrderBook(Integer orderId) throws Exception;
+
+    /* insert */
+    // userId만 입력하여 주문 생성(orderId를 가져오기 위해 매개변수 OrderDto 사용)
+    int insertOrder(OrderDto orderDto) throws Exception;
+    // 주문_도서 생성
+    int insertOrderBook(OrderBookDto orderBookDto) throws Exception;
 }
