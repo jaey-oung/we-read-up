@@ -13,13 +13,15 @@ public class OrderPaymentRequest {
 
     private AddressDto addressDto;  // 배송지
     private List<OrderBookRequest> orderBookRequestList;
+    private int mileage;
 
     public OrderPaymentRequest() {
 
     }
 
-    public OrderPaymentRequest(AddressDto addressDto, List<OrderBookRequest> orderBookRequestList) {
+    public OrderPaymentRequest(AddressDto addressDto, List<OrderBookRequest> orderBookRequestList, int mileage) {
         this.addressDto = addressDto;
         this.orderBookRequestList = orderBookRequestList;
+        this.mileage = mileage;
     }
 }

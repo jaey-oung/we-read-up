@@ -20,4 +20,16 @@ public class PaymentDto {
     private int mileageDiscount;
     private int couponDiscount;
     private int actualPrice;
+
+    public PaymentDto() {
+
+    }
+
+    public PaymentDto(Integer orderId, String paymentMethod, int totalPrice, int mileageDiscount, int actualPrice) {
+        this.orderId = orderId;
+        this.paymentMethod = paymentMethod;
+        this.totalPrice = totalPrice;
+        this.mileageDiscount = mileageDiscount;
+        this.actualPrice = actualPrice;
+    }
 }

@@ -8,4 +8,9 @@
         FROM delivery
         WHERE order_id = #{orderId}
     </select>
+
+    <insert id="insert" parameterType="PaymentDto">
+        INSERT INTO delivery(order_id, recipient, phone_num, zip_code, main_address, detail_address, message)
+        VALUES(#{orderId}, #{recipient}, #{phoneNum}, #{zipCode}, #{mainAddress}, #{detailAddress}, #{message})
+    </insert>
 </mapper>

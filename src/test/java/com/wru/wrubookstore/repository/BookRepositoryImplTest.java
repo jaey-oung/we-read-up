@@ -170,13 +170,4 @@ public class BookRepositoryImplTest {
         count = bookRepository.selectSearchCnt(sc);
         assertEquals(0, count);
     }
-
-    @Test
-    public void selectByBookIdListTest() throws Exception {
-        List<Integer> list = Arrays.asList(1, 2, 3);
-
-        List<OrderBookRequest> orderBookRequestList = bookRepository.selectByBookIdList(list);
-
-        assertEquals(orderBookRequestList.size(), 3);
-    }
 }

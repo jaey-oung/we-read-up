@@ -55,6 +55,10 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
+.wishlist form {
+    display: block;
+}
+
 .wishlist-item .left {
     display: flex;
     align-items: center;

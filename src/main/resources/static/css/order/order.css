@@ -239,16 +239,23 @@ body, h2 {
 }
 
 .method-option {
+    display: block;
     padding: 15px;
     border: 1px solid #ddd;
     cursor: pointer;
     transition: 0.2s;
+    border-radius: 5px;
+    user-select: none;
 }
 
 .method-option.selected {
     border: 1px solid #2563eb;
     color: #2563eb;
     font-weight: bold;
+}
+
+.method-option input[type="radio"] {
+    display: none; /* 라디오 버튼 숨기기 */
 }
 
 .agreement-box {

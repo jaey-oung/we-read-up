@@ -143,9 +143,4 @@ public class BookRepositoryImpl implements BookRepository {
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return session.selectOne(namespace + "selectSearchCnt", sc);
     }
-
-    @Override
-    public List<OrderBookRequest> selectByBookIdList(List<Integer> bookIdList) throws Exception {
-        return session.selectList(namespace + "selectByBookIdList", bookIdList);
-    }
 }

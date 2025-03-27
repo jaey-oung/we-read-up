@@ -17,9 +17,9 @@
 
     <!-- 회원의 기본 주소 조회 -->
     <select id="selectDefaultAddress" parameterType="Integer" resultType="AddressDto">
-        SELECT *
-        FROM address
-        WHERE member_id = #{memberId} AND default_address = true
+        SELECT a.*
+        FROM address a, member m
+        WHERE a.member_id = m.member_id AND m.user_id = #{userId} AND default_address = true
     </select>
 
     <insert id="insert" parameterType="AddressDto">

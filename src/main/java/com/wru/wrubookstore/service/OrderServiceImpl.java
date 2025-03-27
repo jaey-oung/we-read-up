@@ -6,9 +6,12 @@ import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
 import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
+import com.wru.wrubookstore.dto.response.order.OrderPaymentResponse;
 import com.wru.wrubookstore.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +22,14 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentRepository paymentRepository;
     private final DeliveryRepository deliveryRepository;
     private final AddressRepository addressRepository;
-    private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository, BookRepository bookRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository, MemberRepository memberRepository) {
         this.orderRepository = orderRepository;
         this.paymentRepository = paymentRepository;
         this.deliveryRepository = deliveryRepository;
         this.addressRepository = addressRepository;
-        this.bookRepository = bookRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -50,10 +53,58 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderPaymentRequest selectOrderPayment(Integer memberId, List<Integer> bookIdList) throws Exception {
-        AddressDto addressDto = addressRepository.selectDefaultAddress(memberId);
-        List<OrderBookRequest> orderBookRequestList = bookRepository.selectByBookIdList(bookIdList);
+    public OrderPaymentRequest selectOrderPayment(Integer userId, OrderPaymentRequest orderPaymentRequest) throws Exception {
+        // 주소 정보 가져오기
+        AddressDto addressDto = addressRepository.selectDefaultAddress(userId);
+        int mileage = memberRepository.selectMember(userId).getMileage();
 
-        return new OrderPaymentRequest(addressDto, orderBookRequestList);
+        // orderPaymentRequest에 주소, 보유 마일리지 정보 추가
+        orderPaymentRequest.setAddressDto(addressDto);
+        orderPaymentRequest.setMileage(mileage);
+
+        return orderPaymentRequest;
+    }
+
+    @Override
+    @Transactional
+    public void processOrder(OrderPaymentResponse orderPaymentResponse) throws Exception {
+        /* 주문 추가 */
+        OrderDto orderDto = orderPaymentResponse.getOrderDto();
+        orderRepository.insertOrder(orderDto);
+        // 추가한 주문의 order_id 조회
+        Integer orderId = orderDto.getOrderId();
+
+
+        /* 주문_도서 추가 */
+        List<OrderBookDto> orderBookDtoList = orderPaymentResponse.getOrderBookDtoList();
+
+        for (OrderBookDto orderBookDto : orderBookDtoList) {
+            // orderId 설정
+            orderBookDto.setOrderId(orderId);
+            orderRepository.insertOrderBook(orderBookDto);
+        }
+
+
+        /* 배송 추가 */
+        DeliveryDto deliveryDto = orderPaymentResponse.getDeliveryDto();
+        // orderId 설정
+        deliveryDto.setOrderId(orderId);
+        deliveryRepository.insert(deliveryDto);
+
+
+        /* 결제 추가 */
+        PaymentDto paymentDto = orderPaymentResponse.getPaymentDto();
+        // orderId 설정
+        paymentDto.setOrderId(orderId);
+        paymentRepository.insert(paymentDto);
+
+
+        // 회원 마일리지 추가 및 사용 마일리지 차감
+        Map<String, Integer> map = new HashMap<>();
+        map.put("userId", orderDto.getUserId());
+        map.put("mileageDiscount", paymentDto.getMileageDiscount());
+        map.put("actualPrice", paymentDto.getActualPrice());
+
+        memberRepository.updateMileage(map);
     }
 }

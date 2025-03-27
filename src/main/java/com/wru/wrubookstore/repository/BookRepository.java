@@ -58,7 +58,4 @@ public interface BookRepository {
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;
-
-    // BookIdList로 도서 조회
-    List<OrderBookRequest> selectByBookIdList(List<Integer> bookIdList) throws Exception;
 }

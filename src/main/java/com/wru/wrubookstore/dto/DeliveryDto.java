@@ -22,4 +22,18 @@ public class DeliveryDto {
     private Date regDate;
     private Date endDate;
     private String waybill;
+
+    public DeliveryDto() {
+
+    }
+
+    public DeliveryDto(Integer orderId, String recipient, String phoneNum, int zipCode, String mainAddress, String detailAddress, String message) {
+        this.orderId = orderId;
+        this.recipient = recipient;
+        this.phoneNum = phoneNum;
+        this.zipCode = zipCode;
+        this.mainAddress = mainAddress;
+        this.detailAddress = detailAddress;
+        this.message = message;
+    }
 }

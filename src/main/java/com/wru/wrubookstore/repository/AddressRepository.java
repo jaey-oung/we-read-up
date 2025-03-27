@@ -12,7 +12,7 @@ public interface AddressRepository {
     // AddressId로 배송지 조회
     AddressDto selectById(Integer addressId) throws Exception;
     // 회원의 기본 배송지 조회
-    AddressDto selectDefaultAddress(Integer memberId) throws Exception;
+    AddressDto selectDefaultAddress(Integer userId) throws Exception;
 
     /* insert */
     int insert(AddressDto addressDto) throws Exception;

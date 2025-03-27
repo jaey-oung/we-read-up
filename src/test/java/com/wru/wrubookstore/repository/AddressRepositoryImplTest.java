@@ -45,12 +45,11 @@ class AddressRepositoryImplTest {
 
     @Test
     public void selectDefaultAddressTest() throws Exception {
-        Integer memberId = 1;
+        Integer userId = 3;
 
-        AddressDto addressDto = addressRepository.selectDefaultAddress(memberId);
+        AddressDto addressDto = addressRepository.selectDefaultAddress(userId);
 
         assertEquals(addressDto.getAddressId(), 1);
-        assertEquals(addressDto.getMemberId(), memberId);
         assertEquals(addressDto.getName(), "집");
     }
 }

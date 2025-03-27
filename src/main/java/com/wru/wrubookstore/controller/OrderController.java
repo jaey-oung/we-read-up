@@ -6,7 +6,7 @@ import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.request.order.OrderDetailRequest;
 import com.wru.wrubookstore.dto.request.order.OrderHistoryRequest;
 import com.wru.wrubookstore.dto.request.order.OrderPaymentRequest;
-import com.wru.wrubookstore.service.MemberService;
+import com.wru.wrubookstore.dto.response.order.OrderPaymentResponse;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +18,9 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final MemberService memberService;
 
-    public OrderController(OrderService orderService, MemberService memberService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.memberService = memberService;
     }
 
     @GetMapping("/myPage/orderList")
@@ -67,19 +65,30 @@ public class OrderController {
         return "myPage/exchange-refund-list";
     }
 
-    @GetMapping("/order")
-    public String order(@SessionAttribute Integer userId, @RequestParam("bookId") List<Integer> bookIdList,
+    @PostMapping("/orderForm")
+    public String orderPaymentForm(@SessionAttribute Integer userId, @ModelAttribute OrderPaymentRequest orderPaymentRequest,
                         Model model) {
+
         try {
-            Integer memberId = memberService.selectMember(userId).getMemberId();
-
-            OrderPaymentRequest orderPaymentRequest = orderService.selectOrderPayment(memberId, bookIdList);
-
-            model.addAttribute("orderPaymentRequest", orderPaymentRequest);
+            model.addAttribute("orderPaymentRequest", orderService.selectOrderPayment(userId, orderPaymentRequest));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return "order/order";
+    }
+
+    @PostMapping("/order")
+    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse) {
+
+        System.out.println("orderPaymentResponse = " + orderPaymentResponse);
+
+        try {
+            orderService.processOrder(orderPaymentResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/";
     }
 }

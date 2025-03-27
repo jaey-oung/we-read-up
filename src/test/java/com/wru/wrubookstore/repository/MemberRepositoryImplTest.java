@@ -10,24 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberRepositoryImplTest {
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    UserDto userDto;
-
-    LocalDate birthdate;
-    MemberDto memberDto;
-
     @BeforeEach
     public void init() throws Exception {
         userDto = new UserDto("tester@gmail.com", "pwd", "tester");
@@ -48,7 +38,6 @@ class MemberRepositoryImplTest {
         // 모든 비회원 삭제
         userRepository.deleteAll();
         assertEquals(0, userRepository.selectAll().size());
-        assertEquals(0, userRepository.count());
 
         // 모든 회원 삭제
         memberRepository.deleteAllMembers();
@@ -172,4 +161,36 @@ class MemberRepositoryImplTest {
         assertEquals(0, memberRepository.count());
         assertEquals(0, memberRepository.countMembers());
     }
-}*/
+    assertEquals(0, userRepository.count());
+
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    UserDto userDto;
+    LocalDate birthdate;
+
+    MemberDto memberDto;
+
+    @Test
+    @Transactional
+    public void updateMileageTest() throws Exception {
+        int mileageDiscount = 2000;
+        int actualPrice = 10000;
+        Integer userId = 3;
+        Map<String, Integer> map = new HashMap<>();
+        map.put("mileageDiscount", mileageDiscount);
+        map.put("actualPrice", actualPrice);
+        map.put("userId", userId);
+
+        int updateCnt = memberRepository.updateMileage(map);
+        memberDto = memberRepository.selectMember(userId);
+
+        assertEquals(updateCnt, 1);
+        assertEquals(memberDto.getMileage(), 1190);
+    }
+}
+*/

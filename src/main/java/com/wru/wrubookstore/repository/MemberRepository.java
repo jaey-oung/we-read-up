@@ -4,6 +4,7 @@ import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.dto.UserDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MemberRepository {
 
@@ -18,6 +19,8 @@ public interface MemberRepository {
     MemberDto selectMember(Integer userId) throws Exception;
     int updateUser(MemberDto memberDto) throws Exception;
     int updateMember(MemberDto memberDto) throws Exception;
+    // 사용 마일리치 차감 및 구매로 인한 마일리지 추가
+    int updateMileage(Map<String, Integer> map) throws Exception;
     int deleteMember(Integer userId) throws Exception;
     int deleteUser(Integer userId) throws Exception;
     int countMembers() throws Exception;
