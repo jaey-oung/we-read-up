@@ -102,4 +102,19 @@
      }
 
      startInterval(); /* 처음에 슬라이드 자동 재생 */
+
+     const playButton = slider_id.querySelector("#play-button");
+     const pauseButton = slider_id.querySelector("#pause-button");
+
+     pauseButton.addEventListener("click", function() {
+         playButton.style.display = "inline-block";
+         pauseButton.style.display = "none";
+         clearInterval(intervalId); /* ❚❚ 누르면 자동 재생 멈춤 */
+     });
+
+     playButton.addEventListener("click", function() {
+         pauseButton.style.display = "inline-block";
+         playButton.style.display = "none";
+         startInterval(); /* ▶ 누르면 자동 재생 시작 */
+     });
  })();
