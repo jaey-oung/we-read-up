@@ -8,6 +8,61 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSummary();                // 총 수량/금액 계산
 });
 
+// 주문 시 상품정보 넘기기
+document.querySelector(".order-btn").addEventListener("click", function () {
+    const selectedItems = [];
+
+    document.querySelectorAll(".cart-item").forEach(item => {
+        const checkbox = item.querySelector(".select-item");
+        if (checkbox.checked) {
+            const bookId = item.getAttribute("data-book-id");
+            const salePrice = item.getAttribute("data-sale-price");
+            const image = item.getAttribute("data-image");
+            const name = item.getAttribute("data-name");
+            const quantity = item.getAttribute("data-quantity");
+
+            selectedItems.push({
+                bookId,
+                salePrice,
+                image,
+                name,
+                quantity
+            });
+        }
+    });
+
+    if (selectedItems.length === 0) {
+        alert("주문할 상품을 선택해주세요.");
+        return;
+    }
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/orderForm";
+
+    selectedItems.forEach((item, index) => {
+        form.appendChild(makeHiddenInput(`orderBookRequestList[${index}].bookId`, item.bookId));
+        form.appendChild(makeHiddenInput(`orderBookRequestList[${index}].image`, item.image));
+        form.appendChild(makeHiddenInput(`orderBookRequestList[${index}].name`, item.name));
+        form.appendChild(makeHiddenInput(`orderBookRequestList[${index}].orderPrice`, item.salePrice * item.quantity));
+        form.appendChild(makeHiddenInput(`orderBookRequestList[${index}].quantity`, item.quantity));
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+});
+
+// 정보(name, value) input hidden 만들기
+function makeHiddenInput(name, value) {
+    const input = document.createElement("input");
+
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
+
+    return input;
+}
+
 // 모든 항목을 체크 상태로 초기화
 function initializeCheckboxes() {
     const selectAllCheckbox = document.querySelector(".select-all");
@@ -69,6 +124,7 @@ function setupQuantityButtons() {
 
             quantity--;
             quantitySpan.innerText = quantity;
+            cartItem.dataset.quantity = quantity.toString();
 
             const price = salePrice * quantity;
             priceSpan.innerText = price.toLocaleString() + "원";
@@ -82,6 +138,7 @@ function setupQuantityButtons() {
 
             quantity++;
             quantitySpan.innerText = quantity;
+            cartItem.dataset.quantity = quantity.toString();
 
             const price = salePrice * quantity;
             priceSpan.innerText = price.toLocaleString() + "원";
