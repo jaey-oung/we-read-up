@@ -73,8 +73,24 @@ public class CartRepositoryImpl implements CartRepository {
     }
 
     @Override
-    public int delete(int cartId) throws Exception {
-        return session.delete(namespace + "delete", cartId);
+    public int deleteByCartId(int cartId, int userId) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartId", cartId);
+        map.put("userId", userId);
+        return session.delete(namespace + "deleteByCartId", map);
+    }
+
+    @Override
+    public int deleteBySelectedCartIds(int userId, List<Integer> cartIdList) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("cartIdList", cartIdList);
+        return session.delete(namespace + "deleteBySelectedCartIds", map);
+    }
+
+    @Override
+    public int deleteAllByUserId(int userId) throws Exception {
+        return session.delete(namespace + "deleteAllByUserId", userId);
     }
 
 }

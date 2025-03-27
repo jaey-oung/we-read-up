@@ -54,8 +54,19 @@
 
     <!-- 주문상세 정보(주문상품 정보) -->
     <select id="selectOrderBook" parameterType="Integer" resultType="OrderBookRequest">
-        SELECT b.image, b.name, b.sale_price * quantity 'order_price', ob.quantity
+        SELECT b.book_id, b.image, b.name, b.sale_price * quantity 'order_price', ob.quantity
         FROM order_book ob, book b
         WHERE ob.book_id = b.book_id AND ob.order_id = #{orderId}
     </select>
+
+    <!-- 주문 생성 -->
+    <insert id="insertOrder" parameterType="OrderDto" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO orders(user_id)
+        VALUES(#{userId})
+    </insert>
+
+    <insert id="insertOrderBook" parameterType="OrderBookDto">
+        INSERT INTO order_book(order_id, book_id, quantity, price)
+        VALUES(#{orderId}, #{bookId}, #{quantity}, #{price})
+    </insert>
 </mapper>

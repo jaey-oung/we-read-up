@@ -65,7 +65,7 @@
             <p>- 시작일과 종료일을 수동으로도 선택 가능합니다.</p>
         </div>
 
-        <table class="board-table">
+        <!--<table class="board-table">
             <thead>
             <tr>
                 <th>접수일</th>
@@ -86,15 +86,15 @@
                 <td><a href="">취소</a></td>
             </tr>
             </tbody>
-        </table>
+        </table>-->
 
         <div>
             <form class="howtopag" action="/myPage/exchangeRefundList" method="get">
-                <button type="submit" name="page">❮❮</button>
-                <button type="submit" name="page">❮</button>
-                <button type="submit" name="page">num</button>
-                <button type="submit" name="page">❯</button>
-                <button type="submit" name="page">❯❯</button>
+                <button type="submit" name="page" class="howtopag_item_pagdisabled">❮❮</button>
+                <button type="submit" name="page" class="howtopag_item_pagdisabled">❮</button>
+                <button type="submit" name="page" class="howtopag_item_pagactive">1</button>
+                <button type="submit" name="page" class="howtopag_item_pagdisabled">❯</button>
+                <button type="submit" name="page" class="howtopag_item_pagdisabled">❯❯</button>
             </form>
         </div>
     </main>

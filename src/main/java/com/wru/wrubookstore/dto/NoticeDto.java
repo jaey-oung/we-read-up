@@ -12,6 +12,7 @@ public class NoticeDto {
     private Date regDate;
     private Date modDate;
     private int viewCnt;
+    private String employeeName;
 
     public NoticeDto() {    }
     public NoticeDto(Integer noticeId, String employeeId, String title) {
@@ -41,10 +42,11 @@ public class NoticeDto {
                 ", regDate=" + regDate +
                 ", modDate=" + modDate +
                 ", viewCnt=" + viewCnt +
+                ", employeeName='" + employeeName + '\'' +
                 '}';
     }
 
-    public int getNoticeId() {
+    public Integer getNoticeId() {
         return noticeId;
     }
 
@@ -98,5 +100,13 @@ public class NoticeDto {
 
     public void setViewCnt(int viewCnt) {
         this.viewCnt = viewCnt;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 }

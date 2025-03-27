@@ -5,7 +5,9 @@ import com.wru.wrubookstore.dto.response.cart.CartListResponse;
 import com.wru.wrubookstore.repository.CartRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -77,27 +79,12 @@ public class CartServiceImpl implements CartService {
         if (existing != null) {
             // 기존 수량과 기존 가격에 현재 수량과 가격 더하기
             existing.setQuantity(existing.getQuantity() + cartDto.getQuantity());
-            existing.setPrice(existing.getPrice() + cartDto.getPrice());
+            existing.setPrice(existing.getPrice() + (cartDto.getPrice() * cartDto.getQuantity()));
             return cartRepository.update(existing);
         }
 
         return cartRepository.insert(cartDto);
     }
-
-//    @Override
-//    public int insert(CartDto cartDto) throws Exception {
-//        CartDto existing = cartRepository.selectByUserIdAndBookId(cartDto.getUserId(), cartDto.getBookId());
-//
-//        if (existing != null) {
-//            // 기존 장바구니에 있으면 수량 만큼 추가
-//            existing.setQuantity(existing.getQuantity() + cartDto.getQuantity());
-//            // 단일 도서 가격 추가
-//            existing.setPrice(existing.getPrice() + cartDto.getPrice());
-//            return cartRepository.update(existing);
-//        }
-//
-//        return cartRepository.insert(cartDto);
-//    }
 
     @Override
     public int update(CartDto cartDto) throws Exception {
@@ -105,8 +92,18 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public int delete(int cartId) throws Exception {
-        return cartRepository.delete(cartId);
+    public int deleteByCartId(int cartId, int userId) throws Exception {
+        return cartRepository.deleteByCartId(cartId, userId);
+    }
+
+    @Override
+    public int deleteBySelectedCartIds(int userId, List<Integer> cartIdList) throws Exception {
+        return cartRepository.deleteBySelectedCartIds(userId, cartIdList);
+    }
+
+    @Override
+    public int deleteAllByUserId(int userId) throws Exception {
+        return cartRepository.deleteAllByUserId(userId);
     }
 
 }

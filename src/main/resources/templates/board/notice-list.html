@@ -16,7 +16,9 @@
   <div class="content">
     <div class="content-head">
       <div class="first-category">
-        <span>홈 / 게시판 / FAQ</span>
+        <a th:href="@{/board/notice-list}">공지사항</a>
+        <a th:href="@{/board/faq-list}">FAQ</a>
+        <a th:href="@{/inquiryboard/list}">나의 문의</a>
       </div>
 
       <div class="titleArea">
@@ -53,7 +55,7 @@
             <td class="title">
               <a th:href="@{/board/notice-detail(notice_id=${noticeDto.noticeId}, page=${ph.sc.page}, pageSize=${ph.sc.pageSize})}" th:text="${noticeDto.title}"></a>
             </td>
-            <td class="employeeId" th:text="${noticeDto.employeeId}"></td>
+            <td class="employeeId" th:text="${noticeDto.employeeName != null ? noticeDto.employeeName : '알 수 없음'}"></td>
             <td class="regdate" th:if="${noticeDto.regDate != null and noticeDto.regDate.time >= startOfToday}">
               <span th:text="${#dates.format(noticeDto.regDate, 'HH:mm')}"></span>
             </td>

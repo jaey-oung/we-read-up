@@ -40,9 +40,12 @@
 
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
+  <div class="content">
   <div class="content-head">
     <div class="first-category">
-      <span>홈 / 게시판 / 공지사항</span>
+      <a th:href="@{/board/notice-list}">공지사항</a>
+      <a th:href="@{/board/faq-list}">FAQ</a>
+      <a th:href="@{/inquiryboard/list}">나의 문의</a>
     </div>
 
     <div class="titleArea">
@@ -88,13 +91,13 @@
           <td class="employeeId" th:text="${faqDto.employeeId}"></td>
           <td class="regDate">
             <span th:if="${faqDto.regDate != null and faqDto.regDate.time >= startOfToday}"
-                  th:text="${#dates.format(faqDto.regDate, 'HH:mm')}"></span>
+                  th:text="${#dates.format(faqDto.regDate, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:unless="${faqDto.regDate != null and faqDto.regDate.time >= startOfToday}"
                   th:text="${#dates.format(faqDto.regDate, 'yyyy-MM-dd')}"></span>
           </td>
           <td class="modDate">
             <span th:if="${faqDto.modDate != null and faqDto.modDate.time >= startOfToday}"
-                  th:text="${#dates.format(faqDto.modDate, 'HH:mm')}"></span>
+                  th:text="${#dates.format(faqDto.modDate, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:unless="${faqDto.modDate != null and faqDto.modDate.time >= startOfToday}"
                   th:text="${#dates.format(faqDto.modDate, 'yyyy-MM-dd')}"></span>
           </td>
@@ -103,7 +106,7 @@
 
       </table>
     </div>
-
+  </div>
   </div>
 </div>
 
