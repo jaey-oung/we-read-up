@@ -52,7 +52,7 @@
     height: 35px;
 }
 
-.categoryHeader > th:hover {
+.categoryHeader > th > button:hover {
     text-decoration: underline;
     text-decoration-color: white;
 }
