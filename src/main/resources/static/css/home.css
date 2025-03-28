@@ -67,95 +67,78 @@ body {
     height: 100%;
 }
 
-.sale-section {
+/* 주간 랭킹 css */
+
+.book-ranking {
     padding: 40px;
 }
 
-.sale-header {
+.ranking-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.sale-title {
+.ranking-title {
     font-size: 24px;
     font-weight: bold;
+    padding: 0 5px 0 20px;
 }
 
-.sale-subtitle {
+.ranking-subtitle {
     font-size: 14px;
     color: #777;
 }
 
-.category-nav {
-    display: flex;
-    gap: 20px;
-}
-
-.category-nav a {
-    text-decoration: none;
-    color: #aaa;
-    font-size: 14px;
-}
-
-.category-nav a.active {
-    color: black;
-    font-weight: bold;
-    border-bottom: 2px solid black;
-}
-
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(5, 1fr); /* 판매순위별 상위 5권만 조회 */
+    padding: 10px;
 }
 
-.product {
+.product-grid a {
+    text-decoration: none;
+    display: block;
+    position: relative;
+    align-items: center;
+}
+
+.ranking-book-name:hover {
+    text-decoration: underline;
+}
+
+.ranking_books {
     background-color: #f8f8f8;
-    padding: 20px;
+    padding: 10px;
+    margin: 5px;
     text-align: center;
 }
 
-.product img {
+.ranking_books p {
+    margin: 7px;
+    font-size: 15px;
+}
+
+.ranking_books img {
     width: 100%;
-    height: auto;
+    height: 350px;
+    border: 1px solid #EAEAEA;
 }
 
-.product-name {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #333;
+.ranking-book-category, .ranking-book-writers {
+    color: #444444;
+    font-size: 11px;
 }
 
-.product-price {
+.ranking-book-name {
+    font-size: 11px;
+    color: black;
     font-weight: bold;
-    margin-top: 5px;
 }
 
-.discount {
-    text-decoration: line-through;
-    color: #999;
-    font-size: 12px;
-}
-
-.sale-badge {
-    position: absolute;
-    background: black;
-    color: white;
-    font-size: 12px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 10px;
-    right: 10px;
-}
-
-.product-container {
-    position: relative;
+#ranking-book-writers {
+    margin-bottom: 1px;
 }
 
 .offline-shop {
