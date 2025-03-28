@@ -27,70 +27,31 @@
         </div>
     </div>
 </section>
-<section class="sale-section">
-    <div class="sale-header">
+<section class="book-ranking">
+    <div class="ranking-header">
         <div>
-            <span class="sale-title">시즌오프 세일</span>
-            <span class="sale-subtitle">기간한정 세일 상품들</span>
-        </div>
-        <div class="category-nav">
-            <a href="#" class="active">아우터</a>
-            <a href="#">상의</a>
-            <a href="#">하의</a>
-            <a href="#">신발</a>
-            <a href="#">악세사리</a>
+            <span class="ranking-title">주간 랭킹</span>
+            <span class="ranking-subtitle">최근 1주일 동안 집계</span>
         </div>
     </div>
     <div class="product-grid">
-        <div class="product">
-            <div class="product-container">
-                <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/5b1b33bf3a2c534946ba8851a67a4315.png" alt="캐시미어 베이직 니트">
+        <div class="ranking_books" th:each="book : ${rankedBooks}" >
+            <a th:href="@{'/bookDetail?bookId='+${book.bookAndCategory.bookId}}">
+                <img th:src="${book.bookAndCategory.image}" th:alt="${book.bookAndCategory.name}">
+            </a>
+            <div id="book-text">
+                <p class="ranking-book-category" th:text="${book.bookAndCategory.categoryMediumName} + '/' + ${book.bookAndCategory.categorySmallName}">카테고리</p>
+                <a id="ranking-book-name" th:href="@{'/bookDetail?bookId='+${book.bookAndCategory.bookId}}">
+                    <p class="ranking-book-name" th:text="${book.bookAndCategory.name}">도서명</p>
+                </a>
+                <p class="ranking-book-writers" id="ranking-book-writers">
+                    <th:block th:each="writer, iterStat : ${book.writers}">
+                        <span th:text="${writer}">저자명</span>
+                        <span th:if="!${iterStat.last}">,</span>
+                    </th:block>
+                </p>
             </div>
-            <div class="product-name">캐시미어 베이직 니트</div>
-            <div class="product-price">500,000원</div>
         </div>
-        <div class="product">
-            <div class="product-container">
-                <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/decf2d8bd6fce68b55d688474cffdf8f.png" alt="브라운 워치 타입A">
-            </div>
-            <div class="product-name">브라운 워치 타입A</div>
-            <div class="product-price">150,000원</div>
-        </div>
-        <div class="product">
-            <div class="product-container">
-                <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/bb5025802c49871946913c6b43e75515.png" alt="블랙 가죽 자켓">
-                <div class="sale-badge">43%</div>
-            </div>
-            <div class="product-name">블랙 가죽 자켓</div>
-            <div class="discount">150,000원</div>
-            <div class="product-price">85,000원</div>
-        </div>
-        <div class="product">
-            <div class="product-container">
-                <img src="https://ecudemo276584.cafe24.com/web/product/medium/202305/760bd958e1bf5dae96970639d547ce0f.png" alt="브라운 워치 타입B">
-            </div>
-            <div class="product-name">브라운 워치 타입B</div>
-            <div class="product-price">249,000원</div>
-        </div>
-    </div>
-</section>
-<section class="offline-shop">
-    <div class="image-container">
-        <img src="/img/offline-shop.png" alt="Offline Shop">
-        <div class="text-overlay">
-            OFFLINE SHOP <br>
-            <button class="view-more">VIEW MORE +</button>
-        </div>
-    </div>
-    <div class="info-container">
-        <h3>주소</h3>
-        <p>서울특별시 동작구 보라매로0길 00<br>00, Boramae-ro 0-gil, Dongjak-gu, Seoul, Republic of Korea</p>
-
-        <h3>운영시간</h3>
-        <p>AM 09:00 - PM 06:00 (토,일,공휴일 휴무)</p>
-
-        <h3>점심시간</h3>
-        <p>PM 12:00 ~ PM 01:00</p>
     </div>
 </section>
 <div th:replace="~{fragments/footer :: footer}"></div>
