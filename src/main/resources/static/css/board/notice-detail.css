@@ -2,6 +2,11 @@ body {
     margin: 0;
 }
 
+textarea {
+    font-family: inherit;
+    font-size: 15px;
+}
+
 .container {
     padding: 0;
     width: 100%;
@@ -11,8 +16,7 @@ body {
 }
 
 .container .content {
-    margin: 0 auto; /* 수정: 중앙 정렬 */
-    max-width: 1200px; /* 선택 사항: 최대 너비 설정 */
+    margin: 0 60px;
 }
 
 .content-head {
@@ -54,23 +58,24 @@ body {
     border-bottom: 1px solid #E0E0E0;
 }
 
-.main-container h1 {
+.main-container .title {
+    width: 100%;
     font-size: 18px;
     font-weight: normal;
     margin-bottom: 10px;
-}
-
-.main-container .post-info {
-    display: flex;
-    font-size: 14px;
-    color: #666;
-    gap: 15px;
+    border: none;
 }
 
 .main-container .content {
-    padding: 30px 20px;
+    margin: 40px 0 0 0;
+    width: 100%;
+    padding: 20px 0;
     min-height: 100px;
-    border-bottom: 1px solid #E0E0E0;
+    line-height: 1.6em;
+    border-top: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
 }
 
 .main-container .button-group {
@@ -154,7 +159,6 @@ body {
 
 .comment-form {
     margin-top: 30px;
-    padding: 0 20px;
 }
 
 .comment-form h3 {
