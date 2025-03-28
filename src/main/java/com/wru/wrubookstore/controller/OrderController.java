@@ -81,10 +81,6 @@ public class OrderController {
 
     @PostMapping("/order")
     public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse, BindingResult bindingResult) {
-        // 배송지 입력 유효성 검사
-        if (bindingResult.hasErrors()) {
-            return "";
-        }
 
         try {
             orderService.processOrder(orderPaymentResponse);
