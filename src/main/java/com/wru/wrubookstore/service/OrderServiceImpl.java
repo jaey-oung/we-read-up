@@ -99,12 +99,14 @@ public class OrderServiceImpl implements OrderService {
         paymentRepository.insert(paymentDto);
 
 
-        // 회원 마일리지 추가 및 사용 마일리지 차감
+        // 회원 마일리지 추가, 사용 마일리지 차감, 전월 구매금액 추가
         Map<String, Integer> map = new HashMap<>();
         map.put("userId", orderDto.getUserId());
         map.put("mileageDiscount", paymentDto.getMileageDiscount());
         map.put("actualPrice", paymentDto.getActualPrice());
+        map.put("totalPrice", paymentDto.getTotalPrice());
 
         memberRepository.updateMileage(map);
+        memberRepository.updateLastMonthAmount(map);
     }
 }

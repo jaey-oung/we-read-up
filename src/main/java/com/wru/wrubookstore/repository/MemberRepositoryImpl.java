@@ -79,6 +79,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public int updateLastMonthAmount(Map<String, Integer> map) throws Exception {
+        return session.update(namespace + "updateLastMonthAmount", map);
+    }
+
+    @Override
     public int deleteMember(Integer userId) throws Exception {
         return session.delete(namespace+"deleteMember", userId);
     }

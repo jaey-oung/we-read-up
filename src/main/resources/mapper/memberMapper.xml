@@ -99,6 +99,13 @@
         WHERE m.user_id = #{userId}
     </update>
 
+    <!-- 전월 구매 금액 추가 -->
+    <update id="updateLastMonthAmount" parameterType="Map">
+        UPDATE member
+        SET last_month_amount = #{totalPrice}
+        WHERE user_id = #{userId}
+    </update>
+
     <!-- Member 테이블에서 회원 상세 정보 삭제 -->
     <delete id="deleteMember" parameterType="Integer">
         DELETE

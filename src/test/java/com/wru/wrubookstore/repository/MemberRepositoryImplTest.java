@@ -18,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberRepositoryImplTest {
+
+    @Autowired
+    MemberRepository memberRepository;
+
     @BeforeEach
     public void init() throws Exception {
         userDto = new UserDto("tester@gmail.com", "pwd", "tester");
@@ -191,6 +195,23 @@ class MemberRepositoryImplTest {
 
         assertEquals(updateCnt, 1);
         assertEquals(memberDto.getMileage(), 1190);
+    }
+
+    @Test
+    @Transactional
+    public void updateLastMonthAmountTest() throws Exception {
+        Integer userId = 3;
+        int totalPrice = 10000;
+        Map<String, Integer> map = new HashMap<>();
+        map.put("totalPrice", totalPrice);
+        map.put("userId", userId);
+
+        int updateCnt = memberRepository.updateLastMonthAmount(map);
+        MemberDto memberDto = memberRepository.selectMember(userId);
+
+        assertEquals(updateCnt, 1);
+        assertEquals(memberDto.getLastMonthAmount(), 10000);
+
     }
 }
 */
