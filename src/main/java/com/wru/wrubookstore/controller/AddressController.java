@@ -3,8 +3,10 @@ package com.wru.wrubookstore.controller;
 import com.wru.wrubookstore.dto.AddressDto;
 import com.wru.wrubookstore.service.AddressService;
 import com.wru.wrubookstore.service.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,13 +39,21 @@ public class AddressController {
     }
 
     @GetMapping("/myPage/addAddress")
-    public String addAddressForm() {
+    public String addAddressForm(Model model) {
+        // 유효성 검사를 위해 비어있는 addressDto 생성
+        model.addAttribute("address", new AddressDto());
 
         return "myPage/add-address";
     }
 
     @PostMapping("/myPage/addAddress")
-    public String addAddress(@SessionAttribute Integer userId, @ModelAttribute AddressDto addressDto) {
+    public String addAddress(@SessionAttribute Integer userId,
+                             @Valid @ModelAttribute("address") AddressDto addressDto, BindingResult bindingResult) {
+        // 주소 입력 유효성 검사
+        if (bindingResult.hasErrors()) {
+            return "myPage/add-address";
+        }
+
         try {
             // userId로 memberId 반환
             Integer memberId = memberService.selectMember(userId).getMemberId();
@@ -71,7 +81,15 @@ public class AddressController {
     }
 
     @PostMapping("/myPage/editAddress/{addressId}")
-    public String updateAddress(@SessionAttribute Integer userId, @ModelAttribute AddressDto addressDto) {
+    public String updateAddress(@SessionAttribute Integer userId, Model model,
+                                @Valid @ModelAttribute("address") AddressDto addressDto, BindingResult bindingResult) {
+        // 주소 입력 유효성 검사
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("address", addressDto);
+
+            return "myPage/edit-address";
+        }
+
         try {
             // userId로 memberId 반환
             Integer memberId = memberService.selectMember(userId).getMemberId();

@@ -34,25 +34,25 @@
             <h3 class="section-title">배송지</h3>
             <div class="form-group">
                 <label for="receipt">* 받는사람</label>
-                <input type="text" id="receipt" name="deliveryDto.recipient" th:value="${orderPaymentRequest.addressDto.recipient}">
+                <input type="text" id="receipt" name="deliveryDto.recipient" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.recipient : ''}">
             </div>
             <div class="form-group">
                 <label for="zipCode">* 주소</label>
                 <div class="address-group">
-                    <input type="text" id="zipCode" name="deliveryDto.zipCode" th:value="${orderPaymentRequest.addressDto.zipCode}" placeholder="우편번호">
+                    <input type="text" id="zipCode" name="deliveryDto.zipCode" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.zipCode : ''}" placeholder="우편번호">
                 </div>
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="deliveryDto.mainAddress" th:value="${orderPaymentRequest.addressDto.mainAddress}" placeholder="기본주소">
+                <input type="text" name="deliveryDto.mainAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.mainAddress : ''}" placeholder="기본주소">
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="deliveryDto.detailAddress" th:value="${orderPaymentRequest.addressDto.detailAddress}" placeholder="나머지 주소(선택 입력 가능)">
+                <input type="text" name="deliveryDto.detailAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.detailAddress : ''}" placeholder="나머지 주소(선택 입력 가능)">
             </div>
             <div class="form-group">
                 <label for="phoneNum">* 휴대전화</label>
-                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto.phoneNum}" placeholder="'-'를 입력해주세요.">
+                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.phoneNum : ''}" placeholder="'-'를 입력해주세요.">
             </div>
             <div class="form-group">
                 <select name="deliveryDto.message">

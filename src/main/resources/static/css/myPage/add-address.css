@@ -56,6 +56,16 @@ body {
     font-weight: bold;
 }
 
+.form-group .address-group {
+    width: 30%;
+}
+
+.form-group .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
 .form-group input,
 .form-group select {
     flex: 1;
@@ -65,13 +75,12 @@ body {
     font-size: 14px;
 }
 
-.form-group .address-group {
-    display: flex;
-    gap: 10px;
-}
-
-.form-group .address-group input {
-    flex: 1;
+.form-group .err-msg {
+    align-self: flex-start;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 14px;
+    color: red;
 }
 
 .checkbox-group {
@@ -98,7 +107,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+    text-decoration: none;
     border: 1px solid #000;
+    color: black;
     background-color: #fff;
 }
 
