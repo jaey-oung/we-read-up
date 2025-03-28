@@ -2,44 +2,30 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Footer</title>
 </head>
 <body>
-
 <footer th:fragment="footer">
-    <div class="footer_margin"></div>
-
     <div class="footer">
-
-        <div class="footer-title">Shopping Mall Project</div>
-
         <div class="footer-section">
-            <h3>쇼핑몰 기본정보</h3>
+            <a href="/" id="footer-logo"><img src="/img/read-up-logo.png" alt="website-logo"></a>
+            <div class="footer-text">
+                <h3>WE-READ-UP(주)</h3><br>
+                <p class="footer-sub-text">
+                    인터넷 서점<br>
+                    팀원: 이승원 김나현 장신규 유창호 양재영 최회진<br>
+                    주소: 서울 강남구 강남대로 364 미왕빌딩 10층, 11층 (패스트캠퍼스)
+                </p>
+            </div>
+        </div>
+        <div class="footer-section">
+            <a href="/board/notice-list" id="cs"><h3>고객센터</h3></a>
             <p class="footer-text">
-                상호명 OOO 대표자명 OOO 사업장 주소 07071 서울특별시 동작구 보라매로5길 15<br>
-                대표 전화 0000-0000 사업자 등록번호 000-00-00000 통신판매업 신고번호 기타<br>
-                개인정보보호책임자 OOO
+                전화번호 02-501-9396 &nbsp;
+                이메일 help@fastcampus.co.kr &nbsp;
+                주중 10시~18시 &nbsp;(점심시간 12~13시 / 주말 및 공휴일 제외)
             </p>
         </div>
-
-        <div class="footer-section">
-            <h3>고객센터 정보</h3>
-            <p class="footer-text">
-                상담/주문전화 0000-0000<br>
-                상담/주문 이메일 test@test.com<br>
-                <strong>CS운영시간</strong><br>
-                09:00 - 18:00 토,일,공휴일 휴무
-            </p>
-        </div>
-
-        <div class="footer-section">
-            <h3>결제 정보</h3>
-            <p class="footer-text">
-                무통장 계좌정보<br>
-                은행 0000-000-000000 예금주
-            </p>
-        </div>
-
         <div class="footer-section sns-links">
             <h3>SNS</h3>
             <a href="#">instagram</a>
@@ -49,21 +35,15 @@
             <a href="#">twitter</a>
             <a href="#">blog</a>
         </div>
-
         <div class="copyright">
-            Copyright © 브라더. All Rights Reserved. Hosting by Cafe24 Corp.
+            Copyright © we-read-up Corp. All Rights Reserved.
         </div>
     </div>
-
-    <div class="bt_util">
-        <ul>
-            <li><a href="">회사 소개</a></li>
-            <li><a href="">이용 약관</a></li>
-            <li><a href="">개인정보처리방침</a></li>
-            <li><a href="">이용안내</a></li>
-        </ul>
-    </div>
+    <script>
+        $('.sns-links').click(function(event) {
+            event.preventDefault();
+        });
+    </script>
 </footer>
-
 </body>
 </html>
