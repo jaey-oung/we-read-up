@@ -40,6 +40,20 @@ public class BookServiceImpl implements BookService {
         return bookRepository.selectByCategory(sc);
     }
 
+    // 낮은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory2(MainSearchCondition sc) throws Exception {
+        return bookRepository.selectByCategory2(sc);
+    }
+
+    // 높은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory3(MainSearchCondition sc) throws Exception {
+        return bookRepository.selectByCategory3(sc);
+    }
+
     // 책 번호로 한 개 조회
     @Override
     public int countAllByAdmin() throws Exception {
@@ -159,6 +173,41 @@ public class BookServiceImpl implements BookService {
     @Override
     public PublisherListResponse selectPublisherName(String publisherId) throws Exception{
         return bookRepository.selectPublisherName(publisherId);
+    }
+
+
+    // 낮은 가격 순
+
+    //  도서 제목과 저자 이름으로 통합 검색
+    public List<BookDto> searchByAll2(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByAll2(sc);
+    }
+
+    // 도서 제목으로 검색
+    public List<BookDto> searchByTitle2(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByTitle2(sc);
+    }
+
+    // 저자 이름으로 검색
+    public List<BookDto> searchByWriter2(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByWriter2(sc);
+    }
+
+    // 높은 가격 순
+
+    //  도서 제목과 저자 이름으로 통합 검색
+    public List<BookDto> searchByAll3(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByAll3(sc);
+    }
+
+    // 도서 제목으로 검색
+    public List<BookDto> searchByTitle3(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByTitle3(sc);
+    }
+
+    // 저자 이름으로 검색
+    public List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception {
+        return bookRepository.searchByWriter3(sc);
     }
 
 }

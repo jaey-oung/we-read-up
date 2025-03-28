@@ -43,11 +43,14 @@ public class BookController {
      */
     @GetMapping("/bookList")
     public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
-                           HttpSession session) {
+                           HttpSession session, Integer sort) {
 
 //        int userId = (int) session.getAttribute("userId");
 
         try{
+            if(sort == null){
+                sort = 0;
+            }
             // 도서 테이블에서 특정 카테고리에 속한 도서 개수 파악
             int count = bookService.selectByCategoryCnt(sc.getCategory());
             List<CategoryDto> list = new ArrayList<>();
@@ -58,7 +61,15 @@ public class BookController {
                 model.addAttribute("category", categoryInfo);
             } else if (count > 0) {
                 // 개수가 1 이상이면 도서 테이블에서 특정 카테고리에 속한 도서 개수 및 도서 리스트, 카테고리 정보 반환
-                list = bookService.selectByCategory(sc);
+                if(sort == 0){
+                    list = bookService.selectByCategory(sc);
+                }
+                else if(sort == 1){
+                    list = bookService.selectByCategory2(sc);
+                }
+                else if(sort == 2){
+                    list = bookService.selectByCategory3(sc);
+                }
             } else {
                 throw new Exception("잘못된 도서 개수입니다.");
             }
@@ -81,20 +92,51 @@ public class BookController {
      * 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색
      */
     @GetMapping("/search")
-    public String search(MainSearchCondition sc, Model model, HttpServletRequest request) {
+    public String search(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 
         try {
+            if(sort == null){
+                sort = 0;
+            }
             // scDto에서 어떤 옵션을 통한 검색인지 가져오기
             String option = sc.getOption();
             // 검색 결과 개수 반환
             int count = bookService.selectSearchCnt(sc);
             // 옵션과 키워드를 통한 도서 리스트 반환
-            List<BookDto> list = switch (option) {
-                case "all" -> bookService.searchByAll(sc);
-                case "title" ->  bookService.searchByTitle(sc);
-                case "writer" -> bookService.searchByWriter(sc);
-                default -> throw new Exception("잘못된 옵션입니다.");
-            };
+            List<BookDto> list = new ArrayList<>();
+
+            System.out.println("sort = " + sort);
+
+            // 리스트에 담겨있는 BookDto 정보를
+            // 1. 최신순
+            if(sort == 0){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll(sc);
+                    case "title" ->  bookService.searchByTitle(sc);
+                    case "writer" -> bookService.searchByWriter(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
+            }
+            // 2. 낮은 가격순
+            else if(sort == 1){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll2(sc);
+                    case "title" ->  bookService.searchByTitle2(sc);
+                    case "writer" -> bookService.searchByWriter2(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
+            }
+            // 3. 높은 가격순
+            else if(sort == 2){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll3(sc);
+                    case "title" ->  bookService.searchByTitle3(sc);
+                    case "writer" -> bookService.searchByWriter3(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
+            }
+
+
 
             List<List<WriterListResponse>> writerListResponse = new ArrayList<>();
             Map<String,String> publisherListResponse = new HashMap<>();

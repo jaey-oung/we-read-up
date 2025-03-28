@@ -25,6 +25,14 @@ public interface BookService {
     // 카테고리에 속한 책들의 정보 조회
     List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception;
 
+    // 낮은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    List<CategoryDto> selectByCategory2(MainSearchCondition sc) throws Exception;
+
+    // 높은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    List<CategoryDto> selectByCategory3(MainSearchCondition sc) throws Exception;
+
     // 관리자용
     int countAllByAdmin() throws Exception;
     List<BookDto> selectAllByAdmin() throws Exception;
@@ -68,4 +76,24 @@ public interface BookService {
 
     // 카테고리 대 검색 이름
     CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception;
+
+    // 낮은 가격 순
+    //  도서 제목과 저자 이름으로 통합 검색
+    List<BookDto> searchByAll2(MainSearchCondition sc) throws Exception;
+
+    // 도서 제목으로 검색
+    List<BookDto> searchByTitle2(MainSearchCondition sc) throws Exception;
+
+    // 저자 이름으로 검색
+    List<BookDto> searchByWriter2(MainSearchCondition sc) throws Exception;
+
+    // 높은 가격 순
+    //  도서 제목과 저자 이름으로 통합 검색
+    List<BookDto> searchByAll3(MainSearchCondition sc) throws Exception;
+
+    // 도서 제목으로 검색
+    List<BookDto> searchByTitle3(MainSearchCondition sc) throws Exception;
+
+    // 저자 이름으로 검색
+    List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception;
 }

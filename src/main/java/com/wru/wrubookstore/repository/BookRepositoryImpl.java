@@ -50,6 +50,25 @@ public class BookRepositoryImpl implements BookRepository {
         return list;
     }
 
+    // 낮은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory2(MainSearchCondition sc) throws Exception {
+        List<CategoryDto> list = session.selectList(namespace + "selectByCategory2", sc);
+        list.get(0).setCategoryType(sc.getCategory().substring(0, 2));
+        return list;
+    }
+
+    // 높은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    @Override
+    public List<CategoryDto> selectByCategory3(MainSearchCondition sc) throws Exception {
+        List<CategoryDto> list = session.selectList(namespace + "selectByCategory3", sc);
+        list.get(0).setCategoryType(sc.getCategory().substring(0, 2));
+        return list;
+    }
+
+
     // 관리자용
     @Override
     public int countAllByAdmin() throws Exception {
@@ -168,5 +187,39 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public PublisherListResponse selectPublisherName(String publisherId) throws Exception{
         return session.selectOne(namespace + "selectPublisherName", publisherId);
+    }
+
+    // 낮은 가격 순
+
+    //  도서 제목과 저자 이름으로 통합 검색
+    public List<BookDto> searchByAll2(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByAll2", sc);
+    }
+
+    // 도서 제목으로 검색
+    public List<BookDto> searchByTitle2(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByTitle2", sc);
+    }
+
+    // 저자 이름으로 검색
+    public List<BookDto> searchByWriter2(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByWriter2", sc);
+    }
+
+    // 높은 가격 순
+
+    //  도서 제목과 저자 이름으로 통합 검색
+    public List<BookDto> searchByAll3(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByAll3", sc);
+    }
+
+    // 도서 제목으로 검색
+    public List<BookDto> searchByTitle3(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByTitle3", sc);
+    }
+
+    // 저자 이름으로 검색
+    public List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchByWriter3", sc);
     }
 }
