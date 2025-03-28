@@ -24,4 +24,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         map.put("password", password);
         return session.selectOne(namespace+"selectByEmailAndPassword", map);
     }
+
+    @Override
+    public int isEmailDuplicated(String email) throws Exception {
+        return session.selectOne(namespace+"isEmailDuplicated", email);
+    }
 }

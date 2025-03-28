@@ -14,5 +14,6 @@ public interface UserRepository {
     UserDto selectByEmailAndPassword(String email, String password) throws Exception;
     int update(UserDto userDto) throws Exception;
     int delete(String email) throws Exception;
+    int isEmailDuplicated(String email) throws Exception;
 
 }
