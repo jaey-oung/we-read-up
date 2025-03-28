@@ -1,5 +1,8 @@
 package com.wru.wrubookstore.dto;
 
+import com.wru.wrubookstore.domain.FindIdCheck;
+import com.wru.wrubookstore.domain.FindPwCheck;
+import com.wru.wrubookstore.domain.UserRegisterCheck;
 import jakarta.validation.constraints.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,16 +20,16 @@ public class MemberDto {
     private Integer userId;         // 사용자 코드
     private String userStatusId;    // 사용자 상태 코드
 
-    @NotBlank(message = "이메일을 입력해주세요.")
+    @NotBlank(message = "이메일을 입력해주세요.", groups = {UserRegisterCheck.class, FindPwCheck.class})
     @Email(message = "이메일 형식이 올바르지 않습니다.")
     private String email;           // 사용자 이메일
 
-    @NotBlank(message = "비밀번호를 입력해주세요.")
+    @NotBlank(message = "비밀번호를 입력해주세요.", groups = UserRegisterCheck.class)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,20}$",
-            message = "영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자여야 합니다.")
+            message = "영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자여야 합니다.", groups = UserRegisterCheck.class)
     private String password;        // 사용자 비밀번호
 
-    @NotBlank(message = "이름을 입력해주세요.")
+    @NotBlank(message = "이름을 입력해주세요.", groups = {UserRegisterCheck.class, FindIdCheck.class, FindPwCheck.class})
     private String name;            // 사용자 명
     // boolean 타입 사용 시 Lombok이 isMember() 메서드를 자동 생성
     private Boolean isMember;       // 사용자 회원 여부
@@ -35,7 +38,7 @@ public class MemberDto {
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;        // 회원 닉네임
 
-    @NotBlank(message = "전화번호를 입력해주세요.")
+    @NotBlank(message = "전화번호를 입력해주세요.", groups = {FindIdCheck.class, FindPwCheck.class})
     @Pattern(regexp = "^01[016789]-\\d{3,4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다.")
     private String phoneNum;        // 회원 전화번호
 

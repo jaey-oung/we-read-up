@@ -80,7 +80,7 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse, BindingResult bindingResult) {
+    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse) {
 
         try {
             orderService.processOrder(orderPaymentResponse);

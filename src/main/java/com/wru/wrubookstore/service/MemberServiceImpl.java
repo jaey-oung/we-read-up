@@ -62,6 +62,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDto selectByNameAndPhoneNum(MemberDto memberDto) throws Exception {
+        return memberRepository.selectByNameAndPhoneNum(memberDto);
+    }
+
+    @Override
+    public MemberDto selectByEmailAndNameAndPhoneNum(MemberDto memberDto) throws Exception {
+        return memberRepository.selectByEmailAndNameAndPhoneNum(memberDto);
+    }
+
+    @Override
     public int updateUser(MemberDto memberDto) throws Exception {
         return memberRepository.updateUser(memberDto);
     }

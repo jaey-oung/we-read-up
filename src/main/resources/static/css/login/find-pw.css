@@ -74,9 +74,20 @@ h1 {
     font-size: 14px;
 }
 
+.err-msg {
+    align-self: flex-start;
+    margin-top: 5px;
+    font-size: 14px;
+    color: red;
+}
+
 .btn-container {
     margin-top: 20px;
     text-align: center;
+}
+
+.global-error {
+    text-align: left;
 }
 
 .btn {

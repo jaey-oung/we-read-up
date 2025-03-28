@@ -76,6 +76,20 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="selectByNameAndPhoneNum" parameterType="MemberDto" resultType="MemberDto">
+        SELECT *
+        FROM member m, user u
+        WHERE m.user_id = u.user_id AND u.is_member = true
+        AND u.name = #{name} AND m.phone_num = #{phoneNum}
+    </select>
+    
+    <select id="selectByEmailAndNameAndPhoneNum" parameterType="MemberDto" resultType="MemberDto">
+        SELECT *
+        FROM member m, user u
+        WHERE m.user_id = u.user_id AND u.is_member = true
+        AND u.email = #{email} AND u.name = #{name} AND m.phone_num = #{phoneNum}
+    </select>
+
     <!-- User 테이블에 있는 회원 정보 수정 -->
     <update id="updateUser" parameterType="MemberDto">
         UPDATE user
@@ -97,6 +111,13 @@
         JOIN membership ms ON m.membership_id = ms.membership_id
         SET m.mileage = m.mileage - #{mileageDiscount}, m.mileage = m.mileage + (#{actualPrice} * ms.mileage_percent)
         WHERE m.user_id = #{userId}
+    </update>
+
+    <!-- 전월 구매 금액 추가 -->
+    <update id="updateLastMonthAmount" parameterType="Map">
+        UPDATE member
+        SET last_month_amount = #{totalPrice}
+        WHERE user_id = #{userId}
     </update>
 
     <!-- Member 테이블에서 회원 상세 정보 삭제 -->

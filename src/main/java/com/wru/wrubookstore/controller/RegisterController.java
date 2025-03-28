@@ -1,12 +1,16 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.domain.UserRegisterCheck;
 import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.dto.UserDto;
 import com.wru.wrubookstore.service.EmployeeService;
 import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,14 +31,25 @@ public class RegisterController {
     }
 
     @GetMapping("/form")
-    public String registerForm() {
-
+    public String registerForm(Model model) {
+        model.addAttribute("user", new MemberDto());
         return "login/register";
     }
 
     @PostMapping("/user")
-    public String registerUser(UserDto userDto, RedirectAttributes rattr, Model model) {
+    public String registerUser(@Validated(UserRegisterCheck.class) @ModelAttribute("user") MemberDto memberDto, BindingResult bindingResult,
+                               @RequestParam String pwConfirm, RedirectAttributes rattr, Model model) {
+        if (!memberDto.getPassword().equals(pwConfirm)) {
+            bindingResult.rejectValue("password", "PasswordMismatch", "비밀번호가 다릅니다. 다시 입력해주세요.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", memberDto);
+            return "login/register";
+        }
+
         try {
+            UserDto userDto = new UserDto(memberDto.getEmail(), memberDto.getPassword(), memberDto.getName());
             int rowCnt = userService.insert(userDto);
 
             if(rowCnt != 1)
@@ -42,7 +57,7 @@ public class RegisterController {
 
             rattr.addFlashAttribute("msg", "USER_SIGNUP_OK");
         } catch (Exception e) {
-            model.addAttribute("userDto", userDto);
+            model.addAttribute("user", memberDto);
             model.addAttribute("msg", "USER_SIGNUP_ERR");
             return "login/register";
         }
@@ -50,12 +65,23 @@ public class RegisterController {
     }
 
     @PostMapping("/member")
-    public String registerMember(UserDto userDto, MemberDto memberDto, RedirectAttributes rattr, Model model) {
+    public String registerMember(UserDto userDto, @Valid @ModelAttribute("user") MemberDto memberDto,
+                                 BindingResult bindingResult, @RequestParam String pwConfirm, RedirectAttributes rattr,
+                                 Model model) {
+        if (!userDto.getPassword().equals(pwConfirm)) {
+            bindingResult.rejectValue("password", "PasswordMismatch", "비밀번호가 다릅니다. 다시 입력해주세요.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", memberDto);
+            return "login/register";
+        }
+
         try {
             memberService.insert(userDto, memberDto);
             rattr.addFlashAttribute("msg", "MEMBER_SIGNUP_OK");
         } catch (Exception e) {
-            model.addAttribute("memberDto", memberDto);
+            model.addAttribute("user", memberDto);
             model.addAttribute("msg", "MEMBER_SIGNUP_ERR");
             return "login/register";
         }
