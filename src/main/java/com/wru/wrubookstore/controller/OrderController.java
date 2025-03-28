@@ -10,6 +10,7 @@ import com.wru.wrubookstore.dto.response.order.OrderPaymentResponse;
 import com.wru.wrubookstore.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,9 +80,11 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse) {
-
-        System.out.println("orderPaymentResponse = " + orderPaymentResponse);
+    public String orderPayment(@ModelAttribute OrderPaymentResponse orderPaymentResponse, BindingResult bindingResult) {
+        // 배송지 입력 유효성 검사
+        if (bindingResult.hasErrors()) {
+            return "";
+        }
 
         try {
             orderService.processOrder(orderPaymentResponse);
