@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
-    <link rel="stylesheet" href="/css/board/notice-list.css">
+    <link rel="stylesheet" href="/css/board/inquiry-list.css">
 </head>
 <body>
 
@@ -17,9 +17,12 @@
     <div class="content">
     <div class="content-head">
         <div class="first-category">
-            <a th:href="@{/board/notice-list}">공지사항</a>
-            <a th:href="@{/board/faq-list}">FAQ</a>
-            <a th:href="@{/inquiryboard/list}">나의 문의</a>
+            <div class="board-category">
+                <a th:href="@{/board/notice-list}">공지사항</a>
+                <a th:href="@{/board/faq-list}">FAQ</a>
+                <a th:href="@{/inquiryboard/list}" class="selected">나의 문의</a>
+            </div>
+            <span>홈 / 게시판 / 공지사항</span>
         </div>
 
         <div class="titleArea">
@@ -47,7 +50,7 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>문의내용</th>
+                    <th class="inquiry-con">문의내용</th>
                     <th>문의상태</th>
                     <th>답변내용</th>
                     <th>작성자</th>
@@ -97,13 +100,15 @@
                 <button id="deleteButton">게시물삭제</button>
             </div>
         </div>
-        <div class="new-inquiry">
-            <button id="newInquiryButton">신규 등록</button>
-            <div id="newInquiryForm" style="display:none;">
+        <div>
+            <button id="newInquiryButton" class="btn-submit">신규 등록</button>
+            <div id="newInquiryForm" class="inquiry-form" style="display:none;">
                 <h3>신규 문의 등록</h3>
                 <input type="text" id="newTitle" placeholder="제목">
                 <textarea id="newContent" placeholder="내용"></textarea>
-                <button id="submitNewInquiry">등록</button>
+                <div class="form-inputs">
+                    <button id="submitNewInquiry" class="btn-submit">등록</button>
+                </div>
             </div>
         </div>
     </div>

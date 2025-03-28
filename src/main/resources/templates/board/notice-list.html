@@ -16,9 +16,12 @@
   <div class="content">
     <div class="content-head">
       <div class="first-category">
-        <a th:href="@{/board/notice-list}">공지사항</a>
-        <a th:href="@{/board/faq-list}">FAQ</a>
-        <a th:href="@{/inquiryboard/list}">나의 문의</a>
+        <div class="board-category">
+          <a th:href="@{/board/notice-list}" class="selected">공지사항</a>
+          <a th:href="@{/board/faq-list}">FAQ</a>
+          <a th:href="@{/inquiryboard/list}">나의 문의</a>
+        </div>
+        <span>홈 / 게시판 / 공지사항</span>
       </div>
 
       <div class="titleArea">
@@ -87,11 +90,15 @@
 
 <div>
   <form class="howtopag" action="/board/notice-list" method="get">
-    <button type="submit" name="page" value="1">❮❮</button>
+    <button type="submit" name="page" value="1" th:disabled="${ph.sc.page <= 1}">❮❮</button>
     <button type="submit" name="page" th:value="${ph.sc.page - 1}" th:disabled="${ph.sc.page <= 1}">❮</button>
-    <button type="submit" name="page" th:value="${ph.sc.page}" th:text="${ph.sc.page}"></button>
+    <th:block th:unless="${ph.endPage == 0}">
+      <th:block th:each="num : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+        <button type="submit" name="page" th:value="${num}" th:text="${num}" th:class="howtopag_item + ${ph.sc.page == num ? '_pagactive' : ''}"></button>
+      </th:block>
+    </th:block>
     <button type="submit" name="page" th:value="${ph.sc.page + 1}" th:disabled="${ph.sc.page >= ph.totalPage}">❯</button>
-    <button type="submit" name="page" th:value="${ph.totalPage}">❯❯</button>
+    <button type="submit" name="page" th:value="${ph.totalPage}" th:disabled="${ph.sc.page >= ph.totalPage}">❯❯</button>
   </form>
 </div>
 

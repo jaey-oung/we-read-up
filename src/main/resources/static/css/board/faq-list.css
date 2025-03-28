@@ -88,65 +88,39 @@ body {
     color: black;
 }
 
-/* 검색창 스타일 */
-.board-search {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 0 20px;
-    margin-bottom: 20px;
+/* 내용 숨기기 */
+.faq-content {
+    display: none;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-top: none;
 }
 
-.board-search select,
-.board-search input,
-.board-search button {
-    padding: 15px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.faq-content p {
+    margin: 0;
+    white-space: pre-line;
+    line-height: 1.6;
+    text-align: left;
 }
 
-.board-search input[type=submit]:hover {
-    cursor: pointer;
-    border: 1px solid black;
-}
-
-.board-search button {
-    padding: 15px;
-    cursor: pointer;
-    color: white;
-    background-color: black;
-}
-
-.board-search button:hover {
-    background-color: #999;
-}
-
-form.howtopag {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 60px;
-}
-
-form.howtopag button {
-    padding: 0 15px;
-    height: 40px;
+/* 버튼 스타일 */
+.collapsible {
     border: none;
+    text-align: left;
+    padding: 10px;
+    width: 100%;
     cursor: pointer;
     font-size: 16px;
     background-color: white;
 }
 
-form.howtopag button.howtopag_item_pagdisabled {
-    pointer-events: none;
-    color: #ddd;
+.collapsible:hover {
+    color: gray;
 }
 
-form.howtopag button.howtopag_item_pagactive {
-    border: 1px solid black;
-}
-
-form.howtopag button:hover {
-    background-color: #ddd;
+/* 활성화된 버튼 */
+.active {
+    color: white;
+    background-color: #0056b3;
 }

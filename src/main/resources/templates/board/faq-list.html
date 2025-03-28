@@ -7,34 +7,7 @@
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
-    <link rel="stylesheet" href="/css/board/notice-list.css">
-  <style>
-    /* 내용 숨기기 */
-    .faq-content {
-      display: none;
-      padding: 10px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      border-top: none;
-    }
-
-    /* 버튼 스타일 */
-    .collapsible {
-      background: #6c757d;
-      color: white;
-      border: none;
-      text-align: left;
-      padding: 10px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    /* 활성화된 버튼 */
-    .active {
-      background: #0056b3;
-    }
-  </style>
+    <link rel="stylesheet" href="/css/board/faq-list.css">
 </head>
 <body>
 
@@ -43,9 +16,12 @@
   <div class="content">
   <div class="content-head">
     <div class="first-category">
-      <a th:href="@{/board/notice-list}">공지사항</a>
-      <a th:href="@{/board/faq-list}">FAQ</a>
-      <a th:href="@{/inquiryboard/list}">나의 문의</a>
+      <div class="board-category">
+        <a th:href="@{/board/notice-list}">공지사항</a>
+        <a th:href="@{/board/faq-list}" class="selected">FAQ</a>
+        <a th:href="@{/inquiryboard/list}">나의 문의</a>
+      </div>
+      <span>홈 / 게시판 / 공지사항</span>
     </div>
 
     <div class="titleArea">
@@ -85,7 +61,6 @@
             <button type="button" class="collapsible" th:text="${faqDto.title}"></button>
             <div class="faq-content">
               <p th:text="${faqDto.content}"></p>
-
             </div>
           </td>
           <td class="employeeId" th:text="${faqDto.employeeId}"></td>
