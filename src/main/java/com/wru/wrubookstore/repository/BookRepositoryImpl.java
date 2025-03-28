@@ -9,6 +9,7 @@ import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,5 +155,17 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception{
         return session.selectOne(namespace + "selectCategoryL", categoryResponse);
+    }
+
+    // 판매 순위별 상위 5권 bookId 조회
+    @Override
+    public List<Integer> selectBookIdInSalesRank() throws Exception {
+        return session.selectList(namespace + "selectBookIdInSalesRank");
+    }
+
+    // 상위 5권 도서 카테고리, 도서 조회
+    @Override
+    public CategoryDto selectRankedBookInfo(Integer bookId) throws Exception {
+        return session.selectOne(namespace + "selectRankedBookInfo", bookId);
     }
 }
