@@ -5,6 +5,8 @@ import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import com.wru.wrubookstore.repository.BookRepository;
 import jakarta.validation.constraints.Negative;
 import org.springframework.stereotype.Service;
@@ -145,6 +147,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception{
         return bookRepository.selectCategoryL(categoryResponse);
+    }
+
+    // 지은이 이름 조회
+    @Override
+    public List<WriterListResponse> selectWriterName(Integer bookId) throws Exception{
+        return bookRepository.selectWriterName(bookId);
+    }
+
+    // 출판사 이름 조회
+    @Override
+    public PublisherListResponse selectPublisherName(String publisherId) throws Exception{
+        return bookRepository.selectPublisherName(publisherId);
     }
 
 }

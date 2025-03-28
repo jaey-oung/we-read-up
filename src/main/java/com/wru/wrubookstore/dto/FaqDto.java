@@ -11,6 +11,7 @@ public class FaqDto {
     private String content;
     private Date regDate;
     private Date modDate;
+    private String name;
 
     public FaqDto() {}
 
@@ -41,6 +42,7 @@ public class FaqDto {
                 ", content='" + content + '\'' +
                 ", regDate=" + regDate +
                 ", modDate=" + modDate +
+                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -90,5 +92,13 @@ public class FaqDto {
 
     public void setModDate(Date modDate) {
         this.modDate = modDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

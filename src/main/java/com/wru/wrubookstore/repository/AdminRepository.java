@@ -7,8 +7,17 @@ import com.wru.wrubookstore.dto.WriterDto;
 import com.wru.wrubookstore.dto.response.admin.AdminResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminRepository {
+
+    // 검색
+    List<BookDto> searchBook(String name) throws Exception;
+    // 재고 0이아닌 상품 전부 조회
+    List<BookDto> selectZeroNotQuantityBook(Map map) throws Exception;
+
+    // 재고0인 상품 전부 조회
+    List<BookDto> selectZeroQuantityBook(Map map) throws Exception;
 
     // writer-book 마지막 코드 조회용
     String selectWriterBookId() throws Exception;

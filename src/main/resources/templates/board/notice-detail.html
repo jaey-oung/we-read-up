@@ -66,8 +66,7 @@
                     </button>
                 </div>
 
-                <!-- 글쓰기 모드가 아닐 때만 수정/삭제 버튼 보이기 -->
-                <div th:if="${mode != 'new'}">
+                <div th:if="${mode != 'new' and noticeDto.employeeId != null}">
                     <button type="button" id="modifyBtn" class="btn btn-modify">
                         <i class="fa fa-edit"></i> 수정
                     </button>
@@ -163,9 +162,13 @@
     <div class="comment-form">
         <h3>댓글달기</h3>
         <textarea name="commentContent" placeholder="댓글을 입력하세요"></textarea>
-        <div class="form-inputs">
+<!--        <div class="form-inputs">-->
+<!--            <button id="sendBtn" type="button" class="btn-submit">등록</button>-->
+<!--        </div>-->
+        <div class="form-inputs" th:if="${userId != null}">
             <button id="sendBtn" type="button" class="btn-submit">등록</button>
         </div>
+
     </div>
     <div id="commentList"><ul></ul></div>
 </div>

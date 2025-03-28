@@ -4,7 +4,7 @@
 
 <mapper namespace="com.wru.wrubookstore.mapper.FaqMapper">
     <sql id="selectFromFaq">
-        SELECT f.faq_id as faqId, f.employee_id as employeeId, f.title, f.content, f.reg_date as regDate, f.mod_date as modDate
+        SELECT f.faq_id as faqId, f.employee_id as employeeId, f.title, f.content, f.reg_date as regDate, f.mod_date as modDate, e.name
         FROM faq f
         JOIN employee e ON f.employee_id = e.employee_id
     </sql>
