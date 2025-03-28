@@ -143,4 +143,16 @@ public class BookRepositoryImpl implements BookRepository {
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return session.selectOne(namespace + "selectSearchCnt", sc);
     }
+
+    // 카테고리 소, 중 검색 이름
+    @Override
+    public CategoryResponse selectCategorySM(Integer bookId) throws Exception{
+        return session.selectOne(namespace + "selectCategorySM", bookId);
+    }
+
+    // 카테고리 대 검색 이름
+    @Override
+    public CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception{
+        return session.selectOne(namespace + "selectCategoryL", categoryResponse);
+    }
 }

@@ -19,7 +19,7 @@
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <span>홈 / 아우터</span>
+                <span th:text="${category.categoryMediumName+' / '+category.categorySmallName}">홈 / 아우터</span>
             </div>
 
             <div class="second-category">
@@ -75,21 +75,36 @@
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
                     <form class="button-group" id="btnForm">
-                        <button type="button" class="buy-now" onclick="buyNow(this)"
-                            th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
+                        <th:block th:if="${bookDto.stockQuantity != 0}">
+                            <button type="button" class="buy-now" onclick="buyNow(this)"
+                                    th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
                             data-name=${bookDto.name}, data-price=${bookDto.salePrice}">
-                            BUY IT NOW
-                        </button>
-                        <button type="button" class="cart"
-                            th:attr="data-book-id=${bookDto.bookId},
+                                BUY IT NOW
+                            </button>
+                        </th:block>
+                        <th:block th:if="${bookDto.stockQuantity == 0}">
+                            <button type="button" class="buy-now" id="buy-BTN">
+                                BUY IT NOW
+                            </button>
+                        </th:block>
+
+                        <th:block th:if="${bookDto.stockQuantity != 0}">
+                            <button type="button" class="cart" id="cart"
+                                    th:attr="data-book-id=${bookDto.bookId},
                             data-quantity=1,
                             data-price=${bookDto.salePrice}">
-                            CART
-                        </button>
+                                CART
+                            </button>
+                        </th:block>
+                        <th:block th:if="${bookDto.stockQuantity == 0}">
+                            <button type="button" class="cart" id="cart-BTN">
+                                CART
+                            </button>
+                        </th:block>
+
+
 
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
-
-
 
                         <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
@@ -105,17 +120,19 @@
                 <div class="info-title">기본정보</div>
                 <div class="custom-wow">
                     <div class="book-info2">
-                        <span th:text="${bookDto.page}+'쪽'" >216쪽</span>
-                        <span th:text="${bookDto.size}+'mm'">145*210mm</span>
-                        <span th:text="${bookDto.weight}+'g'">300g</span>
-                        <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
+                        <span th:text="${bookDto.page}+'쪽'" class="mag">216쪽</span>
+                        <span th:text="${bookDto.size}+'mm'" class="mag">145*210mm</span>
+                        <span th:text="${bookDto.weight}+'g'" class="mag">300g</span>
+                        <span th:text="'ISBN : '+${bookDto.isbn}" class="mag">ISBN : 9788936434120</span>
                     </div>
 
                     <br>
                     <div class="book-info2">
+                        <br>
                         <div><strong style="color:#000000">주제 분류</strong></div>
                         <!-- 추가 예정 -->
-                        <div style="color:#000000">카테고리</div>
+                        <br>
+                        <div style="color:#000000" th:text="${category.categoryLargeName+' > '+category.categoryMediumName+' > '+category.categorySmallName}">카테고리</div>
                     </div>
                 </div>
             </div>
@@ -198,7 +215,7 @@
 
                     <!-- 리뷰가 없을 때 이거 가운데로 옮겨 줘야됨 -->
                     <div class="book-info" th:if="${reviewCnt == 0}">
-                        <div>리뷰가 없습니다!</div>
+                        <div style="margin-left:500px">등록된 리뷰가 없습니다!</div>
                     </div>
                 </div>
 
@@ -212,6 +229,14 @@
 
 <script>
     $(document).ready(function () {
+        $('#buy-BTN').on('click', function(){
+            alert('재고가 없습니다!');
+            return false;
+        });
+        $('#cart-BTN').on('click', function(){
+            alert('재고가 없습니다!');
+            return false;
+        });
         // 수정 버튼을 누르면 삭제버튼은 완료버튼으로 수정 버튼은 취소 버튼으로?
         $(document).on('click', '#modBtn', function() {
             if($('#modCnt').val() === '1'){
@@ -362,7 +387,7 @@
         updateTotal();
 
         // 장바구니 버튼
-        const addCartButtons = document.querySelectorAll(".cart");
+        const addCartButtons = document.querySelectorAll("#cart");
 
         addCartButtons.forEach(button => {
             button.addEventListener("click", () => {
