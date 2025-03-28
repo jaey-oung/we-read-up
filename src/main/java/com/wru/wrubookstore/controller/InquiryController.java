@@ -25,8 +25,8 @@ public class InquiryController {
         Integer memberId = (Integer) session.getAttribute("userId");
 
         if(memberId==null) {
-            System.out.println("회원 로그인 정보가 없습니다.");
-            return "login/login";
+            m.addAttribute("msg", "LOGIN_REQUIRED"); // 로그인 필요 메시지 추가
+            return "board/inquiry-list"; // 로그인 필요 메시지를 화면에 표시
         }
 
         String currentUserId = memberId.toString();

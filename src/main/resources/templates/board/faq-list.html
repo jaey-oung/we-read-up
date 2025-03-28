@@ -49,7 +49,7 @@
         <tr>
           <th class="noticeId">번호</th>
           <th class="title">제목</th>
-          <th class="employeeId">담당자</th>
+          <th class="name">담당자</th>
           <th class="regDate">등록일</th>
           <th class="viewCnt">수정일</th>
         </tr>
@@ -63,7 +63,7 @@
               <p th:text="${faqDto.content}"></p>
             </div>
           </td>
-          <td class="employeeId" th:text="${faqDto.employeeId}"></td>
+          <td class="name" th:text="${faqDto.name}"></td>
           <td class="regDate">
             <span th:if="${faqDto.regDate != null and faqDto.regDate.time >= startOfToday}"
                   th:text="${#dates.format(faqDto.regDate, 'yyyy-MM-dd HH:mm')}"></span>
