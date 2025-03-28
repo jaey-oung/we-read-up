@@ -155,7 +155,7 @@
        $('#sort-book').on('change', function(){
            let option = $('#option').val();
            let keyword = $('#keyword').val();
-           if(option && keyword){
+           if(option || keyword){
                window.location.href = '/search?sort=' + $(this).val() + '&category='+$('#category').val()+'&option='+$('#option').val()+'&keyword='+$('#keyword').val();
            } else{
                window.location.href = '/bookList?sort=' + $(this).val() + '&category='+$('#category').val();
