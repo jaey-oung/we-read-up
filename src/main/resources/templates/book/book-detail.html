@@ -125,7 +125,7 @@
                 <div class="custom-wow">
                 <div class="book-info2">
                     <!-- 목차 라인 수 제한 + 더보기 추가 -->
-                    <div th:text="${bookDto.tableOfContent}" style="color:#000000"></div>
+                    <div th:utext="${bookDto.tableOfContent}" style="color:#000000"></div>
                 </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                 <div class="custom-wow">
                 <div class="book-info2">
                     <!-- 책소개 라인 수 제한 + 더보기 추가 -->
-                    <div th:text="${bookDto.description}" style="color:#000000"></div>
+                    <div th:utext="${bookDto.description}" style="color:#000000"></div>
                 </div>
                 </div>
             </div>

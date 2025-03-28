@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Setter
@@ -52,5 +53,16 @@ public class BookDto {
         this.weight = weight;
         this.page = page;
         this.image = image;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(releaseDate);
+
+        try{
+            this.releaseDate = sdf.parse(formattedDate);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

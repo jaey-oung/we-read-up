@@ -2,21 +2,30 @@ package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.dto.BookDto;
+import com.wru.wrubookstore.dto.PublisherDto;
+import com.wru.wrubookstore.dto.WriterBookDto;
+import com.wru.wrubookstore.dto.WriterDto;
 import com.wru.wrubookstore.dto.response.admin.AdminResponse;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.service.AdminService;
 import com.wru.wrubookstore.service.BookService;
+import jakarta.validation.Valid;
 import jdk.jfr.Category;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -25,18 +34,48 @@ import java.util.*;
 @RequestMapping("/admin")
 public class AdminController {
     BookService bookService;
+    AdminService adminService;
 
-    AdminController(BookService bookService) {
+    AdminController(BookService bookService, AdminService adminService) {
         this.bookService = bookService;
+        this.adminService = adminService;
     }
 
     // 업로드 경로
     private final String UPLOAD_DIR = "src/main/resources/static/img/book/";
+    private final int NUM = 1;
+    private final String WRT = "wrt_";
+    private final String PUB = "pub_";
+    private final String WB = "wb_";
+
+    // 사업자 번호 포맷팅 메서드
+    private String getFormatBizRegNo(String bizRegNo){
+        if(!(bizRegNo.contains("-")) && bizRegNo.length() == 10){
+            return String.format("%s-%s-%s",
+                    bizRegNo.substring(0,3),
+                    bizRegNo.substring(3,5),
+                    bizRegNo.substring(5));
+        }
+        return bizRegNo;
+    }
+    // 핸드폰 번호 포맷팅 메서드
+    private String getFormatPhoneNumber(String phoneNum){
+        if(!(phoneNum.contains("-")) && phoneNum.length() == 11){
+            return String.format("%s-%s-%s",
+                    phoneNum.substring(0,3),
+                    phoneNum.substring(3,7),
+                    phoneNum.substring(7));
+        }
+        return phoneNum;
+    }
 
     @PostMapping("/upload")
     @ResponseBody
     @Transactional
     public String upload(@RequestParam("image") MultipartFile formData) {
+
+        // static/img/book/파일  - 파일이 저장되는 공간
+
         System.out.println("file = " + formData.getOriginalFilename());
         System.out.println("formData.getResource() = " + formData.getResource());
         System.out.println("formData.getName() = " + formData.getName());
@@ -52,6 +91,9 @@ public class AdminController {
 
             Path path = Paths.get(UPLOAD_DIR + fileName);
 
+            // 디렉토리가 없으면 생성
+            Files.createDirectories(path.getParent()); // 디렉토리 생성
+
             System.out.println("path.getFileName().toString() = " + path.getFileName().toString());
             System.out.println("path.toString() = " + path.toString());
 
@@ -59,8 +101,6 @@ public class AdminController {
 
             String imagePath = "/img/book/"+fileName;
             System.out.println("imagePath = " + imagePath);
-
-            Thread.sleep(2000);
 
             return imagePath;
         }catch(Exception e){
@@ -74,9 +114,139 @@ public class AdminController {
     @ResponseBody
     public String bookCreate(@RequestBody AdminResponse adminResponse){
         System.out.println("\n\nadmin//bookCreate//adminResponse = " + adminResponse);
+        System.out.println("\n\nadmin//bookCreate//admin//adminResponse.getWriterDto() = " + adminResponse.getWriterDto());
+        try {
+            // 검증 뒤로 밀 예정
+            // 지은이 등록용 - writer-book에 사용
+            List<String> writerIdList = new ArrayList<>();
+            // 출판사 등록용 - 책 등록에 사용
+            String publisherId = "";
+            // 책 등록용 - writer-book에 사용
+            int bookId = 0;
+            // writer-book 등록용
+            String writerBookId = "";
+
+
+            for (WriterDto dto : adminResponse.getWriterDto()) {
+                System.out.println("\n\nadmin//dto = " + dto);
+                // dto에 저장된 name과 nickname을 비교해서 중복을 비교
+                WriterDto writerDto = adminService.selectWriterOne(dto);
+
+                // 없으면 writer 추가
+                if (writerDto == null) {
+                    // dto에는 writer_id가 없어서 추가해줘야함
+                    // 마지막 writer_id를 불러옴(ex:wrt_5)
+                    // wrt_를 자르고 5만 남김
+                    String writerCode = adminService.selectWriterId().substring(adminService.selectWriterId().lastIndexOf("_") + 1);
+                    // 마지막 번호에 +1을 해서 저장
+                    int writerIdNum = Integer.parseInt(writerCode) + NUM;
+                    // 다시 이어붙임 wrt_6
+                    String writerId = WRT + writerIdNum;
+
+                    System.out.println("writerId = " + writerId);
+
+                    // dto에 writerId셋팅
+                    dto.setWriterId(writerId);
+
+                    System.out.println("writer//dto = " + dto);
+
+                    // 지은이 등록
+                    adminService.insertWriter(dto);
+
+                    // wrt_6 담아둠 - 추후 writer_book에 넣을 예정
+                    writerIdList.add(writerId);
+                } else {
+                    System.out.println("else//writerDto.getWriterId() = " + writerDto.getWriterId());
+                    // wrt_? 담아둠 - 추후 writer_book에 넣을 예정
+                    writerIdList.add(writerDto.getWriterId());
+                }
+
+            }
+
+            System.out.println("지은이 담김//writerIdList = " + writerIdList);
+
+            // 출판사
+            for (PublisherDto dto : adminResponse.getPublisherDto()) {
+                System.out.println("\n출판사//dto = " + dto);
+
+                // 사업자 번호 000-00-00000
+                // 핸드폰번호 010-0000-0000
+                dto.setBizRegNo(getFormatBizRegNo(dto.getBizRegNo()));
+                dto.setPhoneNum(getFormatPhoneNumber(dto.getPhoneNum()));
+                System.out.println("\n출판사2//dto = " + dto);
+                // 출판사 중복 체크
+                PublisherDto publisherDto = adminService.selectPublisherOne(dto);
+
+                // 출판사 정보가 없으면 새로 만들기
+                if (publisherDto == null) {
+                    // 마지막 publisher 코드 가져오기
+                    String id = adminService.selectPublisherId().substring(adminService.selectPublisherId().indexOf("_") + 1);
+
+                    int pubId = Integer.parseInt(id) + 1;
+
+                    publisherId = PUB + pubId;
+                    System.out.println("publisherId = " + publisherId);
+
+                    // publisher_id 채워주기
+                    dto.setPublisherId(publisherId);
+
+                    System.out.println("\n출판 등록전//dto = " + dto);
+
+                    adminService.insertPublisher(dto);
+                } else {
+                    // 출판사 정보가 있으면 출판사 코드만 가져오기
+                    publisherId = publisherDto.getPublisherId();
+                }
+
+                System.out.println("\n출판사//publisherDto = " + publisherId);
+            }
+
+
+            // 책 등록
+            for(BookDto dto : adminResponse.getBookDto()){
+                // 책 중복 확인
+                if(adminService.selectBook(dto) == null){
+                    // isbn이 없는 책이라면
+
+                    System.out.println("책등록//dto = " + dto);
+                    dto.setPublisherId(publisherId);
+                    dto.setDiscountPercent(dto.getDiscountPercent().multiply(new BigDecimal("0.01")));
+
+                    System.out.println("\n책등록2//dto = " + dto);
+                    adminService.insertBook(dto);
+
+                    bookId = adminService.selectBook(dto).getBookId();
+                    System.out.println("\n책등록3//bookId = " + bookId);
+                } else{
+                    bookId = adminService.selectBook(dto).getBookId();
+                    System.out.println("\n책등록44//bookId = " + bookId);
+                }
+            }
+
+            // writer-book 등록
+            for(String dto : writerIdList){
+                System.out.println("dto = " + dto);
+                // 지은이가 들어온 수만큼 증가
+                int id = Integer.parseInt(adminService.selectWriterBookId().substring(adminService.selectWriterBookId().indexOf("_")+1)) + 1;
+
+                writerBookId = WB + id;
+
+                System.out.println("WBID//writerBookId = " + writerBookId);
+
+                WriterBookDto writerBookDto = new WriterBookDto(writerBookId, dto, bookId);
+
+                System.out.println("지은이-책등록//writerBookDto = " + writerBookDto);
+                adminService.insertWriterBook(writerBookDto);
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+            return "create fail";
+        }
 
         return "success";
     }
+
     @PostMapping("/bookCategory")
     @ResponseBody
     public List<CategoryResponse> bookCategory(@RequestBody CategoryResponse[] categoryResponse, Model m){
@@ -110,9 +280,13 @@ public class AdminController {
     public String bookCategory(Model m){
         try{
             List<CategoryResponse> categoryResponse = bookService.selectCategoryLarge();
+            List<WriterDto> writerDto = adminService.selectAllWriter();
+            List<PublisherDto> publisherDto = adminService.selectAllPublisher();
 
 //            System.out.println("\n\nadmin//Large//categoryResponse = " + Arrays.toString(categoryResponse.toArray())+"\n\n");
             m.addAttribute("cl", categoryResponse);
+            m.addAttribute("authors", writerDto);
+            m.addAttribute("publishers", publisherDto);
         } catch(Exception e){
             e.printStackTrace();
         }
