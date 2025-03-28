@@ -168,7 +168,7 @@
             <div class="info-container">
                 <div class="info-title">목차</div>
                 <div class="custom-wow">
-                <div class="book-info2">
+                <div class="book-info2" id="book">
                     <!-- 목차 라인 수 제한 + 더보기 추가 -->
                     <div th:utext="${bookDto.tableOfContent}" class="tableOfCon"></div>
                     <div class="read-more" th:text="'더보기▼'" data-value="0"></div>
@@ -257,17 +257,18 @@
 
 <script>
     $(document).ready(function () {
-        $('.tableOfCon').on('click', function(){
-            console.log($('table'+'.read-more').data('value'));
+        var contentElement = $('.tableOfCon');
+
+        if (contentElement[0].scrollHeight > 300) {
+            $('.read-more').show();  // 내용이 300px을 넘으면 버튼을 보여줍니다.
+        }
+        $('#book').on('click', function(){
             if($('.read-more').data('value') === 0){
                 $('.tableOfCon').css('max-height', 'none');
                 $('.read-more').html('닫기▲').data('value', 1);
-                console.log('table'+$('.read-more').data('value'));
             } else if($('.read-more').data('value') === 1){
-                console.log('readmore'+$('.read-more').data('value'));
                 $('.tableOfCon').css('max-height', '300px');
                 $('.read-more').html('더보기▼').data('value', 0);
-                console.log($('readmore'+'.read-more').data('value'));
             }
         });
         // var container = document.querySelector('.product-image');
