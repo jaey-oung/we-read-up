@@ -147,6 +147,15 @@ public class BookController {
             int reviewCnt = reviewService.countReview(bookId);
             CategoryResponse categoryResponse = bookService.selectCategorySM(bookId);
             categoryResponse.setCategoryLargeName(bookService.selectCategoryL(categoryResponse).getCategoryLargeName());
+            // 리뷰 점수 조회
+            double rating;
+            if(reviewCnt == 0){
+                rating = 0;
+            } else{
+                rating = reviewService.ratingReview(bookId);
+            }
+
+            System.out.println("rating = " + rating);
 
             System.out.println("여기야!!//categoryResponse = " + categoryResponse);
 
@@ -158,6 +167,7 @@ public class BookController {
             m.addAttribute("isLikeUser", isLikeUser);
             m.addAttribute("memberId", memberId);
             m.addAttribute("category", categoryResponse);
+            m.addAttribute("rating", rating);
             System.out.println("bookDetail//isLikeUser = " + isLikeUser);
 
 
