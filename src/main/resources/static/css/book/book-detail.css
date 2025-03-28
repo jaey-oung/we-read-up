@@ -574,8 +574,22 @@ body {
     margin-left:-5px;
 }
 
+.tableOfCon{
+    max-height:300px;
+    overflow:hidden;
+    transition: max-height 0.5s ease;
+    cursor: pointer;
+    color:#000000;
+    display:inline-block
+}
 
-
+.read-more {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 13px;
+}
 
 
 
