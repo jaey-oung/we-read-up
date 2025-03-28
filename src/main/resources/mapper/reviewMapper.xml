@@ -3,6 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wru.wrubookstore.mapper.reviewMapper">
+    <!-- 해당 책의 등록된 리뷰의 별점들 조회 -->
+    <select id="ratingReview" parameterType="int" resultType="double">
+        SELECT COALESCE(SUM(rating),0)/COUNT(*)
+        FROM review
+        WHERE book_id=#{bookId}
+    </select>
     <!-- 해당 책의 등록된 리뷰의 수 조회 -->
     <select id="countReview" parameterType="int" resultType="int">
         SELECT count(*)

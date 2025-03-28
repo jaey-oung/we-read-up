@@ -48,4 +48,10 @@ public class ReviewRepositoryImpl implements ReviewRepository {
         session.update(namespace + "modifyReview", reviewDto);
     }
 
+    // 해당 책의 등록된 리뷰 점수 조회
+    @Override
+    public double ratingReview(Integer bookId) throws Exception{
+        return session.selectOne(namespace + "ratingReview", bookId);
+    }
+
 }

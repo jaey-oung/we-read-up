@@ -45,4 +45,9 @@ public class ReviewServiceImpl implements ReviewService {
     public void modifyReview(ReviewDto reviewDto) throws Exception{
         reviewRepository.modifyReview(reviewDto);
     }
+    // 해당 책의 등록된 리뷰의 점수 조회
+    @Override
+    public double ratingReview(Integer bookId) throws Exception{
+        return reviewRepository.ratingReview(bookId);
+    }
 }
