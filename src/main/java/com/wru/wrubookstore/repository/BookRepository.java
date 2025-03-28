@@ -58,4 +58,8 @@ public interface BookRepository {
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;
+
+    CategoryResponse selectCategorySM(Integer bookId) throws Exception;
+
+    CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception;
 }

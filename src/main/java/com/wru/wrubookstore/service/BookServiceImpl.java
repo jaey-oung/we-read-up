@@ -6,6 +6,7 @@ import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.repository.BookRepository;
+import jakarta.validation.constraints.Negative;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -132,6 +133,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public int selectSearchCnt(MainSearchCondition sc) throws Exception {
         return bookRepository.selectSearchCnt(sc);
+    }
+
+    // 카테고리 소, 중 검색 이름
+    @Override
+    public CategoryResponse selectCategorySM(Integer bookId) throws Exception{
+        return bookRepository.selectCategorySM(bookId);
+    }
+
+    // 카테고리 대 검색 이름
+    @Override
+    public CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception{
+        return bookRepository.selectCategoryL(categoryResponse);
     }
 
 }
