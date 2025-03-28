@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/book/book-detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -19,7 +20,7 @@
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <span>홈 / 아우터</span>
+                <span th:text="${category.categoryMediumName+' / '+category.categorySmallName}">홈 / 아우터</span>
             </div>
 
             <div class="second-category">
@@ -43,16 +44,43 @@
                     </p>
 
                     <div class="addtional-info">
-                        <p><strong>정가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> <span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'"></span></p>
-                        <p><strong>판매가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
-                            <span th:text="${#numbers.formatInteger(bookDto.salePrice,3,'COMMA')}+'원'" style="font-size:23px; vertical-align: -3px;"></span>
+                        <p><strong>정가</strong><span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'" style="margin-left:66px"></span></p>
+                        <p><strong>판매가</strong>
+                            <span th:text="${#numbers.formatInteger(bookDto.salePrice,3,'COMMA')}+'원'" style="font-size:23px; vertical-align: -3px; margin-left:43px"></span>
                             <span th:text="'('+${#numbers.formatInteger(bookDto.discountPercent*100, 0)}+'%, '+${bookDto.discountPrice}+'원 할인)'"></span>
                         </p>
-                        <p><strong>마일리지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
-                            <span th:text="${#numbers.formatInteger(#numbers.formatInteger(bookDto.originalPrice*0.05,0),3,'COMMA')}+'원(5%) + 멤버십(최대6%)'"></span>
+                        <p><strong>마일리지</strong>
+                            <span th:text="${#numbers.formatInteger(#numbers.formatInteger(bookDto.originalPrice*0.05,0),3,'COMMA')}+'원(5%) + 멤버십(최대6%)'" style="margin-left:29px"></span>
                         </p>
-                        <p><strong>배송방법&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 택배</p>
-                        <p><strong>배송비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> 무료</p>
+                        <p><strong>배송방법</strong><span style="margin-left:34px">택배</span></p>
+                        <p><strong>배송비</strong><span style="margin-left:50px">무료</span></p>
+                        <p><span>
+                            <span class="custom-rating2">
+                                <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                                    <th:block th:if="${rating == 0}">
+                                            <i class="far fa-star" style="color:#ff1493; margin-left:-5px;font-size:20px"></i>
+                                    </th:block>
+                                    <!-- rating이 i보다 작으면 꽉찬별 -->
+                                    <th:block th:if="${rating >= i}">
+                                        <i class="fas fa-star" style="color:#ff1493;margin-left:-5px;font-size:20px"></i>
+                                    </th:block>
+                                    <th:block th:if="${rating < i}">
+                                        <th:block th:if="${i - rating >= 1 && rating != 0}">
+                                            <i class="far fa-star" style="color:#ff1493;margin-left:-5px;font-size:20px"></i>
+                                        </th:block>
+                                        <th:block th:if="${i - rating < 1}">
+                                             <i class="fas fa-star-half-alt" style="color:#ff1493;margin-left:-5px;font-size:20px"></i>
+                                        </th:block>
+                                    </th:block>
+
+                                </th:block>
+<!--                                    <i class="fas fa-star"></i>-->
+<!--                                    <i class="fas fa-star-half-alt"></i>-->
+<!--                                    <i class="far fa-star"></i>-->
+                            </span>
+                            <span th:text="${rating}" style="margin-left:5px;color:#ff1493;font-weight: bold "></span>
+                        </span><span th:text="${'리뷰('+reviewCnt+')'}" style="margin-left:15px"></span></p>
+
                     </div>
 
                     <div class="addtional-info">
@@ -75,21 +103,36 @@
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
                     <form class="button-group" id="btnForm">
-                        <button type="button" class="buy-now" onclick="buyNow(this)"
-                            th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
+                        <th:block th:if="${bookDto.stockQuantity != 0}">
+                            <button type="button" class="buy-now" onclick="buyNow(this)"
+                                    th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
                             data-name=${bookDto.name}, data-price=${bookDto.salePrice}">
-                            BUY IT NOW
-                        </button>
-                        <button type="button" class="cart"
-                            th:attr="data-book-id=${bookDto.bookId},
+                                BUY IT NOW
+                            </button>
+                        </th:block>
+                        <th:block th:if="${bookDto.stockQuantity == 0}">
+                            <button type="button" class="buy-now" id="buy-BTN">
+                                BUY IT NOW
+                            </button>
+                        </th:block>
+
+                        <th:block th:if="${bookDto.stockQuantity != 0}">
+                            <button type="button" class="cart" id="cart"
+                                    th:attr="data-book-id=${bookDto.bookId},
                             data-quantity=1,
                             data-price=${bookDto.salePrice}">
-                            CART
-                        </button>
+                                CART
+                            </button>
+                        </th:block>
+                        <th:block th:if="${bookDto.stockQuantity == 0}">
+                            <button type="button" class="cart" id="cart-BTN">
+                                CART
+                            </button>
+                        </th:block>
+
+
 
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
-
-
 
                         <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
@@ -105,17 +148,19 @@
                 <div class="info-title">기본정보</div>
                 <div class="custom-wow">
                     <div class="book-info2">
-                        <span th:text="${bookDto.page}+'쪽'" >216쪽</span>
-                        <span th:text="${bookDto.size}+'mm'">145*210mm</span>
-                        <span th:text="${bookDto.weight}+'g'">300g</span>
-                        <span th:text="'ISBN : '+${bookDto.isbn}">ISBN : 9788936434120</span>
+                        <span th:text="${bookDto.page}+'쪽'" class="mag">216쪽</span>
+                        <span th:text="${bookDto.size}+'mm'" class="mag">145*210mm</span>
+                        <span th:text="${bookDto.weight}+'g'" class="mag">300g</span>
+                        <span th:text="'ISBN : '+${bookDto.isbn}" class="mag">ISBN : 9788936434120</span>
                     </div>
 
                     <br>
                     <div class="book-info2">
+                        <br>
                         <div><strong style="color:#000000">주제 분류</strong></div>
                         <!-- 추가 예정 -->
-                        <div style="color:#000000">카테고리</div>
+                        <br>
+                        <div style="color:#000000" th:text="${category.categoryLargeName+' > '+category.categoryMediumName+' > '+category.categorySmallName}">카테고리</div>
                     </div>
                 </div>
             </div>
@@ -198,7 +243,7 @@
 
                     <!-- 리뷰가 없을 때 이거 가운데로 옮겨 줘야됨 -->
                     <div class="book-info" th:if="${reviewCnt == 0}">
-                        <div>리뷰가 없습니다!</div>
+                        <div style="margin-left:500px">등록된 리뷰가 없습니다!</div>
                     </div>
                 </div>
 
@@ -212,6 +257,22 @@
 
 <script>
     $(document).ready(function () {
+        // var container = document.querySelector('.product-image');
+        // container.addEventListener('mousemove', function(e){
+        //     var x = e.offsetX;
+        //     var y = e.offsetY;
+        //     var rotateY = -1/30 * x + 30;
+        //     var rotateX = 1/20 * y - 20;
+        //     container.style = `transform : rotateY(${rotateY}deg) rotateX(${rotateX}deg) perspective(350px)`
+        // })
+        $('#buy-BTN').on('click', function(){
+            alert('재고가 없습니다!');
+            return false;
+        });
+        $('#cart-BTN').on('click', function(){
+            alert('재고가 없습니다!');
+            return false;
+        });
         // 수정 버튼을 누르면 삭제버튼은 완료버튼으로 수정 버튼은 취소 버튼으로?
         $(document).on('click', '#modBtn', function() {
             if($('#modCnt').val() === '1'){
@@ -362,7 +423,7 @@
         updateTotal();
 
         // 장바구니 버튼
-        const addCartButtons = document.querySelectorAll(".cart");
+        const addCartButtons = document.querySelectorAll("#cart");
 
         addCartButtons.forEach(button => {
             button.addEventListener("click", () => {

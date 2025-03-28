@@ -4,6 +4,7 @@ import com.wru.wrubookstore.domain.PageHandler;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.domain.SearchCondition;
 import com.wru.wrubookstore.dto.*;
+import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
@@ -144,7 +145,19 @@ public class BookController {
             List<ReviewListResponse> review = reviewService.selectReview(bookId);
             // 리뷰가 있는지 없는지 확인
             int reviewCnt = reviewService.countReview(bookId);
+            CategoryResponse categoryResponse = bookService.selectCategorySM(bookId);
+            categoryResponse.setCategoryLargeName(bookService.selectCategoryL(categoryResponse).getCategoryLargeName());
+            // 리뷰 점수 조회
+            double rating;
+            if(reviewCnt == 0){
+                rating = 0;
+            } else{
+                rating = reviewService.ratingReview(bookId);
+            }
 
+            System.out.println("rating = " + rating);
+
+            System.out.println("여기야!!//categoryResponse = " + categoryResponse);
 
             m.addAttribute("review", review);
             m.addAttribute("bookDto", bookDto);
@@ -153,6 +166,8 @@ public class BookController {
             m.addAttribute("reviewCnt", reviewCnt);
             m.addAttribute("isLikeUser", isLikeUser);
             m.addAttribute("memberId", memberId);
+            m.addAttribute("category", categoryResponse);
+            m.addAttribute("rating", rating);
             System.out.println("bookDetail//isLikeUser = " + isLikeUser);
 
 

@@ -56,4 +56,10 @@ public interface BookService {
 
     // 검색 결과 개수 조회
     int selectSearchCnt(MainSearchCondition sc) throws Exception;
+
+    // 카테고리 소, 중 검색 이름
+    CategoryResponse selectCategorySM(Integer bookId) throws Exception;
+
+    // 카테고리 대 검색 이름
+    CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception;
 }

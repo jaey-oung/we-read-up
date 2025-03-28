@@ -44,6 +44,20 @@
         <result property="categorySmallId" column="category_small_id"/>
         <result property="categorySmallName" column="category_small_name"/>
     </resultMap>
+    <select id="selectCategoryL" parameterType="CategoryResponse" resultType="CategoryResponse" resultMap="categoryResultMap">
+        SELECT name AS category_large_name
+        FROM category_large
+        WHERE category_large_id=#{categoryLargeId}
+    </select>
+    <!-- 카테고리 소,중 조회 -->
+    <select id="selectCategorySM" parameterType="int" resultType="CategoryResponse" resultMap="categoryResultMap">
+        SELECT m.name AS category_medium_name, cs.name AS category_small_name, category_large_id FROM category_medium m,
+               (SELECT name, category_medium_id FROM category_small,
+                       (SELECT category_small_id FROM book WHERE book_id = #{bookId}) AS bs
+                WHERE bs.category_small_id = category_small.category_small_id) AS cs
+        WHERE cs.category_medium_id=m.category_medium_id
+    </select>
+
     <!-- 카테고리 대 조회 -->
     <select id="selectCategoryLarge" resultType="CategoryResponse" resultMap="categoryResultMap">
         SELECT category_large_id, name AS category_large_name

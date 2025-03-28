@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/book/book-list.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
 </head>
 <body>
 
@@ -39,70 +39,86 @@
     </div>
 
     <div class="content-main">
-        <div class="sort">
-            <p class="product-count">
-                총 <strong class="highlight" th:text="${ph.totalCnt}"></strong>개의 상품이 있습니다.
-            </p>
+        <div class="product-header">
+            <div class="sort">
+                <p class="product-count">
+                    총 <strong class="highlight" th:text="${ph.totalCnt}"></strong>개의 상품이 있습니다.
+                </p>
 
-                <!-- 정렬 방식 추가 -->
-                <select>
-                    <option value="">- 정렬방식 -</option>
-                    <option value="latest">최신순</option>
-                    <option value="low-price">낮은 가격순</option>
-                    <option value="high-price">높은 가격순</option>
-                </select>
             </div>
-
-            <div class="product-grid">
-                <!-- 쿼리 스트링으로 값 넘겨주기 -->
-                <a style="text-decoration:none;" th:each="item : ${list}" th:href="@{'/bookDetail?bookId='+${item.bookId}+'&page='+${ph.page}+'&category='+${category}+'&pageSize='+${ph.pageSize}}" class="product">
-                    <img style="height:80%;width:100%" th:src="${item.image}" th:alt="${item.name}">
-                    <div class="hover-buttons">
-                        <!-- 장바구니 추가 -->
-                        <button class="add-cart-btn"
-                            th:attr="data-book-id=${item.bookId},
-                            data-price=${item.salePrice}">
-                            장바구니
-                        </button>
-                        <!-- 주문으로 넘어가기 추가 -->
-                        <button>구매</button>
-                    </div>
-                    <p class="product-name" th:text="${item.name}"></p>
-                    <!-- 지은이 | 출판사 -->
-<!--                    <p class="product-name" th:text="${item.name+'|'}"></p>-->
-                    <p class="product-price" id="salePrice" >
-                        <strong th:text="${#numbers.formatInteger(item.salePrice, 3,'COMMA')+'원 / '+#numbers.formatInteger(item.originalPrice * 0.05,3,'COMMA')+'원'}"></strong>
-                    </p>
-                </a>
+            <!-- 정렬 방식 추가 -->
+            <div class="sort-select">
+                <label>
+                    <select>
+                        <option value="">- 정렬방식 -</option>
+                        <option value="latest">최신순</option>
+                        <option value="low-price">낮은 가격순</option>
+                        <option value="high-price">높은 가격순</option>
+                    </select>
+                </label>
             </div>
-            <form class="howtopag" id="form" th:action="@{${uri}}" method="get">
-                <!-- 이전 페이지 -10 -->
-                <th:block th:if="${ph.page -10 > 0}">
-                    <button type="submit" name="page" th:value="${ph.page -10}">❮❮</button>
-                </th:block>
-                <!-- 이전 페이지 -1 -->
-                <th:block th:if="${ph.page -1 > 0}">
-                    <button type="submit" name="page" th:value="${ph.page -1}">❮</button>
-                </th:block>
-                <!-- 페이지 1-10 -->
-                <th:block th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
-                    <button type="submit" name="page" th:text="${i}" th:value="${i}">num</button>
-                </th:block>
-                <!-- 다음 페이지 +1 -->
-                <th:block th:if="${ph.page+1 <= ph.totalPage}">
-                    <button type="submit" name="page" th:value="${ph.page+1}">❯</button>
-                </th:block>
-                <!-- 다음 페이지 +10 -->
-                <th:block th:if="${ph.page +10 <= ph.totalPage}">
-                    <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
-                </th:block>
-                <!-- 요청 넘겨주기용 input -->
-                <input type="hidden" id="category" name="category" th:value="${sc.category}"/>
-                <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
-                <input type="hidden" id="option" name="option" th:value="${sc.option}"/>
-                <input type="hidden" id="keyword" name="keyword" th:value="${sc.keyword}"/>
-            </form>
         </div>
+
+        <!-- 상품 결과 없음 -->
+        <div class="product-empty" th:if="${#lists.isEmpty(list)}">
+            <div class="empty-icon">
+                <i class='bx bx-error-circle'></i>
+            </div>
+            <p class="empty-title">상품이 없습니다.</p>
+            <p class="empty-desc">검색어의 철자가 정확한지 다시 한 번 확인해주세요!</p>
+        </div>
+
+        <!-- 상품 목록 -->
+        <div class="product-grid" th:if="${not #lists.isEmpty(list)}">
+            <!-- 쿼리 스트링으로 값 넘겨주기 -->
+            <a style="text-decoration:none;" th:each="item : ${list}" th:href="@{'/bookDetail?bookId='+${item.bookId}+'&page='+${ph.page}+'&category='+${category}+'&pageSize='+${ph.pageSize}}" class="product">
+                <img style="height:80%;width:100%" th:src="${item.image}" th:alt="${item.name}">
+                <div class="hover-buttons">
+                    <!-- 장바구니 추가 -->
+                    <button class="add-cart-btn"
+                        th:attr="data-book-id=${item.bookId},
+                        data-price=${item.salePrice}">
+                        장바구니
+                    </button>
+                    <!-- 주문으로 넘어가기 추가 -->
+                    <button>구매</button>
+                </div>
+                <p class="product-name" th:text="${item.name}"></p>
+                <!-- 지은이 | 출판사 -->
+<!--                    <p class="product-name" th:text="${item.name+'|'}"></p>-->
+                <p class="product-price" id="salePrice" >
+                    <strong th:text="${#numbers.formatInteger(item.salePrice, 3,'COMMA')+'원 / '+#numbers.formatInteger(item.originalPrice * 0.05,3,'COMMA')+'원'}"></strong>
+                </p>
+            </a>
+        </div>
+        <form class="howtopag" id="form" th:if="${not #lists.isEmpty(list)}" th:action="@{${uri}}" method="get">
+            <!-- 이전 페이지 -10 -->
+            <th:block th:if="${ph.page -10 > 0}">
+                <button type="submit" name="page" th:value="${ph.page -10}">❮❮</button>
+            </th:block>
+            <!-- 이전 페이지 -1 -->
+            <th:block th:if="${ph.page -1 > 0}">
+                <button type="submit" name="page" th:value="${ph.page -1}">❮</button>
+            </th:block>
+            <!-- 페이지 1-10 -->
+            <th:block th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                <button type="submit" name="page" th:text="${i}" th:value="${i}">num</button>
+            </th:block>
+            <!-- 다음 페이지 +1 -->
+            <th:block th:if="${ph.page+1 <= ph.totalPage}">
+                <button type="submit" name="page" th:value="${ph.page+1}">❯</button>
+            </th:block>
+            <!-- 다음 페이지 +10 -->
+            <th:block th:if="${ph.page +10 <= ph.totalPage}">
+                <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
+            </th:block>
+            <!-- 요청 넘겨주기용 input -->
+            <input type="hidden" id="category" name="category" th:value="${sc.category}"/>
+            <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
+            <input type="hidden" id="option" name="option" th:value="${sc.option}"/>
+            <input type="hidden" id="keyword" name="keyword" th:value="${sc.keyword}"/>
+        </form>
+    </div>
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
