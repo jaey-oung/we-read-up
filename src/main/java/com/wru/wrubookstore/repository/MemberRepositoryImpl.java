@@ -64,6 +64,16 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public MemberDto selectByNameAndPhoneNum(MemberDto memberDto) throws Exception {
+        return session.selectOne(namespace + "selectByNameAndPhoneNum", memberDto);
+    }
+
+    @Override
+    public MemberDto selectByEmailAndNameAndPhoneNum(MemberDto memberDto) throws Exception {
+        return session.selectOne(namespace + "selectByEmailAndNameAndPhoneNum", memberDto);
+    }
+
+    @Override
     public int updateUser(MemberDto memberDto) throws Exception {
         return session.update(namespace+"updateUser", memberDto);
     }
@@ -76,6 +86,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public int updateMileage(Map<String, Integer> map) throws Exception {
         return session.update(namespace + "updateMileage", map);
+    }
+
+    @Override
+    public int updateLastMonthAmount(Map<String, Integer> map) throws Exception {
+        return session.update(namespace + "updateLastMonthAmount", map);
     }
 
     @Override
