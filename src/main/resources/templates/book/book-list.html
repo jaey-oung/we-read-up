@@ -87,11 +87,29 @@
                         구매
                     </button>
                 </div>
-                <p class="product-name" th:text="${item.name}"></p>
-                <!-- 지은이 | 출판사 -->
-<!--                    <p class="product-name" th:text="${item.name+'|'}"></p>-->
-                <p class="product-price" id="salePrice" >
-                    <strong th:text="${#numbers.formatInteger(item.salePrice, 3,'COMMA')+'원 / '+#numbers.formatInteger(item.originalPrice * 0.05,3,'COMMA')+'원'}"></strong>
+                <p class="product-name" style="font-size:17px; margin-bottom:-2px; font-weight: bold " th:text="${item.name}"></p>
+                <p style="color:#888888; margin-top:10px;margin-bottom:2px;font-size:14px">
+                    <th:block th:each="i : ${writerListResponse}" style="display:inline-block;">
+                        <th:block th:each="writer, stat : ${i}">
+                            <th:block th:if="${item.bookId == writer.bookId}">
+                                <span th:text="${writer.name}"></span>
+                                <th:block th:if="${stat.count < stat.size}">
+                                    <span th:text="','" style="margin-left:-5px;margin-right:-5px"></span>
+                                </th:block>
+                                <th:block th:if="${stat.count == stat.size}">
+                                    <span th:text="'지음 | '" style="margin-left:-3px;margin-right:-2px"></span>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                    <th:block th:each="i : ${publisherListResponse}">
+                        <th:block th:if="${i.key == item.publisherId}">
+                            <span th:text="${i.value}"></span>
+                        </th:block>
+                    </th:block>
+                </p>
+                <p class="product-price" id="salePrice" style="margin-top:0" >
+                    <strong style="color:black; font-size:17px;" th:text="${#numbers.formatInteger(item.salePrice, 3,'COMMA')+'원 '}"></strong><span style="color:#888888" th:text="${'('+#numbers.formatInteger(item.originalPrice * 0.05,3,'COMMA')+'P)'}"></span>
                 </p>
             </a>
         </div>

@@ -6,6 +6,8 @@ import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -154,5 +156,17 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception{
         return session.selectOne(namespace + "selectCategoryL", categoryResponse);
+    }
+
+    // 지은이 이름 조회
+    @Override
+    public List<WriterListResponse> selectWriterName(Integer bookId) throws Exception{
+        return session.selectList(namespace + "selectWriterName", bookId);
+    }
+
+    // 출판사 이름 조회
+    @Override
+    public PublisherListResponse selectPublisherName(String publisherId) throws Exception{
+        return session.selectOne(namespace + "selectPublisherName", publisherId);
     }
 }
