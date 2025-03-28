@@ -95,6 +95,13 @@ public class BookController {
                 default -> throw new Exception("잘못된 옵션입니다.");
             };
 
+            List<String> writer = new ArrayList<>();
+            List<String> publisher = new ArrayList<>();
+            for(BookDto dto : list){
+                writer = bookService.selectWriter(dto.getBookId());
+                dto.getPublisherId();
+            }
+
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);

@@ -3,7 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wru.wrubookstore.mapper.AdminMapper">
-
+    <!-- 책한 권에 등록된 출판사 -->
+    <select id="selectPublisherName" parameterType="int" resultType="String">
+        SELECT p.name
+        FROM book b, (SELECT publisher_id, name FROM publisher) AS p
+        WHERE b.book_id=#{bookId} AND b.publisher_id=p.publisher_id;
+    </select>
+    <!-- 책 한권에 등록된 지은이 모두 담기 -->
+    <select id="selectWriterName" parameterType="int" resultType="String">
+        SELECT w.name
+        FROM writer w, (SELECT writer_id FROM writer_book WHERE book_id=#{bookId}) AS wb
+        WHERE w.writer_id=wb.writer_id;
+    </select>
     <!-- 마지막으로 등록한 writer_book 코드 조회 -->
     <select id="selectWriterBookId" resultType="String">
         SELECT writer_book_id

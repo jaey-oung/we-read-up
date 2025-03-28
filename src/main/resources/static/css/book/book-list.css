@@ -98,15 +98,18 @@ body {
 
 /* 제품명 및 가격 스타일 */
 .product-name {
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
     color: #333;
+    text-decoration: none !important;
 }
 
 .product-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: black;
+    font-size: 16px;
+
+    color: darkred;
+    text-decoration: none !important;
 }
 
 /* 버튼 컨테이너 (기본적으로 숨김) */
