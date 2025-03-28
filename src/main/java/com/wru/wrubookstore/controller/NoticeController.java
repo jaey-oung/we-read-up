@@ -29,8 +29,8 @@ public class NoticeController {
 
     @PostMapping("/modify")
     public String modify(NoticeDto noticeDto, Model m, HttpSession session, RedirectAttributes rdatt){
-        //        String employee_id = (String) session.getAttribute("id");
-        String employee_id = "emp_1";
+        String employee_id = (String) session.getAttribute("employeeId");
+//        String employee_id = "emp_1";
         noticeDto.setEmployeeId(employee_id);
         try {
             int rowCnt = noticeService.modify(noticeDto);  // insert
@@ -57,9 +57,9 @@ public class NoticeController {
 
     @PostMapping("/write")
     public String write(NoticeDto noticeDto, Model m, HttpSession session, RedirectAttributes rdatt){
-//        String employee_id = (String) session.getAttribute("id");
-        String employee_id = "emp_1";
-        noticeDto.setEmployeeId(employee_id);
+        String employeeId = (String) session.getAttribute("employeeId");
+//        String employee_id = "emp_1";
+        noticeDto.setEmployeeId(employeeId);
 
         try {
             int rowCnt = noticeService.write(noticeDto);  // insert
@@ -81,8 +81,8 @@ public class NoticeController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam("noticeId")Integer noticeId, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rdatt) {
-//        String employeeId = (String) session.getAttribute("id");
-        String employeeId = "emp_1";
+        String employeeId = (String) session.getAttribute("employeeId");
+//        String employeeId = "emp_1";
         try {
             m.addAttribute("page", page);
             m.addAttribute("pageSize", pageSize);
@@ -105,9 +105,12 @@ public class NoticeController {
     }
 
     @GetMapping("/notice-detail")
-    public String read(@RequestParam("notice_id")Integer notice_id, Integer page, Integer pageSize, Model m) {
+    public String read(@RequestParam("notice_id")Integer notice_id, Integer page, Integer pageSize, Model m,HttpSession session) {
         try {
             NoticeDto noticeDto = noticeService.read(notice_id);
+            String employeeId = (String) session.getAttribute("employeeId");
+            Integer userId = (Integer) session.getAttribute("userId");
+            noticeDto.setEmployeeId(employeeId);
 
 //            System.out.println("noticeDto: " + noticeDto);  // 로그 확인
 
@@ -115,6 +118,8 @@ public class NoticeController {
             m.addAttribute("page", page);
             m.addAttribute("pageSize", pageSize);
             m.addAttribute("mode", "read"); // mode 추가
+            m.addAttribute("employeeId", employeeId);
+            m.addAttribute("userId", userId);
 
             // searchCondition 추가
             SearchCondition sc = new SearchCondition(page, pageSize);
@@ -127,10 +132,12 @@ public class NoticeController {
     }
 
     @GetMapping("/notice-list")
-    public String list(@ModelAttribute SearchCondition sc, Model m, HttpServletRequest request) {
+    public String list(@ModelAttribute SearchCondition sc, Model m, HttpServletRequest request, HttpSession session, NoticeDto noticeDto) {
 //        if(!loginCheck(request))
 //            return "redirect:/login/login?toURL="+request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
-
+        String employeeId = (String) session.getAttribute("employeeId");
+        noticeDto.setEmployeeId(employeeId);
+        System.out.println("employeeId = " + employeeId);
         try {
             int totalCnt = noticeService.getSearchResultCnt(sc);
             m.addAttribute("totalCnt", totalCnt);
@@ -140,6 +147,7 @@ public class NoticeController {
             List<NoticeDto> list = noticeService.getSearchResultPage(sc);
             m.addAttribute("list", list);
             m.addAttribute("ph", noticepageHandler);
+            m.addAttribute("employeeId", employeeId);
 
             System.out.println("Notice List: " + list);
 

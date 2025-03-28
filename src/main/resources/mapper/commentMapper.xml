@@ -32,7 +32,7 @@
     </select>
 
     <select id="selectCommentsByNoticeId" parameterType="int" resultType="CommentDto">
-        SELECT c.comment_id, c.notice_id, c.content, c.member_id, m.nickname, c.reg_date, c.mod_date
+        SELECT c.comment_id, c.notice_id, c.content, c.member_id, m.nickname, c.reg_date, c.mod_date, m.user_id
         FROM comment c
                  JOIN member m ON c.member_id = m.member_id
         WHERE c.notice_id = #{noticeId}

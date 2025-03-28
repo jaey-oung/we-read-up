@@ -38,7 +38,13 @@
 
     <select id="selectAll" resultType="NoticeDto">
         <include refid="selectFromNotice"/>
-        ORDER BY reg_date DESC, notice_id DESC
+        ORDER BY
+        CASE
+        WHEN n.title LIKE '[중요]%' THEN 0
+        ELSE 1
+        END,
+        n.reg_date DESC,
+        n.notice_id DESC;
     </select>
 
     <update id="update" parameterType="NoticeDto">
@@ -74,7 +80,13 @@
         <include refid="selectFromNotice"/>
         WHERE true
         <include refid="searchCondition"/>
-        ORDER BY reg_date DESC, notice_id DESC
+        ORDER BY
+        CASE
+        WHEN n.title LIKE '[중요]%' THEN 0
+        ELSE 1
+        END,
+        n.reg_date DESC,
+        n.notice_id DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
