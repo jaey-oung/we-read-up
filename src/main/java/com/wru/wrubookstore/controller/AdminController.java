@@ -217,9 +217,8 @@ public class AdminController {
 
                     bookId = adminService.selectBook(dto).getBookId();
                     System.out.println("\n책등록3//bookId = " + bookId);
-                } else{
-                    bookId = adminService.selectBook(dto).getBookId();
-                    System.out.println("\n책등록44//bookId = " + bookId);
+                } else {
+                    return "isbn is already exist";
                 }
             }
 
@@ -341,13 +340,16 @@ public class AdminController {
     }
 
     @GetMapping("/bookList")
-    public String bookList(Model m, Integer page, Integer pageSize){
+    public String bookList(Model m, Integer page, Integer pageSize, Integer quantity, String name){
         try{
             if(page == null || page < 1){
                 page = 1;
             }
             if(pageSize == null || pageSize < 1){
                 pageSize = 5;
+            }
+            if(quantity == null){
+                quantity = 1;
             }
 
             // 관리자용 등록된 상품 갯수
@@ -358,7 +360,7 @@ public class AdminController {
             m.addAttribute("countQuantityZeroByAdmin", countQuantityZeroByAdmin);
 
             // 페이징
-            PageHandler pageHandler = new PageHandler(countAllByAdmin, page, pageSize);
+            PageHandler pageHandler = new PageHandler(quantity == 1 ? countAllByAdmin : quantity == 0 ? countQuantityZeroByAdmin : countAllByAdmin-countQuantityZeroByAdmin, page, pageSize);
             m.addAttribute("ph", pageHandler);
 
             // 상품 정보
@@ -366,10 +368,28 @@ public class AdminController {
             map.put("offset", (page-1)*pageSize);
             map.put("limit", pageSize);
 
-            List<BookDto> bookDto = bookService.selectBook(map);
+            List<BookDto> bookDto = new ArrayList<>();
+
+            if(name != null && !name.isEmpty()){
+                // 검색
+                bookDto = adminService.searchBook(name);
+            } else if(quantity == 1 && bookService.selectBook(map) != null){
+                // 모두 보여주기
+                bookDto = bookService.selectBook(map);
+            } else if(quantity == 2 && adminService.selectZeroNotQuantityBook(map) != null){
+                // 판매중인 상품만 보여주기
+                bookDto = adminService.selectZeroNotQuantityBook(map);
+            } else if(quantity == 0 && adminService.selectZeroQuantityBook(map) != null){
+                // 재고0인 상품만 보여주기
+                bookDto = adminService.selectZeroQuantityBook(map);
+            } else {
+                // select가 null 인경우
+                bookDto = null;
+            }
 
             // 상품 정보
             m.addAttribute("bookDto", bookDto);
+            m.addAttribute("quantity", quantity);
 
         } catch (Exception e){
             e.printStackTrace();

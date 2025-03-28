@@ -3,6 +3,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wru.wrubookstore.mapper.AdminMapper">
+    <!-- 검색 -->
+    <select id="searchBook" parameterType="String" resultType="BookDto">
+        SELECT *
+        FROM book
+        WHERE name LIKE CONCAT('%',#{name} ,'%')
+    </select>
+    <!-- 재고가 0인 책 모두 조회 -->
+    <select id="selectZeroQuantityBook" parameterType="map" resultType="BookDto">
+        SELECT *
+        FROM book
+        WHERE stock_quantity=0
+        ORDER BY book_id desc
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 재고가 0이 아닌 책 모두 조회 -->
+    <select id="selectZeroNotQuantityBook" parameterType="map" resultType="BookDto">
+        SELECT *
+        FROM book
+        WHERE stock_quantity!=0
+        ORDER BY book_id desc
+        LIMIT #{offset}, #{limit}
+    </select>
     <!-- 책한 권에 등록된 출판사 -->
     <select id="selectPublisherName" parameterType="int" resultType="String">
         SELECT p.name

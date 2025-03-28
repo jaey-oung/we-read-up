@@ -44,6 +44,19 @@
         <result property="categorySmallId" column="category_small_id"/>
         <result property="categorySmallName" column="category_small_name"/>
     </resultMap>
+    <!-- 책에 들어있는 출판사 이름 조회 -->
+    <select id="selectPublisherName" parameterType="String" resultType="PublisherListResponse">
+        SELECT *
+        FROM publisher
+        WHERE publisher_id=#{publisherId}
+    </select>
+    <!-- 책에 들어있는 지은이 조회 -->
+    <select id="selectWriterName" parameterType="int" resultType="WriterListResponse">
+        SELECT book_id, name
+        FROM writer w, (SELECT * FROM writer_book WHERE book_id = #{bookId}) AS wb
+        WHERE w.writer_id=wb.writer_id;
+    </select>
+    <!-- 카테고리 대 조회 -->
     <select id="selectCategoryL" parameterType="CategoryResponse" resultType="CategoryResponse" resultMap="categoryResultMap">
         SELECT name AS category_large_name
         FROM category_large
