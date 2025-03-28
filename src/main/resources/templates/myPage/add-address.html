@@ -33,34 +33,52 @@
 
     <!-- 메인 컨텐츠 -->
     <main class="main-content">
-        <form action="/myPage/addAddress" method="post">
+        <form action="/myPage/addAddress" method="post" th:object="${address}">
             <h3>배송 주소록 관리</h3>
             <div class="form-container">
                 <div class="form-group">
                     <label for="name">* 배송지명</label>
-                    <input type="text" id="name" name="name">
+                    <div class="input-wrapper">
+                        <input type="text" id="name" name="name">
+                        <div class="err-msg" th:if="${#fields.hasErrors('name')}" th:text="${#fields.errors('name').getFirst()}"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="recipient">* 수령인 이름</label>
-                    <input type="text" id="recipient" name="recipient">
+                    <div class="input-wrapper">
+                        <input type="text" id="recipient" name="recipient">
+                        <div class="err-msg" th:if="${#fields.hasErrors('recipient')}" th:text="${#fields.errors('recipient').getFirst()}"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="zipCode">* 주소</label>
                     <div class="address-group">
-                        <input type="text" id="zipCode" name="zipCode" placeholder="우편번호">
+                        <div class="input-wrapper">
+                            <input type="text" id="zipCode" name="zipCode" placeholder="우편번호">
+                            <div class="err-msg" th:if="${#fields.hasErrors('zipCode')}" th:text="${#fields.errors('zipCode').getFirst()}"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label></label>
-                    <input type="text" name="mainAddress" placeholder="기본주소">
+                    <div class="input-wrapper">
+                        <input type="text" name="mainAddress" placeholder="기본주소">
+                        <div class="err-msg" th:if="${#fields.hasErrors('mainAddress')}" th:text="${#fields.errors('mainAddress').getFirst()}"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label></label>
-                    <input type="text" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)">
+                    <div class="input-wrapper">
+                        <input type="text" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)">
+                        <div class="err-msg" th:if="${#fields.hasErrors('detailAddress')}" th:text="${#fields.errors('detailAddress').getFirst()}"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="phoneNum">* 휴대전화</label>
-                    <input type="tel" id="phoneNum" name="phoneNum">
+                    <div class="input-wrapper">
+                        <input type="tel" id="phoneNum" name="phoneNum">
+                        <div class="err-msg" th:if="${#fields.hasErrors('phoneNum')}" th:text="${#fields.errors('phoneNum').getFirst()}"></div>
+                    </div>
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="defaultAddress" name="defaultAddress">
@@ -69,7 +87,7 @@
             </div>
             <div class="btn-container">
                 <input type="submit" value="등록" class="btn black">
-                <input type="reset" value="취소" class="btn">
+                <a href="/myPage/addressList" class="btn">취소</a>
             </div>
         </form>
     </main>
