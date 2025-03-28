@@ -108,6 +108,13 @@ h1 {
     margin-left: 10px;
 }
 
+.form-group .err-msg {
+    text-align: left;
+    margin-top: 5px;
+    font-size: 10px;
+    color: red;
+}
+
 .check-btn {
     height: 42px;
     font-size: 14px;
