@@ -61,4 +61,9 @@ public class UserRepositoryImpl implements UserRepository {
         return session.delete(namespace+"delete", email);
     }
 
+    @Override
+    public int isEmailDuplicated(String email) throws Exception {
+        return session.selectOne(namespace+"isEmailDuplicated", email);
+    }
+
 }
