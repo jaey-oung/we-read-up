@@ -57,6 +57,7 @@ public class LoginController {
         EmployeeDto employeeDto = employeeService.login(email, password);
         if (employeeDto != null) {
             session.setAttribute("employeeId", employeeDto.getEmployeeId());
+            session.setAttribute("authorityId", employeeDto.getAuthorityId());
             session.setAttribute("name", employeeDto.getName());
         } else {
             // 2. 비회원 또는 회원 로그인 시도

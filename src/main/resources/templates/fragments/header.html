@@ -10,10 +10,11 @@
         <div class="toparea">
             <div class="toparea_state">
                 <span th:if="${session.name != null}" th:text="'안녕하세요, ' + ${session.name} + '님'"></span>
-                <a href="/register/form" th:if="${session.userId == null}">회원가입</a>
+                <a href="/register/form" th:if="${session.name == null}">회원가입</a>
                 <a th:href="${session.name == null} ? '/login/login' : '/login/logout'" th:text="${session.name == null} ? '로그인' : '로그아웃'"></a>
-                <a href="/myPage">마이페이지</a>
+                <a href="/myPage" th:if="${session.userId != null}">마이페이지</a>
                 <a href="/board/notice-list">고객센터</a>
+                <a href="/admin/bookList" th:if="${session.authorityId == 'auth_3'}">관리자 페이지</a>
             </div>
         </div>
         <div class="top_nav_box">
