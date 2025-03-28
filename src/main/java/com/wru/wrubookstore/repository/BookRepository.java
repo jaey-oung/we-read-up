@@ -6,12 +6,18 @@ import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.request.order.OrderBookRequest;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 
 import java.util.List;
 import java.util.Map;
 
 public interface BookRepository {
 
+    // 출판사 이름 조회
+    PublisherListResponse selectPublisherName(String publisherId) throws Exception;
+    // 지은이 이름 조회
+    List<WriterListResponse> selectWriterName(Integer bookId) throws Exception;
     // 카테고리 정보 조회
     CategoryDto selectCategoryInfo(String category) throws Exception;
 

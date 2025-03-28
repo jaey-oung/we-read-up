@@ -9,6 +9,7 @@ import com.wru.wrubookstore.repository.AdminRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -18,6 +19,22 @@ public class AdminServiceImpl implements AdminService {
         this.adminRepository = adminRepository;
     }
 
+    // 검색
+    @Override
+    public List<BookDto> searchBook(String name) throws Exception{
+        return adminRepository.searchBook(name);
+    }
+    // 재고 0이아닌 상품 전부 조회
+    @Override
+    public List<BookDto> selectZeroNotQuantityBook(Map map) throws Exception{
+        return adminRepository.selectZeroNotQuantityBook(map);
+    }
+
+    // 재고0인 상품 전부 조회
+    @Override
+    public List<BookDto> selectZeroQuantityBook(Map map) throws Exception{
+        return adminRepository.selectZeroQuantityBook(map);
+    }
     // writer-book 마지막 코드 조회용
     @Override
     public String selectWriterBookId() throws Exception{
