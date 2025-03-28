@@ -3,6 +3,7 @@ package com.wru.wrubookstore.service;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.RankedBookDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 
@@ -62,4 +63,7 @@ public interface BookService {
 
     // 카테고리 대 검색 이름
     CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception;
+
+    // 판매 순위별 상위 5권 조회
+    List<RankedBookDto> getWeeklyRanking() throws Exception;
 }
