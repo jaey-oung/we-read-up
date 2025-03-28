@@ -66,7 +66,7 @@
                 <th>이름</th>
                 <th>정가</th>
                 <th>판매가</th>
-                <th>할인가</th>
+                <th>할인가격</th>
                 <th>할인율</th>
                 <th>등록일</th>
                 <th>ISBN</th>
@@ -82,7 +82,7 @@
                     <td th:text="${i.name}">No name</td>
                     <td th:text="${#numbers.formatInteger(i.originalPrice, 3, 'COMMA')+'원'}">999,999,999원</td>
                     <td th:text="${#numbers.formatInteger(i.salePrice, 3, 'COMMA')+'원'}">999,999,999원</td>
-                    <td th:text="${#numbers.formatInteger(i.discountPrice, 3, 'COMMA')}">0원</td>
+                    <td th:text="${#numbers.formatInteger(i.discountPrice, 3, 'COMMA')+'원'}">0원</td>
                     <td th:text="${#numbers.formatInteger(i.discountPercent*100, 0)+'%'}">0%</td>
                     <td th:text="${#dates.format(i.regDate,'yyyy-MM-dd')}">9999-01-01</td>
                     <td th:text="${i.isbn}">9791130648385</td>
