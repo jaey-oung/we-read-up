@@ -5,7 +5,9 @@ import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.domain.SearchCondition;
 import com.wru.wrubookstore.dto.*;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
 import com.wru.wrubookstore.service.MemberService;
@@ -19,10 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Writer;
+import java.util.*;
 
 @Controller
 public class BookController {
@@ -96,14 +96,22 @@ public class BookController {
                 default -> throw new Exception("잘못된 옵션입니다.");
             };
 
-            List<String> writer = new ArrayList<>();
-            List<String> publisher = new ArrayList<>();
+            List<List<WriterListResponse>> writerListResponse = new ArrayList<>();
+            Map<String,String> publisherListResponse = new HashMap<>();
+
             for(BookDto dto : list){
-                writer = bookService.selectWriter(dto.getBookId());
-                dto.getPublisherId();
+                writerListResponse.add(bookService.selectWriterName(dto.getBookId()));
+                publisherListResponse.put(bookService.selectPublisherName(dto.getPublisherId()).getPublisherId(),bookService.selectPublisherName(dto.getPublisherId()).getName());
             }
 
+//            List<PublisherListResponse> publisher = new ArrayList<>(publisherListResponse);
+
+            System.out.println("출판사 여기//publisherListResponse = " + publisherListResponse);
+            System.out.println("지은이여기//writerListResponse = " + writerListResponse);
+
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
+            model.addAttribute("publisherListResponse", publisherListResponse);
+            model.addAttribute("writerListResponse", writerListResponse);
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);
             model.addAttribute("ph", pageHandler);

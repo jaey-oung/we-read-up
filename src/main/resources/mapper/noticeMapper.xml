@@ -97,4 +97,8 @@
         <include refid="searchCondition"/>
     </select>
 
+    <delete id="deleteCommentsByNoticeId" parameterType="int">
+        DELETE FROM comment WHERE notice_id = #{noticeId}
+    </delete>
+
 </mapper>

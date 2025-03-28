@@ -73,8 +73,8 @@ public class CommentController {
 //        System.out.println("dto = " + dto);
 
         try {
+            MemberDto memberDto = memberService.selectMember(userId);
             if(userId != null){
-                MemberDto memberDto = memberService.selectMember(userId);
                 System.out.println("memberDto = " + memberDto);
 
                 if (memberDto != null) {
@@ -98,20 +98,20 @@ public class CommentController {
 
     // 지정된 댓글을 삭제하는 메서드
     @DeleteMapping("/comments/{commentId}")  // DELETE /comments/9?noticeId=1  <-- 삭제할 댓글 번호
-    public ResponseEntity<String> remove(@PathVariable Integer commentId,@RequestParam Integer noticeId, @RequestBody CommentDto dto, HttpSession session) {
+    public ResponseEntity<String> remove(@PathVariable Integer commentId,@RequestParam Integer noticeId, HttpSession session) {
         Integer userId = (Integer)session.getAttribute("userId");
         Integer memberId;
 
         try {
             if(userId != null){
-                MemberDto memberDto = memberService.selectMember(userId);
+            MemberDto memberDto = memberService.selectMember(userId);
                 System.out.println("memberDto = " + memberDto);
 
                 if (memberDto != null) {
                     memberId = memberDto.getMemberId();
 
-                    dto.setMemberId(memberId);
-                    dto.setNoticeId(noticeId);
+//                    dto.setMemberId(memberId);
+//                    dto.setNoticeId(noticeId);
 
                     int rowCnt = service.remove(commentId, noticeId, memberId);
                     System.out.println("commentId = " + commentId);

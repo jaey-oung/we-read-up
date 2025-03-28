@@ -168,9 +168,10 @@
             <div class="info-container">
                 <div class="info-title">목차</div>
                 <div class="custom-wow">
-                <div class="book-info2">
+                <div class="book-info2" id="book">
                     <!-- 목차 라인 수 제한 + 더보기 추가 -->
-                    <div th:utext="${bookDto.tableOfContent}" style="color:#000000"></div>
+                    <div th:utext="${bookDto.tableOfContent}" class="tableOfCon"></div>
+                    <div class="read-more" th:text="'더보기▼'" data-value="0"></div>
                 </div>
                 </div>
             </div>
@@ -179,8 +180,7 @@
                 <div class="info-title">책소개</div>
                 <div class="custom-wow">
                 <div class="book-info2">
-                    <!-- 책소개 라인 수 제한 + 더보기 추가 -->
-                    <div th:utext="${bookDto.description}" style="color:#000000"></div>
+                    <div th:utext="${bookDto.description}" style="color:#000000; display:inline-block"></div>
                 </div>
                 </div>
             </div>
@@ -257,6 +257,20 @@
 
 <script>
     $(document).ready(function () {
+        var contentElement = $('.tableOfCon');
+
+        if (contentElement[0].scrollHeight > 300) {
+            $('.read-more').show();  // 내용이 300px을 넘으면 버튼을 보여줍니다.
+        }
+        $('#book').on('click', function(){
+            if($('.read-more').data('value') === 0){
+                $('.tableOfCon').css('max-height', 'none');
+                $('.read-more').html('닫기▲').data('value', 1);
+            } else if($('.read-more').data('value') === 1){
+                $('.tableOfCon').css('max-height', '300px');
+                $('.read-more').html('더보기▼').data('value', 0);
+            }
+        });
         // var container = document.querySelector('.product-image');
         // container.addEventListener('mousemove', function(e){
         //     var x = e.offsetX;
