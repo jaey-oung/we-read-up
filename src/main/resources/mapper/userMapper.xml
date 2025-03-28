@@ -56,4 +56,11 @@
         WHERE email = #{email} AND is_member = 0
     </delete>
 
+    <!-- 이메일 중복 확인 -->
+    <select id="isEmailDuplicated" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE email = #{email}
+    </select>
+
 </mapper>

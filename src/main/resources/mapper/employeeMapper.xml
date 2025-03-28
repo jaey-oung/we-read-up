@@ -10,4 +10,11 @@
         WHERE email = #{email} AND password = #{password}
     </select>
 
+    <!-- 이메일 중복 확인 -->
+    <select id="isEmailDuplicated" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM employee
+        WHERE email = #{email}
+    </select>
+
 </mapper>

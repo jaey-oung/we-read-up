@@ -59,4 +59,9 @@ public class UserServiceImpl implements UserService {
     public int delete(String email) throws Exception {
         return userRepository.delete(email);
     }
+
+    @Override
+    public int isEmailDuplicated(String email) throws Exception {
+        return userRepository.isEmailDuplicated(email.trim());
+    }
 }
