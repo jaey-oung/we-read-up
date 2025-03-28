@@ -33,24 +33,24 @@
                 <div class="user-info">
                     <div class="row">
                         <span class="label">이름</span>
-                        <span>홍길동</span>
+                        <span th:text="${member.name}">홍길동</span>
                     </div>
                     <div class="row">
                         <span class="label">휴대폰번호</span>
-                        <span>010-1234-5678</span>
+                        <span th:text="${member.phoneNum}">010-1234-5678</span>
                     </div>
                 </div>
 
                 <div class="id-list">
                     <label class="id-radio">
                         <input type="radio" name="selectedId" checked>
-                        <span class="id-text">roo* ( 개인회원, 2025-03-16 가입 )</span>
+                        <span class="id-text" th:text="|${member.email} ( ${member.regDate} 가입 )|">roo* (2025-03-16 가입 )</span>
                     </label>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn">로그인</button>
-                    <button class="btn black">비밀번호 찾기</button>
+                    <a href="/login/login" class="btn">로그인</a>
+                    <a href="/login/findPw" class="btn black">비밀번호 찾기</a>
                 </div>
             </div>
         </div>
