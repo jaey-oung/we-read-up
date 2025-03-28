@@ -32,6 +32,10 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             let msg = [[${msg}]];
+            if (msg === "LOGIN_REQUIRED") { // 로그인 필요 메시지 처리
+                alert("로그인이 필요합니다.");
+                window.location.href = "/login/login"; // 로그인 페이지로 이동
+            }
             if (msg === "LIST_ERR") alert("게시물 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.");
             if (msg === "READ_ERR") alert("삭제되었거나 없는 게시물입니다.");
             if (msg === "DEL_ERR") alert("삭제되었거나 없는 게시물입니다.");

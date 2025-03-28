@@ -622,12 +622,18 @@
 
     // 구매 버튼
     function buyNow(button) {
+        let memberId = $('#memberId').val();
+
+        if(memberId === '0'){
+            alert('로그인 해주세요.');
+            return;
+        }
+
         const quantity = parseInt(document.getElementById("quantity").value, 10);
         const bookId = button.dataset.bookId;
         const image = button.dataset.image;
         const name = button.dataset.name;
         const orderPrice = button.dataset.price * quantity;
-        console.log("quantity : " +  quantity);
 
         const form = document.createElement("form");
         form.method = "POST";

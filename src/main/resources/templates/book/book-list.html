@@ -81,7 +81,11 @@
                         장바구니
                     </button>
                     <!-- 주문으로 넘어가기 추가 -->
-                    <button>구매</button>
+                    <button onclick="buyNow(this)"
+                            th:attr="data-book-id=${item.bookId}, data-image=${item.image}, data-name=${item.name},
+                                     data-price=${item.salePrice}, data-quantity=1">
+                        구매
+                    </button>
                 </div>
                 <p class="product-name" style="font-size:17px; margin-bottom:-2px; font-weight: bold " th:text="${item.name}"></p>
                 <p style="color:#888888; margin-top:10px;margin-bottom:2px;font-size:14px">
@@ -131,6 +135,7 @@
                 <button type="submit" name="page" th:value="${ph.page+10}">❯❯</button>
             </th:block>
             <!-- 요청 넘겨주기용 input -->
+            <input type="hidden" id="userId" th:value="${session.userId}">
             <input type="hidden" id="category" name="category" th:value="${sc.category}"/>
             <input type="hidden" id="pageSize" name="pageSize" th:value="${ph.pageSize}"/>
             <input type="hidden" id="option" name="option" th:value="${sc.option}"/>
@@ -140,6 +145,7 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/book-list.js"></script>

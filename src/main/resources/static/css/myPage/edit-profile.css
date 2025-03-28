@@ -81,7 +81,7 @@ h1 {
     margin-left: 10px;
 }
 
-.err-msg {
+.form-group .err-msg {
     align-self: flex-start;
     margin-top: 5px;
     font-size: 14px;
