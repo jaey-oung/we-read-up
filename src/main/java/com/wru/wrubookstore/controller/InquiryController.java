@@ -23,6 +23,12 @@ public class InquiryController {
     @GetMapping("/list")
     public String list(Model m, HttpSession session){
         Integer memberId = (Integer) session.getAttribute("userId");
+
+        if(memberId==null) {
+            System.out.println("회원 로그인 정보가 없습니다.");
+            return "login/login";
+        }
+
         String currentUserId = memberId.toString();
 //        int memberId = 2;
 //        String currentUserId = "2";
