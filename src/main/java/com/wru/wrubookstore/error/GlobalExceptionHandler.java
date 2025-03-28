@@ -1,4 +1,4 @@
-package com.wru.wrubookstore;
+package com.wru.wrubookstore.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
