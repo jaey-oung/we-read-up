@@ -34,7 +34,19 @@
         FROM <include refid="sql-selectCategory" /> c
         WHERE TRUE <include refid="sql-option-category" />
     </select>
-
+    <!--  카테고리에 속한 책들의 수 조회 -->
+    <select id="selectByCategoryCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+    </select>
+    <!--  카테고리에 속한 책들의 정보 조회 -->
+    <select id="selectByCategory" parameterType="MainSearchCondition" resultType="CategoryDto">
+        SELECT *
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+        LIMIT #{offset}, #{limit}
+    </select>
     <!-- 컬럼 매핑 -->
     <resultMap id="categoryResultMap" type="CategoryResponse">
         <result property="categoryLargeId" column="category_large_id"/>
@@ -77,19 +89,6 @@
         FROM category_small cs, category_medium cm
         WHERE cm.category_medium_id = #{categoryMediumId} AND cs.category_medium_id = #{categoryMediumId}
         ORDER BY category_small_id
-    </select>
-    <!--  카테고리에 속한 책들의 수 조회 -->
-    <select id="selectByCategoryCnt" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        <include refid="sql-part-selectByCategory" />
-        <include refid="sql-option-category" />
-    </select>
-    <!--  카테고리에 속한 책들의 정보 조회 -->
-    <select id="selectByCategory" parameterType="MainSearchCondition" resultType="CategoryDto">
-        SELECT *
-        <include refid="sql-part-selectByCategory" />
-        <include refid="sql-option-category" />
-        LIMIT #{offset}, #{limit}
     </select>
     <!-- 관리자용: 전체 책 잘라서 가져오기 -->
     <select id="selectBook" parameterType="map" resultType="BookDto">
@@ -227,5 +226,20 @@
     <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
         SELECT COUNT(DISTINCT b.book_id)
         <include refid="sql-option-cnt" />
+    </select>
+    <!-- 판매 순위별 상위 5권 조회 -->
+    <select id="selectBookIdInSalesRank" resultType="int">
+        SELECT b.book_id
+        FROM orders a, order_book b
+        WHERE a.order_id = b.order_id AND a.end_date IS NOT NULL AND DATEDIFF(curdate(), DATE_FORMAT(a.end_date, '%Y-%m-%d')) &lt; 7
+        GROUP BY b.book_id
+        ORDER BY COUNT(b.book_id) DESC
+        LIMIT 0, 5
+    </select>
+    <!-- 상위 5권 도서 카테고리, 도서 조회 -->
+    <select id="selectRankedBookInfo" parameterType="Integer" resultType="CategoryDto">
+        SELECT  b.book_id, b.name, b.category_small_id, b.image, c.*
+        <include refid="sql-part-selectByCategory" />
+        AND book_id = #{bookId}
     </select>
 </mapper>
