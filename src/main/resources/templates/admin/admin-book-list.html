@@ -79,7 +79,7 @@
                 <tr th:each="i : ${bookDto}" class="book-list">
                     <td><input type="checkbox" class="quantity-box" th:value="${i.bookId}" id="quantity-box"></td>
                     <td th:text="${i.bookId}" id="bookId-box" class="bookId-box">0</td>
-                    <td th:text="${i.name}">No name</td>
+                    <td th:text="${i.name}" class="book-url">No name</td>
                     <td th:text="${#numbers.formatInteger(i.originalPrice, 3, 'COMMA')+'원'}">999,999,999원</td>
                     <td th:text="${#numbers.formatInteger(i.salePrice, 3, 'COMMA')+'원'}">999,999,999원</td>
                     <td th:text="${#numbers.formatInteger(i.discountPrice, 3, 'COMMA')+'원'}">0원</td>
@@ -124,6 +124,9 @@
 
 <script>
     $(document).ready(function (){
+        $('.book-url').on('click', function(){
+            window.location.href = '/bookDetail?bookId=' + $(this).closest($('.book-list')).find('.bookId-box').text();
+        });
         // 엔터 키로 폼 제출 방지 및 검색 동작
         $('#search-input').keypress(function (event) {
             if (event.which === 13) { // Enter key (엔터키)
