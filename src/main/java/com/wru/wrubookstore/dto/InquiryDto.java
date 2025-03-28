@@ -16,6 +16,7 @@ public class InquiryDto {
     private Date modDate;
     private String inquiryStatusName;
     private String memberNickname;
+    private String employeeName;
 
     public InquiryDto() {}
 
@@ -54,6 +55,7 @@ public class InquiryDto {
                 ", modDate=" + modDate +
                 ", inquiryStatusName='" + inquiryStatusName + '\'' +
                 ", memberNickname='" + memberNickname + '\'' +
+                ", employeeName='" + employeeName + '\'' +
                 '}';
     }
 
@@ -143,5 +145,13 @@ public class InquiryDto {
 
     public void setMemberNickname(String memberNickname) {
         this.memberNickname = memberNickname;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 }

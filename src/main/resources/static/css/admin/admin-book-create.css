@@ -99,7 +99,7 @@ label {
     font-size: 14px;
 }
 
-input[type="text"],
+
 input[type="number"],
 input[type="date"],
 input[type="file"],
@@ -196,7 +196,6 @@ button[type="submit"]:hover {
 .form-table td {
     text-align: left;
 }
-
 /* 폼 입력 필드 스타일 */
 .form-table input[type=text],
 .form-table input[type=date],
@@ -251,6 +250,10 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
+.writer-medium-name{ width:200px;}
+.writer-medium-gender{ width:200px;}
+.writer-long{ width:400px;}
+.medium-phone{ width:10%;}
 
 /* 입력 필드 크기 유틸리티 클래스 */
 .short  { width: 80px;  }  /* 짧은 입력 필드 (숫자 등) */

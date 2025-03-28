@@ -10,6 +10,23 @@
 </head>
 <body th:attr="data-msg=${msg}">
 <div th:replace="~{fragments/header :: header}"></div>
+<section class="new-books">
+    <div id="h-slider-1" class="h-slider">
+        <div class="h-slide-container">
+            <div class="h-slider-body">
+            </div>
+            <div id="slide-control">
+                <button type="button" class="slide-control-button" id="pause-button">❚❚</button>
+                <button type="button" class="slide-control-button" id="play-button" style="display:none">▶</button>
+                <div id="slider-bottom-text">
+                    <a href="#" id="h-slide-prev">❮</a>
+                    <span id="h-slide-number"></span>
+                    <a href="#" id="h-slide-next">❯</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="sale-section">
     <div class="sale-header">
         <div>
@@ -77,7 +94,7 @@
     </div>
 </section>
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script src="/js/home.js"></script>
+<script src="/js/home-slider.js"></script>
 <script src="/js/display-msg.js"></script>
 </body>
 </html>

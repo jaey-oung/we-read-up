@@ -17,7 +17,7 @@
                 <strong>쇼핑몰 프로젝트</strong>
             </div>
             <div class="right">
-                <a class="icon">🛒</a>
+                <a href="/cart/list" class="icon">🛒</a>
                 <a href="/myPage" class="icon">👤</a>
             </div>
         </div>
@@ -52,7 +52,7 @@
             </div>
             <div class="form-group">
                 <label for="phoneNum">* 휴대전화</label>
-                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto.phoneNum}">
+                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto.phoneNum}" placeholder="'-'를 입력해주세요.">
             </div>
             <div class="form-group">
                 <select name="deliveryDto.message">
