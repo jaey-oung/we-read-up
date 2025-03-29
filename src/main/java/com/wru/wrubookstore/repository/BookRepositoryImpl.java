@@ -11,6 +11,7 @@ import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,6 @@ public class BookRepositoryImpl implements BookRepository {
         list.get(0).setCategoryType(sc.getCategory().substring(0, 2));
         return list;
     }
-
 
     // 관리자용
     @Override
@@ -221,5 +221,17 @@ public class BookRepositoryImpl implements BookRepository {
     // 저자 이름으로 검색
     public List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception {
         return session.selectList(namespace + "searchByWriter3", sc);
+    }
+
+    // 판매 순위별 상위 5권 bookId 조회
+    @Override
+    public List<Integer> selectBookIdInSalesRank() throws Exception {
+        return session.selectList(namespace + "selectBookIdInSalesRank");
+    }
+
+    // 상위 5권 도서 카테고리, 도서 조회
+    @Override
+    public CategoryDto selectRankedBookInfo(Integer bookId) throws Exception {
+        return session.selectOne(namespace + "selectRankedBookInfo", bookId);
     }
 }
