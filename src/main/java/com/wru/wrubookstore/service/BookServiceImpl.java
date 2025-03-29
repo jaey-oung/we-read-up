@@ -3,14 +3,15 @@ package com.wru.wrubookstore.service;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.RankedBookDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
 import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import com.wru.wrubookstore.repository.BookRepository;
-import jakarta.validation.constraints.Negative;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,7 +104,6 @@ public class BookServiceImpl implements BookService {
     public List<CategoryResponse> selectCategorySmall(CategoryResponse categoryResponse) throws Exception{
         return bookRepository.selectCategorySmall(categoryResponse);
     }
-    // 카테고리 조회용
 
     // 책 번호로 한개 조회
     @Override
@@ -208,6 +208,25 @@ public class BookServiceImpl implements BookService {
     // 저자 이름으로 검색
     public List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception {
         return bookRepository.searchByWriter3(sc);
+    }
+
+    // 판매 순위별 상위 5권 조회
+    @Override
+    public List<RankedBookDto> getWeeklyRanking() throws Exception {
+        List<RankedBookDto> rankedBooks = new ArrayList<>();
+        // 판매 순위별 상위 5권 bookId 조회
+        List<Integer> bookIds = bookRepository.selectBookIdInSalesRank();
+        for (int i = 0; i < bookIds.size(); i++) {
+            // bookId 하나씩 가져오기
+            int bookId = bookIds.get(i);
+            // 책 정보와 카테고리 정보 가져오기
+            CategoryDto bookAndCategoryInfo = bookRepository.selectRankedBookInfo(bookId);
+            // 책 하나당 저자 정보 가져오기
+            List<String> authors = bookRepository.selectWriter(bookId);
+            rankedBooks.add(new RankedBookDto(bookAndCategoryInfo, authors));
+        }
+        // 책의 개별 정보 각각 담아 리스트로 반환
+        return rankedBooks;
     }
 
 }

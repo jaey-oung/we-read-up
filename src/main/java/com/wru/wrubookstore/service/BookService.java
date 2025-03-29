@@ -3,6 +3,7 @@ package com.wru.wrubookstore.service;
 import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.dto.BookDto;
 import com.wru.wrubookstore.dto.CategoryDto;
+import com.wru.wrubookstore.dto.RankedBookDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
@@ -96,4 +97,7 @@ public interface BookService {
 
     // 저자 이름으로 검색
     List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception;
+
+    // 판매 순위별 상위 5권 조회
+    List<RankedBookDto> getWeeklyRanking() throws Exception;
 }
