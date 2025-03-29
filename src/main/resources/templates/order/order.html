@@ -5,6 +5,7 @@
     <title>WE READ UP - 주문</title>
     <link rel="icon" href="/img/read-up-logo.png" type="text/png">
     <link rel="stylesheet" href="/css/order/order.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body onload="totalProductPrice()">
 
@@ -45,15 +46,15 @@
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="deliveryDto.mainAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.mainAddress : ''}" placeholder="기본주소">
+                <input type="text" id="main-address" name="deliveryDto.mainAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.mainAddress : ''}" placeholder="기본주소">
             </div>
             <div class="form-group">
                 <label></label>
-                <input type="text" name="deliveryDto.detailAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.detailAddress : ''}" placeholder="나머지 주소(선택 입력 가능)">
+                <input type="text" id="detail-address" name="deliveryDto.detailAddress" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.detailAddress : ''}" placeholder="나머지 주소(선택 입력 가능)">
             </div>
             <div class="form-group">
                 <label for="phoneNum">* 휴대전화</label>
-                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.phoneNum : ''}" placeholder="'-'를 입력해주세요.">
+                <input type="tel" id="phoneNum" name="deliveryDto.phoneNum" th:value="${orderPaymentRequest.addressDto != null ? orderPaymentRequest.addressDto.phoneNum : ''}" placeholder="'-'를 입력해주세요." maxlength="13">
             </div>
             <div class="form-group">
                 <select name="deliveryDto.message">
@@ -224,9 +225,21 @@
     }
 
     // 전액 사용 버튼 클릭 시
-    function useFullMileage() {
-        mileageInput.value = formatNumber(availableMileage);
-    }
+    document.getElementById('useAllBtn').addEventListener('click', function (event) {
+        event.preventDefault();
+        // 가격과 마일리지 텍스트 가져오기
+        let totalPrice = parseInt(document.getElementById('productPrice').textContent.replace(/,/g, '').replace(/원/g, ''));
+        let availableMileage = parseInt(document.getElementById('availableMileage').textContent.replace(/,/g, '').replace(/원/g, ''));
+
+        console.log('토탈 ' + totalPrice);
+        console.log('마일리지 ' + availableMileage);
+
+        // 마일리지 입력 값 설정: totalPrice 보다 큰 마일리지는 totalPrice만큼 사용
+        let usableMileage = availableMileage > totalPrice ? totalPrice : availableMileage;
+        // mileageInput의 value 속성에 설정
+        mileageInput.value = formatNumber(usableMileage);
+        updateDiscountPrice(); // 마일리지 변경 후 할인 금액 업데이트
+    });
 
     // 숫자 → 콤마 추가된 문자열로 포맷
     function formatNumber(num) {
@@ -234,7 +247,7 @@
     }
 
     // 초과 제한
-    mileageInput.addEventListener("input", function () {
+    mileageInput.addEventListener('input', function () {
         let raw = Number(this.value.replaceAll(",", ""));
 
         if (isNaN(raw)) {
@@ -242,11 +255,14 @@
             return;
         }
 
+        // 입력된 마일리지가 availableMileage를 초과하면 availableMileage로 설정
         if (raw > availableMileage) {
             raw = availableMileage;
         }
 
+        // 입력된 값을 콤마 형식으로 포맷하여 설정
         this.value = formatNumber(raw);
+        updateDiscountPrice(); // 마일리지 변경 후 할인 금액 업데이트
     });
 
     // form 제출 전 mileageDiscount 값 숫자로 변경
@@ -280,10 +296,41 @@
     });
 
     // submit 버튼 클릭 시 alert 발생
-    document.getElementById("orderForm").addEventListener("submit", function (e) {
-        alert("결제가 완료되었습니다.");
+    document.getElementById("orderForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        let receipt = $('#receipt').val();
+        let zipCode = $('#zipCode').val();
+        let mainAddress = $('#main-address').val();
+        let detailAddress = $('#detail-address').val();
+        let phoneNum = $('#phoneNum').val();
+        console.log('receipt' + receipt);
+        console.log('zipCode' + zipCode);
+        console.log('mainAddress' + mainAddress);
+        console.log('detailAddress' + detailAddress);
+        console.log('phoneNum' + phoneNum);
+        if (receipt && zipCode && mainAddress && detailAddress && phoneNum) {
+            alert("결제가 완료되었습니다.");
+            $('#orderForm').attr('action', '/order')
+            $('#orderForm').attr('method', 'post')
+            $('#orderForm').submit();
+        } else {
+            alert("배송지를 입력해주세요!");
+            $('#receipt').focus();
+        }
     });
+
+    $('#zipCode').on('input', function () {
+        let zip = $('#zipCode').val().replace(/[^0-9-]/g, '');
+        $(this).val(zip);
+    });
+
+    $('#phoneNum').on('input', function () {
+        let phoneNum = $('#phoneNum').val().replace(/[^0-9-]/g, '');
+        $(this).val(phoneNum);
+    });
+
 </script>
+
 
 </body>
 </html>
