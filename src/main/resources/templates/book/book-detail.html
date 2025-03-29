@@ -44,16 +44,16 @@
                     </p>
 
                     <div class="addtional-info">
-                        <p><strong>정가</strong><span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'" style="margin-left:66px"></span></p>
+                        <p><strong>정가</strong><span th:text="${#numbers.formatInteger(bookDto.originalPrice,3,'COMMA')}+'원'" style="margin-left:63px"></span></p>
                         <p><strong>판매가</strong>
                             <span th:text="${#numbers.formatInteger(bookDto.salePrice,3,'COMMA')}+'원'" style="font-size:23px; vertical-align: -3px; margin-left:43px"></span>
-                            <span th:text="'('+${#numbers.formatInteger(bookDto.discountPercent*100, 0)}+'%, '+${bookDto.discountPrice}+'원 할인)'"></span>
+                            <span th:text="'('+${#numbers.formatInteger(bookDto.discountPercent*100, 0)}+'%, '+${#numbers.formatInteger(bookDto.discountPrice,3,'COMMA')}+'원 할인)'"></span>
                         </p>
                         <p><strong>마일리지</strong>
                             <span th:text="${#numbers.formatInteger(#numbers.formatInteger(bookDto.originalPrice*0.05,0),3,'COMMA')}+'원(5%) + 멤버십(최대6%)'" style="margin-left:29px"></span>
                         </p>
                         <p><strong>배송방법</strong><span style="margin-left:34px">택배</span></p>
-                        <p><strong>배송비</strong><span style="margin-left:50px">무료</span></p>
+                        <p><strong>배송비</strong><span style="margin-left:49px">무료</span></p>
                         <p><span>
                             <span class="custom-rating2">
                                 <th:block th:each="i : ${#numbers.sequence(1,5)}">
@@ -107,12 +107,12 @@
                             <button type="button" class="buy-now" onclick="buyNow(this)"
                                     th:attr="data-book-id=${bookDto.bookId}, data-image=${bookDto.image},
                             data-name=${bookDto.name}, data-price=${bookDto.salePrice}">
-                                BUY IT NOW
+                                구매하기
                             </button>
                         </th:block>
                         <th:block th:if="${bookDto.stockQuantity == 0}">
                             <button type="button" class="buy-now" id="buy-BTN">
-                                BUY IT NOW
+                                구매하기
                             </button>
                         </th:block>
 
@@ -121,12 +121,12 @@
                                     th:attr="data-book-id=${bookDto.bookId},
                             data-quantity=1,
                             data-price=${bookDto.salePrice}">
-                                CART
+                                장바구니
                             </button>
                         </th:block>
                         <th:block th:if="${bookDto.stockQuantity == 0}">
                             <button type="button" class="cart" id="cart-BTN">
-                                CART
+                                장바구니
                             </button>
                         </th:block>
 
@@ -134,7 +134,7 @@
 
                     <!-- 구매, 장바구니, 위시리스트 버튼 추가 해야됨 -->
 
-                        <button class="wishlist" id="likeButton" th:style="'background-color:'+${isLikeUser == 0 ? '#fff' : 'red'}" th:text="${isLikeUser == 0 ? 'LIKE' : 'UNLIKE'}"></button>
+                        <button class="wishlist" id="likeButton" th:style="'color:'+${isLikeUser == 0 ? 'black' : 'red'}" th:text="${isLikeUser == 0 ? '&#x2764;' : '&#x2764;'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
 
                         <input type="hidden" id="memberId" th:value="${memberId}"/>
@@ -483,11 +483,21 @@
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
             if (isLikeUser === 0 && memberId !== '0') {
-                $(this).text('UNLIKE').css('background-color', 'red');    // UNLIKE로 변경
+                $(this).html('&#x2764;').css('color', 'red');    // UNLIKE로 변경
                 $('#isLikeUser').val(1);
+
+                $(this).css('animation', 'none');
+                setTimeout(() => {
+                    $(this).css('animation', 'beating .5s 1 alternate');  // 애니메이션 다시 적용
+                }, 10);  // 아주 짧은 시간 후 애니메이션을 재적용
             } else{
-                $(this).text('LIKE').css('background-color', '#fff');     // LIKE로 변경
+                $(this).html('&#x2764;').css('color', 'black');     // LIKE로 변경
                 $('#isLikeUser').val(0);
+
+                $(this).css('animation', 'none');
+                setTimeout(() => {
+                    $(this).css('animation', 'beating .5s 1 alternate');
+                }, 10);
             }
 
             if(memberId !== '0'){
@@ -501,13 +511,13 @@
                         } else {
                             alert('Error: ' + response.data);
                             // 오류 발생 시 버튼을 원래 상태로 복원
-                            $(this).text('LIKE').css('background-color', '#fff');
+                            $(this).html('&#x2764;').css('color', 'black');
                         }
                     })
                     .catch(function(error) {
                         alert('Error: ' + error);
                         // 오류 발생 시 버튼을 원래 상태로 복원
-                        $(this).text('LIKE').css('background-color', '#fff');
+                        $(this).html('&#x2764;').css('color', 'black');
                     });
             }
         });
