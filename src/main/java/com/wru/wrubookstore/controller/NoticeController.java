@@ -1,9 +1,11 @@
 package com.wru.wrubookstore.controller;
 
 import com.wru.wrubookstore.dto.CommentDto;
+import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.dto.NoticeDto;
 import com.wru.wrubookstore.domain.NoticepageHandler;
 import com.wru.wrubookstore.domain.SearchCondition;
+import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.NoticeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,9 +24,11 @@ import java.util.List;
 public class NoticeController {
 
     private final NoticeService noticeService;
+    private final MemberService memberService;
 
-    public NoticeController(NoticeService noticeService) {
+    public NoticeController(NoticeService noticeService, MemberService memberService) {
         this.noticeService = noticeService;
+        this.memberService = memberService;
     }
 
     @PostMapping("/modify")
@@ -111,6 +115,9 @@ public class NoticeController {
             String employeeId = (String) session.getAttribute("employeeId");
             Integer userId = (Integer) session.getAttribute("userId");
             noticeDto.setEmployeeId(employeeId);
+            MemberDto memberDto = memberService.selectMember(userId);
+
+            System.out.println("\n\n멤버!!///memberDto = " + memberDto);
 
 //            System.out.println("noticeDto: " + noticeDto);  // 로그 확인
 
@@ -120,6 +127,7 @@ public class NoticeController {
             m.addAttribute("mode", "read"); // mode 추가
             m.addAttribute("employeeId", employeeId);
             m.addAttribute("userId", userId);
+            m.addAttribute("member", memberDto);
 
             // searchCondition 추가
             SearchCondition sc = new SearchCondition(page, pageSize);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -104,7 +105,7 @@ public class CommentController {
 
         try {
             if(userId != null){
-            MemberDto memberDto = memberService.selectMember(userId);
+                MemberDto memberDto = memberService.selectMember(userId);
                 System.out.println("memberDto = " + memberDto);
 
                 if (memberDto != null) {
@@ -130,11 +131,13 @@ public class CommentController {
 
     // 지정된 게시물의 모든 댓글을 가져오는 메서드
     @GetMapping("/comments")  // /comments?noticeId=1   GET
-    public ResponseEntity<List<CommentDto>> list(Integer noticeId) {
+    public ResponseEntity<List<CommentDto>> list(Integer noticeId, Model m) {
         List<CommentDto> list = null;
         try {
             list = service.getList(noticeId);
+            System.out.println("\n\n코멘트//list = " + list);
             System.out.println("commentlist = " + list);
+            m.addAttribute("list", list);
             return new ResponseEntity<List<CommentDto>>(list, HttpStatus.OK);  // 200
         } catch (Exception e) {
             e.printStackTrace();

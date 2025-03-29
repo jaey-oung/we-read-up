@@ -75,6 +75,7 @@
                         <i class="fa fa-trash"></i> 삭제
                     </button>
                 </div>
+                <input type="hidden" th:value="${member.memberId}" id="memberId"/>
 
                 <!-- 목록 버튼은 항상 보이게 -->
                 <button type="button" id="listBtn" class="btn btn-list">
@@ -163,9 +164,9 @@
     <div class="comment-form">
         <h3>댓글달기</h3>
         <textarea name="commentContent" placeholder="댓글을 입력하세요"></textarea>
-<!--        <div class="form-inputs">-->
-<!--            <button id="sendBtn" type="button" class="btn-submit">등록</button>-->
-<!--        </div>-->
+        <!--        <div class="form-inputs">-->
+        <!--            <button id="sendBtn" type="button" class="btn-submit">등록</button>-->
+        <!--        </div>-->
         <div class="form-inputs" th:if="${userId != null}">
             <button id="sendBtn" type="button" class="btn-submit">등록</button>
         </div>
@@ -281,14 +282,21 @@
 
     // 댓글을 HTML로 변환 (안전하게 특수문자 escape 추가)
     let toHtml = function(comments) {
+        let member = parseInt($('#memberId').val());
         let html = "<ul>";
         comments.forEach(function(comment) {
             html += '<li data-commentId="' + comment.commentId + '" data-noticeId="' + comment.noticeId + '">';
             html += '<span class="memberId"> 작성자: ' + escapeHtml(comment.nickname) + '</span> | ';
             html += '<span class="content"> 내용: ' + escapeHtml(comment.content) + '</span> | ';
             html += '<span class="modDate"> 수정일: ' + comment.modDate + '</span> | ';
-            html += '<button class="delBtn">삭제</button>';
-            html += '<button class="modBtn">수정</button>';
+            console.log('멤버아이디!'+member);
+            console.log('코맨트아이디!'+comment.memberId);
+            if(member === comment.memberId){
+                html += '<button class="delBtn">삭제</button>';
+                html += '<button class="modBtn">수정</button>';
+            }
+
+
             html += '</li>';
         });
         html += "</ul>";
