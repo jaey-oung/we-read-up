@@ -1,5 +1,6 @@
 package com.wru.wrubookstore.controller;
 
+import com.wru.wrubookstore.domain.AllCheck;
 import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.dto.UserDto;
 import com.wru.wrubookstore.service.MemberService;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -41,8 +43,8 @@ public class ProfileController {
     }
 
     @PostMapping("/myPage/editMember")
-    public String editMember(@Valid @ModelAttribute("user") MemberDto memberDto, BindingResult bindingResult,
-                              @RequestParam String pwConfirm, Model model) {
+    public String editMember(@Validated(AllCheck.class) @ModelAttribute("user") MemberDto memberDto, BindingResult bindingResult,
+                             @RequestParam String pwConfirm, Model model) {
         // 비밀번호 동일 입력 체크
         if (!pwCheck(memberDto.getPassword(), pwConfirm)) {
             bindingResult.rejectValue("password", "PasswordMismatch", "비밀번호가 다릅니다. 다시 입력해주세요.");
@@ -55,7 +57,7 @@ public class ProfileController {
         }
 
         try {
-             memberService.editMember(memberDto);
+            memberService.editMember(memberDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +115,7 @@ public class ProfileController {
     }
 
     @PostMapping("/myPage/convertMember")
-    public String convertMember(@Valid @ModelAttribute("user") MemberDto memberDto, BindingResult bindingResult,
+    public String convertMember(@Validated(AllCheck.class) @ModelAttribute("user") MemberDto memberDto, BindingResult bindingResult,
                                 @RequestParam String pwConfirm, Model model, HttpSession session) {
         // 비밀번호 동일 입력 체크
         if (!pwCheck(memberDto.getPassword(), pwConfirm)) {
