@@ -6,11 +6,17 @@ import com.wru.wrubookstore.dto.CategoryDto;
 import com.wru.wrubookstore.dto.RankedBookDto;
 import com.wru.wrubookstore.dto.response.book.BookListResponse;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 
 import java.util.List;
 import java.util.Map;
 
 public interface BookService {
+    // 출판사 이름 조회
+    PublisherListResponse selectPublisherName(String publisherId) throws Exception;
+    // 지은이 이름 조회
+    List<WriterListResponse> selectWriterName(Integer bookId) throws Exception;
     // 카테고리 정보 조회
     CategoryDto selectCategoryInfo(String category) throws Exception;
 
@@ -19,6 +25,14 @@ public interface BookService {
 
     // 카테고리에 속한 책들의 정보 조회
     List<CategoryDto> selectByCategory(MainSearchCondition sc) throws Exception;
+
+    // 낮은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    List<CategoryDto> selectByCategory2(MainSearchCondition sc) throws Exception;
+
+    // 높은 가격 순
+    // 카테고리에 속한 책들의 정보 조회
+    List<CategoryDto> selectByCategory3(MainSearchCondition sc) throws Exception;
 
     // 관리자용
     int countAllByAdmin() throws Exception;
@@ -63,6 +77,26 @@ public interface BookService {
 
     // 카테고리 대 검색 이름
     CategoryResponse selectCategoryL(CategoryResponse categoryResponse) throws Exception;
+
+    // 낮은 가격 순
+    //  도서 제목과 저자 이름으로 통합 검색
+    List<BookDto> searchByAll2(MainSearchCondition sc) throws Exception;
+
+    // 도서 제목으로 검색
+    List<BookDto> searchByTitle2(MainSearchCondition sc) throws Exception;
+
+    // 저자 이름으로 검색
+    List<BookDto> searchByWriter2(MainSearchCondition sc) throws Exception;
+
+    // 높은 가격 순
+    //  도서 제목과 저자 이름으로 통합 검색
+    List<BookDto> searchByAll3(MainSearchCondition sc) throws Exception;
+
+    // 도서 제목으로 검색
+    List<BookDto> searchByTitle3(MainSearchCondition sc) throws Exception;
+
+    // 저자 이름으로 검색
+    List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception;
 
     // 판매 순위별 상위 5권 조회
     List<RankedBookDto> getWeeklyRanking() throws Exception;

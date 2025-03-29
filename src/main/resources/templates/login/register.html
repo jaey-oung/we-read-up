@@ -14,64 +14,86 @@
     <div class="content">
         <div class="content-head">
             <div class="first-category">
-                <span>홈 / 회원가입</span>
+                <span class="first-category-title">홈 / 회원가입</span>
             </div>
             <div class="second-category">
                 <div class="signup-tab active" id="user-tab">비회원가입</div>
                 <div class="signup-tab" id="member-tab">회원가입</div>
             </div>
-            <form action="/register" method="post" class="third-category">
+            <form action="/register" method="post" class="third-category" th:object="${user}">
                 <h1 id="signup-title">비회원가입</h1>
                 <div class="form-container">
                     <div class="form-group">
                         <label for="email">* 이메일</label>
-                        <input type="email" id="email" name="email">
+                        <div class="input-wrapper horizontal">
+                            <input type="email" id="email" name="email" th:value="${user.email}" required>
+                            <button type="button" class="check-btn">중복확인</button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password">* 비밀번호</label>
-                        <input type="password" id="password" name="password" placeholder="(영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자)">
+                        <div class="input-wrapper">
+                            <input type="password" id="password" name="password"
+                                   placeholder="영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자" required>
+                            <div class="err-msg" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password').getFirst()}"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password-confirm">* 비밀번호 확인</label>
-                        <input type="password" id="password-confirm" name="pwConfirm">
+                        <div class="input-wrapper">
+                            <input type="password" id="password-confirm" name="pwConfirm" required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="name">* 이름</label>
-                        <input type="text" id="name" name="name">
+                        <div class="input-wrapper">
+                            <input type="text" id="name" name="name" th:value="${user.name}" required>
+                        </div>
                     </div>
                     <div class="form-group member-field">
                         <label for="nickname">* 닉네임</label>
-                        <input type="text" id="nickname" name="nickname">
+                        <div class="input-wrapper">
+                            <input type="text" id="nickname" name="nickname" th:value="${user.nickname}">
+                            <div class="err-msg" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></div>
+                        </div>
                     </div>
                     <div class="form-group member-field">
                         <label for="phone">* 휴대전화</label>
-                        <input type="tel" id="phone" name="phoneNum">
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" name="phoneNum" th:value="${user.phoneNum}">
+                            <div class="err-msg" th:if="${#fields.hasErrors('phoneNum')}" th:text="${#fields.errors('phoneNum').getFirst()}"></div>
+                        </div>
                     </div>
                     <div class="form-group member-field">
                         <label for="birth">* 생년월일</label>
-                        <input type="date" id="birth" name="birthdate">
+                        <div class="input-wrapper">
+                            <input type="date" id="birth" name="birthdate" th:value="${user.birthdate}">
+                            <div class="err-msg" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}"></div>
+                        </div>
                     </div>
                     <div class="form-group member-field">
                         <label>* 성별</label>
-                        <div class="radio-group">
-                            <input type="radio" id="male" name="gender" value="M" checked>
-                            <label for="male">남</label>
+                        <div class="input-wrapper">
+                            <div class="radio-group">
+                                <input type="radio" id="male" name="gender" value="M" checked th:checked="${user.gender.toString() == 'M'}">
+                                <label for="male">남</label>
 
-                            <input type="radio" id="female" name="gender" value="F">
-                            <label for="female">여</label>
+                                <input type="radio" id="female" name="gender" value="F" th:checked="${user.gender.toString() == 'M'}">
+                                <label for="female">여</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="buttons">
-                    <input type="submit" value="가입하기" class="btn submit">
-                    <input type="reset" value="취소" class="btn cancel">
+
+                    <input type="submit" value="가입하기" class="btn submit" disabled>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js/display-msg.js"></script>
 <script src="/js/register.js"></script>
+<script src="/js/birth.js"></script>
 </body>
 </html>

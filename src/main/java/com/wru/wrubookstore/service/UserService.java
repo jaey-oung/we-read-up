@@ -14,5 +14,6 @@ public interface UserService {
     UserDto login(String email, String password);
     int update(UserDto userDto) throws Exception;
     int delete(String email) throws Exception;
+    int isEmailDuplicated(String email) throws Exception;
 
 }

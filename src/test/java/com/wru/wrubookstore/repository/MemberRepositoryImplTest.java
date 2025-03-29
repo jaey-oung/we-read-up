@@ -18,6 +18,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberRepositoryImplTest {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    UserDto userDto;
+    LocalDate birthdate;
+
+    MemberDto memberDto;
+
     @BeforeEach
     public void init() throws Exception {
         userDto = new UserDto("tester@gmail.com", "pwd", "tester");
@@ -161,19 +173,6 @@ class MemberRepositoryImplTest {
         assertEquals(0, memberRepository.count());
         assertEquals(0, memberRepository.countMembers());
     }
-    assertEquals(0, userRepository.count());
-
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    UserDto userDto;
-    LocalDate birthdate;
-
-    MemberDto memberDto;
 
     @Test
     @Transactional
@@ -191,6 +190,57 @@ class MemberRepositoryImplTest {
 
         assertEquals(updateCnt, 1);
         assertEquals(memberDto.getMileage(), 1190);
+    }
+
+    @Test
+    @Transactional
+    public void updateLastMonthAmountTest() throws Exception {
+        Integer userId = 3;
+        int totalPrice = 10000;
+        Map<String, Integer> map = new HashMap<>();
+        map.put("totalPrice", totalPrice);
+        map.put("userId", userId);
+
+        int updateCnt = memberRepository.updateLastMonthAmount(map);
+        MemberDto memberDto = memberRepository.selectMember(userId);
+
+        assertEquals(updateCnt, 1);
+        assertEquals(memberDto.getLastMonthAmount(), 10000);
+    }
+
+    @Test
+    public void selectByNameAndPhoneNumTest() throws Exception {
+        String name = "김유리";
+        String phoneNum = "010-3456-7890";
+
+        memberDto = new MemberDto();
+        memberDto.setName(name);
+        memberDto.setPhoneNum(phoneNum);
+
+        MemberDto selectMemberDto = memberRepository.selectByNameAndPhoneNum(memberDto);
+
+        assertEquals(selectMemberDto.getName(), name);
+        assertEquals(selectMemberDto.getPhoneNum(), phoneNum);
+        assertEquals(selectMemberDto.getEmail(), "yuri@gmail.com");
+    }
+
+    @Test
+    public void selectByEmailAndNameAndPhoneNumTest() throws Exception {
+        String email = "yuri@gmail.com";
+        String name = "김유리";
+        String phoneNum = "010-3456-7890";
+
+        memberDto = new MemberDto();
+        memberDto.setEmail(email);
+        memberDto.setName(name);
+        memberDto.setPhoneNum(phoneNum);
+
+        MemberDto selectMemberDto = memberRepository.selectByEmailAndNameAndPhoneNum(memberDto);
+
+        assertEquals(selectMemberDto.getName(), name);
+        assertEquals(selectMemberDto.getPhoneNum(), phoneNum);
+        assertEquals(selectMemberDto.getEmail(), "yuri@gmail.com");
+        assertEquals(selectMemberDto.getPassword(), "asdf");
     }
 }
 */

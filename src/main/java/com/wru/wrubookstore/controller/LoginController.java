@@ -1,20 +1,24 @@
 package com.wru.wrubookstore.controller;
 
 
+import com.wru.wrubookstore.domain.FindIdCheck;
+import com.wru.wrubookstore.domain.FindPwCheck;
 import com.wru.wrubookstore.dto.EmployeeDto;
+import com.wru.wrubookstore.dto.MemberDto;
 import com.wru.wrubookstore.dto.UserDto;
 import com.wru.wrubookstore.service.EmployeeService;
+import com.wru.wrubookstore.service.MemberService;
 import com.wru.wrubookstore.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -23,10 +27,12 @@ public class LoginController {
 
     private final EmployeeService employeeService;
     private final UserService userService;
+    private final MemberService memberService;
 
-    LoginController(EmployeeService employeeService, UserService userService) {
+    LoginController(EmployeeService employeeService, UserService userService, MemberService memberService) {
         this.employeeService = employeeService;
         this.userService = userService;
+        this.memberService = memberService;
     }
 
     // 쿠키에 저장된 이메일을 모델에 추가
@@ -95,25 +101,65 @@ public class LoginController {
     }
 
     @GetMapping("/findId")
-    public String findIdForm() {
+    public String findIdForm(Model model) {
+        // 유효성 검사를 위해 비어있는 MemberDto 전송
+        model.addAttribute("member", new MemberDto());
 
         return "login/find-id";
     }
 
     @PostMapping("/findId")
-    public String findId() {
+    public String findId(@Validated(FindIdCheck.class) @ModelAttribute("member") MemberDto memberDto, BindingResult bindingResult, Model model) {
+
+        try {
+            MemberDto findMemberDto = memberService.selectByNameAndPhoneNum(memberDto);
+
+            if (findMemberDto == null) {
+                bindingResult.reject("errorMessage", "일치하는 정보가 없습니다. 입력 정보를 다시 확인해주세요.");
+            }
+
+            // 유효성 검사
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("member", memberDto);
+
+                return "login/find-id";
+            }
+
+            model.addAttribute("member", findMemberDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "login/find-id-result";
     }
 
     @GetMapping("/findPw")
-    public String findPwForm() {
+    public String findPwForm(Model model) {
+        model.addAttribute("member", new MemberDto());
 
         return "login/find-pw";
     }
 
     @PostMapping("/findPw")
-    public String findPw() {
+    public String findPw(@Validated(FindPwCheck.class) @ModelAttribute("member") MemberDto memberDto, BindingResult bindingResult, Model model) {
+        try {
+            MemberDto findMemberDto = memberService.selectByEmailAndNameAndPhoneNum(memberDto);
+
+            if (findMemberDto == null) {
+                bindingResult.reject("errorMessage", "일치하는 정보가 없습니다. 입력 정보를 다시 확인해주세요.");
+            }
+
+            // 유효성 검사
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("member", memberDto);
+
+                return "login/find-pw";
+            }
+
+            model.addAttribute("member", findMemberDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "login/find-pw-result";
     }

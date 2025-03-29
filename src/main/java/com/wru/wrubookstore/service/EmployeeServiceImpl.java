@@ -23,4 +23,9 @@ public class EmployeeServiceImpl implements  EmployeeService {
         }
         return employeeDto;
     }
+
+    @Override
+    public int isEmailDuplicated(String email) throws Exception {
+        return employeeRepository.isEmailDuplicated(email.trim());
+    }
 }

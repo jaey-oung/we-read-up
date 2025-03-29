@@ -94,8 +94,8 @@
       </form>
 
       <div class="third-category">
-        <form action="/myPage/withdraw" method="post">
-          <input type="submit" value="회원 탈퇴">
+        <form action="/myPage/withdraw" method="post" onsubmit="return deleteUser()">
+          <input type="submit" value="회원 탈퇴" id="delete-user">
         </form>
         <form th:unless="${user.isMember}" action="/myPage/convertMember" method="get">
           <input type="submit" value="회원 전환">
@@ -110,6 +110,17 @@
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+
+
+<script src="/js/birth.js"></script>
+<script>
+  function deleteUser() {
+    return confirm("정말로 회원 탈퇴하시겠습니까?");
+  }
+</script>
 
 </body>
 </html>

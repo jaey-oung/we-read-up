@@ -5,7 +5,9 @@ import com.wru.wrubookstore.domain.MainSearchCondition;
 import com.wru.wrubookstore.domain.SearchCondition;
 import com.wru.wrubookstore.dto.*;
 import com.wru.wrubookstore.dto.response.category.CategoryResponse;
+import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
+import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import com.wru.wrubookstore.service.BookService;
 import com.wru.wrubookstore.service.LikeService;
 import com.wru.wrubookstore.service.MemberService;
@@ -19,10 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Writer;
+import java.util.*;
 
 @Controller
 public class BookController {
@@ -43,11 +43,14 @@ public class BookController {
      */
     @GetMapping("/bookList")
     public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
-                           HttpSession session) {
+                           HttpSession session, Integer sort) {
 
 //        int userId = (int) session.getAttribute("userId");
 
         try{
+            if(sort == null){
+                sort = 0;
+            }
             // 도서 테이블에서 특정 카테고리에 속한 도서 개수 파악
             int count = bookService.selectByCategoryCnt(sc.getCategory());
             List<CategoryDto> list = new ArrayList<>();
@@ -58,7 +61,15 @@ public class BookController {
                 model.addAttribute("category", categoryInfo);
             } else if (count > 0) {
                 // 개수가 1 이상이면 도서 테이블에서 특정 카테고리에 속한 도서 개수 및 도서 리스트, 카테고리 정보 반환
-                list = bookService.selectByCategory(sc);
+                if(sort == 0){
+                    list = bookService.selectByCategory(sc);
+                }
+                else if(sort == 1){
+                    list = bookService.selectByCategory2(sc);
+                }
+                else if(sort == 2){
+                    list = bookService.selectByCategory3(sc);
+                }
             } else {
                 throw new Exception("잘못된 도서 개수입니다.");
             }
@@ -81,29 +92,68 @@ public class BookController {
      * 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색
      */
     @GetMapping("/search")
-    public String search(MainSearchCondition sc, Model model, HttpServletRequest request) {
+    public String search(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 
         try {
+            if(sort == null){
+                sort = 0;
+            }
             // scDto에서 어떤 옵션을 통한 검색인지 가져오기
             String option = sc.getOption();
             // 검색 결과 개수 반환
             int count = bookService.selectSearchCnt(sc);
             // 옵션과 키워드를 통한 도서 리스트 반환
-            List<BookDto> list = switch (option) {
-                case "all" -> bookService.searchByAll(sc);
-                case "title" ->  bookService.searchByTitle(sc);
-                case "writer" -> bookService.searchByWriter(sc);
-                default -> throw new Exception("잘못된 옵션입니다.");
-            };
+            List<BookDto> list = new ArrayList<>();
 
-            List<String> writer = new ArrayList<>();
-            List<String> publisher = new ArrayList<>();
-            for(BookDto dto : list){
-                writer = bookService.selectWriter(dto.getBookId());
-                dto.getPublisherId();
+            System.out.println("sort = " + sort);
+
+            // 리스트에 담겨있는 BookDto 정보를
+            // 1. 최신순
+            if(sort == 0){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll(sc);
+                    case "title" ->  bookService.searchByTitle(sc);
+                    case "writer" -> bookService.searchByWriter(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
+            }
+            // 2. 낮은 가격순
+            else if(sort == 1){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll2(sc);
+                    case "title" ->  bookService.searchByTitle2(sc);
+                    case "writer" -> bookService.searchByWriter2(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
+            }
+            // 3. 높은 가격순
+            else if(sort == 2){
+                list = switch (option) {
+                    case "all" -> bookService.searchByAll3(sc);
+                    case "title" ->  bookService.searchByTitle3(sc);
+                    case "writer" -> bookService.searchByWriter3(sc);
+                    default -> throw new Exception("잘못된 옵션입니다.");
+                };
             }
 
+
+
+            List<List<WriterListResponse>> writerListResponse = new ArrayList<>();
+            Map<String,String> publisherListResponse = new HashMap<>();
+
+            for(BookDto dto : list){
+                writerListResponse.add(bookService.selectWriterName(dto.getBookId()));
+                publisherListResponse.put(bookService.selectPublisherName(dto.getPublisherId()).getPublisherId(),bookService.selectPublisherName(dto.getPublisherId()).getName());
+            }
+
+//            List<PublisherListResponse> publisher = new ArrayList<>(publisherListResponse);
+
+            System.out.println("출판사 여기//publisherListResponse = " + publisherListResponse);
+            System.out.println("지은이여기//writerListResponse = " + writerListResponse);
+
             PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
+            model.addAttribute("publisherListResponse", publisherListResponse);
+            model.addAttribute("writerListResponse", writerListResponse);
             model.addAttribute("sc", sc);
             model.addAttribute("list", list);
             model.addAttribute("ph", pageHandler);
@@ -147,6 +197,15 @@ public class BookController {
             int reviewCnt = reviewService.countReview(bookId);
             CategoryResponse categoryResponse = bookService.selectCategorySM(bookId);
             categoryResponse.setCategoryLargeName(bookService.selectCategoryL(categoryResponse).getCategoryLargeName());
+            // 리뷰 점수 조회
+            double rating;
+            if(reviewCnt == 0){
+                rating = 0;
+            } else{
+                rating = reviewService.ratingReview(bookId);
+            }
+
+            System.out.println("rating = " + rating);
 
             System.out.println("여기야!!//categoryResponse = " + categoryResponse);
 
@@ -158,6 +217,7 @@ public class BookController {
             m.addAttribute("isLikeUser", isLikeUser);
             m.addAttribute("memberId", memberId);
             m.addAttribute("category", categoryResponse);
+            m.addAttribute("rating", rating);
             System.out.println("bookDetail//isLikeUser = " + isLikeUser);
 
 

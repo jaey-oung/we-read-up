@@ -4,6 +4,7 @@ import com.wru.wrubookstore.repository.NoticeRepositoryImpl;
 import com.wru.wrubookstore.dto.NoticeDto;
 import com.wru.wrubookstore.domain.SearchCondition;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,11 @@ public class NoticeService {
         return noticeRepositoryImpl.count();
     }
 
+    @Transactional
     public int remove(Integer noticeId, String employeeId) throws Exception {
+        // 댓글 먼저 삭제
+        noticeRepositoryImpl.deleteCommentsByNoticeId(noticeId);
+        // 게시물 삭제
         return noticeRepositoryImpl.delete(noticeId, employeeId);
     }
 

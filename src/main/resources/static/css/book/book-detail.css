@@ -502,6 +502,17 @@ body {
     flex-direction: row;
     cursor: pointer;
 }
+.custom-rating2 {
+    color: #888888; /* 기본 회색 별 */
+    font-size: 20px;
+    flex-direction: row;
+    cursor: pointer;
+    display: inline-block;
+}
+.custom-star2{
+    margin-right:-5px;
+    display: inline-block;
+}
 
 .custom-star {
     margin-right: 5px;
@@ -545,7 +556,40 @@ body {
     background-color: #009fdd;
 }
 
+.star-rating-empty{
+    color: #888888; /* 기본 회색 별 */
+    font-size: 20px;
+    flex-direction: row;
+    cursor: pointer;
+    display: inline-block;
+    margin-left:-5px;
+}
 
+.star-rating-full{
+    color: #ff1493;
+    font-size: 20px;
+    flex-direction: row;
+    cursor: pointer;
+    display: inline-block;
+    margin-left:-5px;
+}
 
+.tableOfCon{
+    max-height:300px;
+    overflow:hidden;
+    transition: max-height 0.5s ease;
+    cursor: pointer;
+    color:#000000;
+    display:inline-block
+}
+
+.read-more {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 13px;
+    display: none;
+}
 
 

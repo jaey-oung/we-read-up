@@ -14,6 +14,8 @@ public interface MemberService {
     void insert(UserDto userDto, MemberDto memberDto) throws Exception;
     MemberDto select(Integer userId) throws Exception;
     MemberDto selectMember(Integer userId) throws Exception;
+    MemberDto selectByNameAndPhoneNum(MemberDto memberDto) throws Exception;
+    MemberDto selectByEmailAndNameAndPhoneNum(MemberDto memberDto) throws Exception;
     int updateUser(MemberDto memberDto) throws Exception;
     int updateMember(MemberDto memberDto) throws Exception;
     int deleteMember(Integer userId) throws Exception;
