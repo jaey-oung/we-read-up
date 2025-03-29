@@ -223,13 +223,7 @@ public class BookRepositoryImpl implements BookRepository {
         return session.selectList(namespace + "searchByWriter3", sc);
     }
 
-    // 판매 순위별 상위 5권 bookId 조회
-    @Override
-    public List<Integer> selectBookIdInSalesRank() throws Exception {
-        return session.selectList(namespace + "selectBookIdInSalesRank");
-    }
-
-    // 상위 5권 도서 카테고리, 도서 조회
+    // 순위에 오른 도서의 카테고리와 도서 정보 조회
     @Override
     public CategoryDto selectRankedBookInfo(Integer bookId) throws Exception {
         return session.selectOne(namespace + "selectRankedBookInfo", bookId);

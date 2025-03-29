@@ -97,9 +97,6 @@ public interface BookRepository {
     // 저자 이름으로 검색
     List<BookDto> searchByWriter3(MainSearchCondition sc) throws Exception;
 
-    // 판매 순위별 상위 5권 bookId 조회
-    List<Integer> selectBookIdInSalesRank() throws Exception;
-
-    // 상위 5권 도서 카테고리, 도서 조회
+    // 순위에 오른 도서의 카테고리와 도서 정보 조회
     CategoryDto selectRankedBookInfo(Integer bookId) throws Exception;
 }

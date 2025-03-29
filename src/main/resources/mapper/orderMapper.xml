@@ -65,8 +65,38 @@
         VALUES(#{userId})
     </insert>
 
+    <!-- 테스트용 주문 생성 -->
+    <insert id="insertOrderTest" parameterType="OrderDto" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO orders(user_id, status_id, reg_date, end_date)
+        VALUES (#{userId}, #{statusId}, #{regDate}, #{endDate})
+    </insert>
+
     <insert id="insertOrderBook" parameterType="OrderBookDto">
         INSERT INTO order_book(order_id, book_id, quantity, price)
         VALUES(#{orderId}, #{bookId}, #{quantity}, #{price})
     </insert>
+
+    <!-- 판매 순위별 상위 5권 bookId 조회 (판매량이 같을 경우 bookId가 큰 순서대로)-->
+    <select id="selectBookIdInSalesRank" resultType="int">
+        SELECT b.book_id
+        FROM orders a, order_book b
+        WHERE a.order_id = b.order_id
+          AND a.end_date IS NOT NULL
+          AND DATEDIFF(curdate(), end_date) &lt; 7
+        GROUP BY b.book_id
+        ORDER BY SUM(b.quantity) DESC, b.book_id DESC
+        LIMIT 5
+    </select>
+
+    <!-- 테스트용 주문 데이터 전체 삭제 (orders)-->
+    <delete id="deleteAllOrdersTest">
+        DELETE
+        FROM orders
+    </delete>
+
+    <!--  테스트용 주문 데이터 전체 삭제 (order_book) -->
+    <delete id="deleteAllOrderBookTest">
+        DELETE
+        FROM order_book
+    </delete>
 </mapper>
