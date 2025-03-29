@@ -20,16 +20,15 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
 
+        /* 주간랭킹 - 판매량 기준 상위 5권 조회 */
         List<RankedBookDto> rankedBooks = new ArrayList<>();
         try {
-            // 판매순위별 상위 5권 정보 가져오기
             rankedBooks = bookService.getWeeklyRanking();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         model.addAttribute("rankedBooks", rankedBooks);
-
         return "home";
     }
 }

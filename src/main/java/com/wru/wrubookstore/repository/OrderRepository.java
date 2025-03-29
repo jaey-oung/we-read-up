@@ -23,10 +23,17 @@ public interface OrderRepository {
     int selectCntByOsc(Map<String, Object> map) throws Exception;
     // 주문상세조회 -> 주문상품 정보
     List<OrderBookRequest> selectOrderBook(Integer orderId) throws Exception;
+    // 판매 순위별 상위 5권 bookId 조회 (판매량이 같을 경우 bookId가 큰 순서대로)
+    List<Integer> selectBookIdInSalesRank() throws Exception;
 
     /* insert */
     // userId만 입력하여 주문 생성(orderId를 가져오기 위해 매개변수 OrderDto 사용)
     int insertOrder(OrderDto orderDto) throws Exception;
     // 주문_도서 생성
     int insertOrderBook(OrderBookDto orderBookDto) throws Exception;
+
+    /* test */
+    int insertOrderTest(OrderDto orderDto) throws Exception;
+    int deleteAllOrdersTest() throws Exception;
+    int deleteAllOrderBookTest() throws Exception;
 }

@@ -38,14 +38,9 @@ public class BookController {
         this.memberService = memberService;
     }
 
-    /**
-     * 메인 홈페이지 메뉴의 카테고리 클릭 시 도서 리스트 출력
-     */
+    /* 메인 홈페이지 메뉴의 카테고리 클릭 시 도서 리스트 출력 */
     @GetMapping("/bookList")
-    public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
-                           HttpSession session, Integer sort) {
-
-//        int userId = (int) session.getAttribute("userId");
+    public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 
         try{
             if(sort == null){
@@ -74,12 +69,9 @@ public class BookController {
                 throw new Exception("잘못된 도서 개수입니다.");
             }
 
-            PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
-
             model.addAttribute("sc", sc);
-//            model.addAttribute("userId", userId);
             model.addAttribute("list", list);
-            model.addAttribute("ph", pageHandler);
+            model.addAttribute("ph", new PageHandler(count, sc.getPage(), sc.getPageSize()));
             model.addAttribute("uri", request.getRequestURI()); // 페이징 시 해당 uri 정보 전달
         } catch(Exception e) {
             e.printStackTrace();
@@ -88,9 +80,8 @@ public class BookController {
         return "book/book-list";
     }
 
-    /**
-     * 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색
-     */
+
+    /* 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색 */
     @GetMapping("/search")
     public String search(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 

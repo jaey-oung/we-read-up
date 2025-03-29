@@ -3,7 +3,7 @@
         {
             "url": "/img/slides/new-java.png",
             "name": "신간도서_자바의_정석_4판",
-            "link": "/search?option=all&keyword=자바의+정석+4판" /* 책 추가 후 bookDetail로 연결 */
+            "link": "/bookDetail?bookId=7"
         },
         {
             "url": "/img/slides/rec-health.png",
@@ -13,12 +13,12 @@
         {
             "url": "/img/slides/event-join.png",
             "name": "회원가입_이벤트",
-            "link": "/register/form"
+            "link": ""
         },
         {
             "url": "/img/slides/new-golf.png",
             "name": "신간도서_골프",
-            "link": "/search?option=all&keyword=골프" /* 책 추가 후 bookDetail로 연결 */
+            "link": "/bookDetail?bookId=6"
         },
         {
             "url": "/img/slides/event-spring.png",
@@ -33,7 +33,7 @@
         {
             "url": "/img/slides/benefit-member.png",
             "name": "회원_혜택",
-            "link": "/login/login"
+            "link": ""
         }
     ];
 
