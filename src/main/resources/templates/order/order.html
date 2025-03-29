@@ -228,7 +228,7 @@
     document.getElementById('useAllBtn').addEventListener('click', function (event) {
         event.preventDefault();
         // 가격과 마일리지 텍스트 가져오기
-        let totalPrice = parseInt(document.getElementById('productPrice').textContent.replace(/,/g, '').replace(/원/g, ''));
+        let totalPrice = parseInt(document.getElementById('totalPrice').textContent.replace(/,/g, '').replace(/원/g, ''));
         let availableMileage = parseInt(document.getElementById('availableMileage').textContent.replace(/,/g, '').replace(/원/g, ''));
 
         console.log('토탈 ' + totalPrice);
