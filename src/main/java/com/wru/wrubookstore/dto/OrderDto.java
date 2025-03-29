@@ -17,4 +17,13 @@ public class OrderDto {
     private OrderStatus statusId;
     private Date regDate;
     private Date endDate;
+
+    public OrderDto() {}
+
+    public OrderDto(Integer userId, OrderStatus statusId, Date regDate, Date endDate) {
+        this.userId = userId;
+        this.statusId = statusId;
+        this.regDate = regDate;
+        this.endDate = endDate;
+    }
 }
