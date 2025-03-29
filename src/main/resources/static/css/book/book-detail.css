@@ -139,27 +139,35 @@ body {
 
 .button-group button {
     padding: 20px;
-    font-size: 12px;
     border: 1px solid #ddd;
     cursor: pointer;
     font-weight: bold;
 }
 
 .buy-now {
+    font-size: 15px;
     flex: 3;
     background-color: #000;
     color: #fff;
+    max-height:65px;
 }
 
 .cart {
+    font-size: 15px;
     flex: 2;
     background-color: #fff;
     color: #000;
+    max-height:65px;
 }
 
 .wishlist {
+    font-size:30px;
     background-color: #fff;
     color: #000;
+    max-height:65px;
+    display: flex;               /* Flexbox 사용 */
+    align-items: center;         /* 수직 중앙 정렬 */
+    justify-content: center;     /* 수평 중앙 정렬 */
 }
 
 .button-group button:hover {
@@ -593,3 +601,18 @@ body {
 }
 
 
+
+.like-btn {width: 50px; height: 50px;background: url(https://umings.github.io/images/i_like_off.png) no-repeat center / 50px; cursor: pointer; border:0; font-size:0; margin:50px auto; display:block;}
+.like-btn.on {background: url(https://umings.github.io/images/i_like_on.png) no-repeat center / 50px; animation: beating .5s 1 alternate;}
+@keyframes beating {
+    0% {transform: scale(1);}
+    40% {transform: scale(1.25);}
+    70% {transform: scale(0.9);}
+    100% {transform: scale(1);}
+}
+
+@keyframes glow {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+    100% { filter: brightness(1); }
+}
