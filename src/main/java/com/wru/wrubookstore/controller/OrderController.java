@@ -96,7 +96,9 @@ public class OrderController {
             System.out.println("구매!//orderPaymentResponse = " + orderPaymentResponse);
 
             for(OrderBookDto dto : orderPaymentResponse.getOrderBookDtoList()){
-                cartService.deleteByCartId(dto.getCartId(), orderPaymentResponse.getOrderDto().getUserId());
+                if(dto.getCartId() != null){
+                    cartService.deleteByCartId(dto.getCartId(), orderPaymentResponse.getOrderDto().getUserId());
+                }
             }
             orderService.processOrder(orderPaymentResponse);
         } catch (Exception e) {
