@@ -2,13 +2,14 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>WE READ UP - 회원가입</title>
+    <link rel="icon" href="/img/read-up-logo.png" type="text/png">
     <link rel="stylesheet" href="/css/fragments/header.css">
     <link rel="stylesheet" href="/css/fragments/footer.css">
     <link rel="stylesheet" href="/css/fragments/nav.css">
     <link rel="stylesheet" href="/css/login/register.css">
 </head>
-<body th:attr="data-msg=${msg}">
+<body th:attr="data-msg=${msg}, data-tab=${tab}">
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <div class="content">
@@ -34,7 +35,7 @@
                         <label for="password">* 비밀번호</label>
                         <div class="input-wrapper">
                             <input type="password" id="password" name="password"
-                                   placeholder="영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자" required>
+                                   placeholder="영문 대소문자, 숫자, 특수문자 모두 포함하고 8~20자여야 합니다" required>
                             <div class="err-msg" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password').getFirst()}"></div>
                         </div>
                     </div>

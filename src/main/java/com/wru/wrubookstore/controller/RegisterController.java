@@ -45,6 +45,7 @@ public class RegisterController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", memberDto);
+            model.addAttribute("tab", "user");
             return "login/register";
         }
 
@@ -74,6 +75,7 @@ public class RegisterController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", memberDto);
+            model.addAttribute("tab", "member");
             return "login/register";
         }
 
