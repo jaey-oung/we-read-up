@@ -26,7 +26,7 @@ public class MemberDto {
 
     @NotBlank(message = "비밀번호를 입력해주세요.", groups = UserRegisterCheck.class)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,20}$",
-            message = "영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자여야 합니다.", groups = UserRegisterCheck.class)
+            message = "영문 대소문자, 숫자, 특수문자 모두 포함하고 8~20자여야 합니다.", groups = UserRegisterCheck.class)
     private String password;        // 사용자 비밀번호
 
     @NotBlank(message = "이름을 입력해주세요.", groups = {UserRegisterCheck.class, FindIdCheck.class, FindPwCheck.class})
