@@ -187,7 +187,7 @@
     <!--  책 하나의 출판사 이름 -->
     <select id="selectPublisher" parameterType="int" resultType="String">
         SELECT p.name
-        FROM publisher AS p, (SELECT publisher_id FROM book WHERE book_id=3) AS bp
+        FROM publisher AS p, (SELECT publisher_id FROM book WHERE book_id=#{bookId}) AS bp
         WHERE p.publisher_id = bp.publisher_id;
     </select>
     <!-- 테스트용 -->
