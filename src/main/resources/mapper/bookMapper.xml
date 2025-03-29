@@ -102,6 +102,25 @@
         SELECT *
         <include refid="sql-part-selectByCategory" />
         <include refid="sql-option-category" />
+        ORDER BY book_id desc
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 가격 낮은 순 -->
+    <!--  카테고리에 속한 책들의 정보 조회 -->
+    <select id="selectByCategory2" parameterType="MainSearchCondition" resultType="CategoryDto">
+        SELECT *
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+        ORDER BY sale_price
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 가격 높은 순 -->
+    <!--  카테고리에 속한 책들의 정보 조회 -->
+    <select id="selectByCategory3" parameterType="MainSearchCondition" resultType="CategoryDto">
+        SELECT *
+        <include refid="sql-part-selectByCategory" />
+        <include refid="sql-option-category" />
+        ORDER BY sale_price desc
         LIMIT #{offset}, #{limit}
     </select>
     <!-- 관리자용: 전체 책 잘라서 가져오기 -->
@@ -224,18 +243,68 @@
         <include refid="sql-searchByTitle" />
         UNION
         <include refid="sql-searchByWriter" />
+        ORDER BY book_id desc
         LIMIT #{offset}, #{limit}
     </select>
     <!-- 도서 제목으로 검색 -->
     <select id="searchByTitle" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByTitle" />
+        ORDER BY book_id desc
         LIMIT #{offset}, #{limit}
     </select>
     <!-- 저자 이름으로 검색 -->
     <select id="searchByWriter" parameterType="MainSearchCondition" resultType="BookDto">
         <include refid="sql-searchByWriter" />
+        ORDER BY book_id desc
         LIMIT #{offset}, #{limit}
     </select>
+    <!-- 가격 낮은 순 조회 -->
+    <!-- 도서 제목과 저자 이름으로 통합 검색 -->
+    <select id="searchByAll2" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        UNION
+        <include refid="sql-searchByWriter" />
+        ORDER BY sale_price
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 도서 제목으로 검색 -->
+    <select id="searchByTitle2" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        ORDER BY sale_price
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 저자 이름으로 검색 -->
+    <select id="searchByWriter2" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByWriter" />
+        ORDER BY sale_price
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 가격 높은 순 조회 -->
+    <!-- 도서 제목과 저자 이름으로 통합 검색 -->
+    <select id="searchByAll3" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        UNION
+        <include refid="sql-searchByWriter" />
+        ORDER BY sale_price DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 도서 제목으로 검색 -->
+    <select id="searchByTitle3" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByTitle" />
+        ORDER BY sale_price DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 저자 이름으로 검색 -->
+    <select id="searchByWriter3" parameterType="MainSearchCondition" resultType="BookDto">
+        <include refid="sql-searchByWriter" />
+        ORDER BY sale_price DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+
+
+
     <!-- 검색 결과 개수 조회 -->
     <select id="selectSearchCnt" parameterType="MainSearchCondition" resultType="int">
         SELECT COUNT(DISTINCT b.book_id)
