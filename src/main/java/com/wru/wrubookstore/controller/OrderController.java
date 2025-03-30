@@ -79,6 +79,7 @@ public class OrderController {
                          Model model) {
 
         try {
+            System.out.println("userId = " + userId);
             System.out.println("오더//orderPaymentRequest = " + orderPaymentRequest);
             model.addAttribute("orderPaymentRequest", orderService.selectOrderPayment(userId, orderPaymentRequest));
             model.addAttribute("order", orderPaymentRequest);
