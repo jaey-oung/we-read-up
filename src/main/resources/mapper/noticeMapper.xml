@@ -7,7 +7,7 @@
     <sql id="selectFromNotice">
         SELECT n.notice_id AS noticeId, n.employee_id AS employeeId, n.title, n.content, n.view_cnt, n.mod_date, n.reg_date, e.name AS employeeName
         FROM notice n
-        JOIN employee e on n.employee_id = e.employee_id
+                 JOIN employee e on n.employee_id = e.employee_id
     </sql>
 
     <select id="select" parameterType="int" resultType="NoticeDto">
@@ -67,7 +67,7 @@
                 AND title LIKE concat('%', #{keyword}, '%')
             </when>
             <when test='option=="W"'>
-                AND employee_id LIKE concat('%', #{keyword}, '%')
+                AND e.name LIKE concat('%', #{keyword}, '%')
             </when>
             <otherwise>
                 AND (title LIKE concat('%', #{keyword}, '%')
@@ -92,8 +92,8 @@
 
     <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
         SELECT count(*)
-        FROM notice
-        WHERE true
+        FROM notice n, employee e
+        WHERE n.employee_id = e.employee_id
         <include refid="searchCondition"/>
     </select>
 
