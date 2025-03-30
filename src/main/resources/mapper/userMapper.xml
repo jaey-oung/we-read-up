@@ -36,6 +36,12 @@
         WHERE user_id = #{userId} AND is_member = 0
     </select>
 
+    <select id="selectUser" parameterType="Integer" resultType="UserDto">
+        SELECT user_id, user_status_id, email, password, name, is_member
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
     <!-- 이메일과 비밀번호로 특정 비회원 조회 -->
     <select id="selectByEmailAndPassword" parameterType="map" resultType="UserDto">
         SELECT user_id, user_status_id, email, password, name, is_member
