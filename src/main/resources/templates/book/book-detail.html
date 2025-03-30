@@ -138,6 +138,8 @@
                         <button class="wishlist" id="likeButton" th:style="'color:'+${isLikeUser == 0 ? 'black' : 'red'}" th:text="${isLikeUser == 0 ? '&#x2764;' : '&#x2764;'}"></button>
                         <input type="hidden" id="bookId" name="bookId" th:value="${bookDto.bookId}"/>
 
+                        <input type="hidden" id="isMember" th:value="${isMember}"/>
+                        <input type="hidden" id="userId" th:value="${userId}"/>
                         <input type="hidden" id="memberId" th:value="${memberId}"/>
                         <input type="hidden" id="isLikeUser" th:value="${isLikeUser}"/>
                     </form>
@@ -202,7 +204,7 @@
                         </div>
                         <div class="custom-review-right">
 
-                            <textarea class="custom-review-content" th:placeholder="${memberId == 0 ? '로그인 후 이용해주세요.' : '리뷰를 작성해주세요...'}" id="content" th:readonly="${memberId == 0 ? 'readonly' : 'false'}"></textarea>
+                            <textarea class="custom-review-content" th:placeholder="${isMember == 0 ? '리뷰는 회원만 작성 가능합니다' : '리뷰를 작성해주세요...'}" id="content" th:readonly="${isMember == 0 ? 'readonly' : 'false'}"></textarea>
                             <div class="custom-review-action">
                                 <button class="custom-submit-btn" id="reviewBtn">등록</button>
                             </div>
@@ -259,6 +261,7 @@
 <script>
     $(document).ready(function () {
         var contentElement = $('.tableOfCon');
+        let bookId = $('#bookId').val();
 
         if (contentElement[0].scrollHeight > 300) {
             $('.read-more').show();  // 내용이 300px을 넘으면 버튼을 보여줍니다.
@@ -333,9 +336,9 @@
             if($(this).html()==='삭제'){
                 var result = confirm("정말로 삭제하시겠습니까?");
                 let reviewId = $(this).closest('.review').find('#reviewId').val();
-                let memberId = $('#memberId').val();
-                let bookId = $('#bookId').val();
+
                 console.log(reviewId);
+                console.log(bookId);
                 if (result) {
                     axios.post('/reviewDelete', {reviewId, memberId, bookId}, {
                         headers: { "content-type": "application/json" }
@@ -472,14 +475,21 @@
         $('#likeButton').click(function(event) {
             event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
             let bookId = $('#bookId').val();
-            let memberId = $('#memberId').val();
             let {text} = $(this); // 현재 클릭된 버튼
             let isLikeUser = parseInt($('#isLikeUser').val());
             console.log(isLikeUser);
             console.log(memberId);
 
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('좋아요는 회원만 가능합니다!');
+                location.reload();
             }
 
             // 버튼 텍스트와 배경 색상을 즉시 변경
@@ -523,11 +533,17 @@
             }
         });
 
-        let memberId = $('#memberId').val();
         // 별점 1
         $('#star1').click(function(){
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
             let star = $(this).data('value');
@@ -542,8 +558,15 @@
         });
         // 별점 2
         $('#star2').click(function(){
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
             let star = $(this).data('value');
@@ -558,8 +581,15 @@
         });
         // 별점 3
         $('#star3').click(function(){
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
             let star = $(this).data('value');
@@ -574,8 +604,15 @@
         });
         // 별점 4
         $('#star4').click(function(){
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
             let star = $(this).data('value');
@@ -590,8 +627,15 @@
         });
         // 별점 5
         $('#star5').click(function(){
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
             let star = $(this).data('value');
@@ -605,13 +649,19 @@
         });
 
         $('#reviewBtn').click(function(){
-            let memberId = $('#memberId').val();
             let bookId = $('#bookId').val();
             let content = $('#content').val();
             let rating = $('#rating').val();
 
-            if(memberId === '0'){
-                alert('로그인 해주세요.');
+            if(!userId){
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                    window.location.href = '/login/login';
+                }
+                return false;
+            }
+
+            if(isMember === '0'){
+                alert('리뷰는 회원만 등록가능합니다!');
                 location.reload();
             }
 
@@ -644,14 +694,18 @@
             }
         });
     });
+    let memberId = $('#memberId').val();
+    let userId = $('#userId').val();
+    let isMember = $('#isMember').val();
 
     // 구매 버튼
     function buyNow(button) {
-        let memberId = $('#memberId').val();
 
-        if(memberId === '0'){
-            alert('로그인 해주세요.');
-            return;
+        if(!userId){
+            if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+                window.location.href = '/login/login';
+            }
+            return false;
         }
 
         const quantity = parseInt(document.getElementById("quantity").value, 10);

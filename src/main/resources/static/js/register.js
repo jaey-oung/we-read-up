@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const body = document.querySelector("body");
     const firstCategoryTitle = document.querySelector(".first-category-title");
     const userTab = document.querySelector("#user-tab");
     const memberTab = document.querySelector("#member-tab");
@@ -13,7 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function hideMemberFields() {
         memberFields.forEach(el => el.classList.add("hidden"));
         form.action = "/register/user";
-        firstCategoryTitle.textContent = "홈 / 비회원가입"
+        firstCategoryTitle.textContent = "홈 / 비회원가입";
+        userTab.classList.add("active");
+        memberTab.classList.remove("active");
         title.textContent = "비회원가입";
     }
 
@@ -21,11 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function showMemberFields() {
         memberFields.forEach(el => el.classList.remove("hidden"));
         form.action = "/register/member";
-        firstCategoryTitle.textContent = "홈 / 회원가입"
+        firstCategoryTitle.textContent = "홈 / 회원가입";
+        userTab.classList.remove("active");
+        memberTab.classList.add("active");
         title.textContent = "회원가입";
     }
 
-    hideMemberFields();
+    const defaultTab = body.dataset.tab || "user"; // 없으면 기본값은 user
+    if (defaultTab === "member") {
+        showMemberFields();
+    } else {
+        hideMemberFields();
+    }
 
     // 중복확인 버튼 눌렀을 때
     checkBtn.addEventListener("click", function () {
@@ -64,18 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 회원가입 탭을 눌렀을 때
-    userTab.addEventListener("click", () => {
-        userTab.classList.add("active");
-        memberTab.classList.remove("active");
-        hideMemberFields();
-    });
+    userTab.addEventListener("click", hideMemberFields);
 
     // 비회원가입 탭을 눌렀을 때
-    memberTab.addEventListener("click", () => {
-        memberTab.classList.add("active");
-        userTab.classList.remove("active");
-        showMemberFields();
-    });
+    memberTab.addEventListener("click", showMemberFields);
 
     // 폼 제출할 때
     form.addEventListener("submit", function (e) {

@@ -23,13 +23,16 @@ public class OrderServiceImpl implements OrderService {
     private final DeliveryRepository deliveryRepository;
     private final AddressRepository addressRepository;
     private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository, MemberRepository memberRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, PaymentRepository paymentRepository, DeliveryRepository deliveryRepository, AddressRepository addressRepository, MemberRepository memberRepository) {
         this.orderRepository = orderRepository;
         this.paymentRepository = paymentRepository;
         this.deliveryRepository = deliveryRepository;
         this.addressRepository = addressRepository;
         this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
+
     }
 
     @Override
@@ -56,7 +59,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderPaymentRequest selectOrderPayment(Integer userId, OrderPaymentRequest orderPaymentRequest) throws Exception {
         // 주소 정보 가져오기
         AddressDto addressDto = addressRepository.selectDefaultAddress(userId);
-        int mileage = memberRepository.selectMember(userId).getMileage();
+        int mileage = 0;
+
+        if(userRepository.selectUser(userId).getIsMember()){
+            mileage = memberRepository.selectMember(userId).getMileage();
+        }
 
         // orderPaymentRequest에 주소, 보유 마일리지 정보 추가
         orderPaymentRequest.setAddressDto(addressDto);

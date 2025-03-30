@@ -51,12 +51,32 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public List<Integer> selectBookIdInSalesRank() throws Exception {
+        return session.selectList(namespace + "selectBookIdInSalesRank");
+    }
+
+    @Override
     public int insertOrder(OrderDto orderDto) throws Exception {
         return session.insert(namespace + "insertOrder", orderDto);
     }
 
     @Override
+    public int insertOrderTest(OrderDto orderDto) throws Exception {
+        return session.insert(namespace + "insertOrderTest", orderDto);
+    }
+
+    @Override
     public int insertOrderBook(OrderBookDto orderBookDto) throws Exception {
         return session.insert(namespace + "insertOrderBook", orderBookDto);
+    }
+
+    @Override
+    public int deleteAllOrdersTest() throws Exception {
+        return session.delete(namespace + "deleteAllOrdersTest");
+    }
+
+    @Override
+    public int deleteAllOrderBookTest() throws Exception {
+        return session.delete(namespace + "deleteAllOrderBookTest");
     }
 }

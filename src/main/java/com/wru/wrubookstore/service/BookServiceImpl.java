@@ -9,6 +9,7 @@ import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
 import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
 import com.wru.wrubookstore.repository.BookRepository;
+import com.wru.wrubookstore.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ import java.util.Map;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final OrderRepository orderRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, OrderRepository orderRepository) {
         this.bookRepository = bookRepository;
+        this.orderRepository = orderRepository;
     }
 
     // 카테고리 정보 조회
@@ -215,7 +218,7 @@ public class BookServiceImpl implements BookService {
     public List<RankedBookDto> getWeeklyRanking() throws Exception {
         List<RankedBookDto> rankedBooks = new ArrayList<>();
         // 판매 순위별 상위 5권 bookId 조회
-        List<Integer> bookIds = bookRepository.selectBookIdInSalesRank();
+        List<Integer> bookIds = orderRepository.selectBookIdInSalesRank();
         for (int i = 0; i < bookIds.size(); i++) {
             // bookId 하나씩 가져오기
             int bookId = bookIds.get(i);

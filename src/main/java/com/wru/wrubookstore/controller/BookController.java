@@ -8,10 +8,7 @@ import com.wru.wrubookstore.dto.response.category.CategoryResponse;
 import com.wru.wrubookstore.dto.response.publisher.PublisherListResponse;
 import com.wru.wrubookstore.dto.response.review.ReviewListResponse;
 import com.wru.wrubookstore.dto.response.writer.WriterListResponse;
-import com.wru.wrubookstore.service.BookService;
-import com.wru.wrubookstore.service.LikeService;
-import com.wru.wrubookstore.service.MemberService;
-import com.wru.wrubookstore.service.ReviewService;
+import com.wru.wrubookstore.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -30,22 +27,20 @@ public class BookController {
     private final LikeService likeService;
     private final ReviewService reviewService;
     private final MemberService memberService;
+    private final UserService userService;
 
-    BookController(BookService bookService, LikeService likeService, ReviewService reviewService, MemberService memberService) {
+    BookController(BookService bookService, UserService userService,LikeService likeService, ReviewService reviewService, MemberService memberService) {
         this.bookService = bookService;
         this.likeService = likeService;
         this.reviewService = reviewService;
         this.memberService = memberService;
+        this.userService = userService;
+
     }
 
-    /**
-     * 메인 홈페이지 메뉴의 카테고리 클릭 시 도서 리스트 출력
-     */
+    /* 메인 홈페이지 메뉴의 카테고리 클릭 시 도서 리스트 출력 */
     @GetMapping("/bookList")
-    public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request,
-                           HttpSession session, Integer sort) {
-
-//        int userId = (int) session.getAttribute("userId");
+    public String bookList(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 
         try{
             if(sort == null){
@@ -74,12 +69,9 @@ public class BookController {
                 throw new Exception("잘못된 도서 개수입니다.");
             }
 
-            PageHandler pageHandler = new PageHandler(count, sc.getPage(), sc.getPageSize());
-
             model.addAttribute("sc", sc);
-//            model.addAttribute("userId", userId);
             model.addAttribute("list", list);
-            model.addAttribute("ph", pageHandler);
+            model.addAttribute("ph", new PageHandler(count, sc.getPage(), sc.getPageSize()));
             model.addAttribute("uri", request.getRequestURI()); // 페이징 시 해당 uri 정보 전달
         } catch(Exception e) {
             e.printStackTrace();
@@ -88,9 +80,8 @@ public class BookController {
         return "book/book-list";
     }
 
-    /**
-     * 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색
-     */
+
+    /* 검색 창에 통합검색, 저자명, 도서명 옵션으로 키워드 검색 */
     @GetMapping("/search")
     public String search(MainSearchCondition sc, Model model, HttpServletRequest request, Integer sort) {
 
@@ -171,11 +162,18 @@ public class BookController {
         try{
             int isLikeUser = 0;
             int memberId = 0;
+            int isMember = 0;
 
             if(userId != null){
+                System.out.println("userId = " + userId);
                 MemberDto memberDto = memberService.selectMember(userId);
                 System.out.println("bookDetail//memberDto = " + memberDto);
+                UserDto userDto = userService.selectUser(userId);
+                System.out.println("userDto = " + userDto);
 
+                if(userDto.getIsMember()){
+                    isMember = 1;
+                }
                 if (memberDto != null) {
                     memberId = memberDto.getMemberId();
                     // 좋아요 누른 회원의 정보 조회
@@ -218,6 +216,8 @@ public class BookController {
             m.addAttribute("memberId", memberId);
             m.addAttribute("category", categoryResponse);
             m.addAttribute("rating", rating);
+            m.addAttribute("isMember", isMember);
+            m.addAttribute("userId", userId);
             System.out.println("bookDetail//isLikeUser = " + isLikeUser);
 
 

@@ -26,7 +26,7 @@ public class MemberDto {
 
     @NotBlank(message = "비밀번호를 입력해주세요.", groups = UserRegisterCheck.class)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,20}$",
-            message = "영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 8자~20자여야 합니다.", groups = UserRegisterCheck.class)
+            message = "영문 대소문자, 숫자, 특수문자 모두 포함하고 8~20자여야 합니다.", groups = UserRegisterCheck.class)
     private String password;        // 사용자 비밀번호
 
     @NotBlank(message = "이름을 입력해주세요.", groups = {UserRegisterCheck.class, FindIdCheck.class, FindPwCheck.class})
@@ -50,7 +50,7 @@ public class MemberDto {
 
     @NotNull(message = "성별을 선택해주세요.")
     private char gender;          // 회원 성별
-    private int mileage;            // 회원 보유 마일리지
+    private Integer mileage;            // 회원 보유 마일리지
     private int lastMonthAmount;    // 회원 전월 구매 금액
     private String image;           // 회원 이미지
 
