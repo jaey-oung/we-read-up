@@ -14,6 +14,11 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+
+    @Override
+    public UserDto selectUser(Integer userId) throws Exception{
+        return userRepository.selectUser(userId);
+    }
     @Override
     public int count() throws Exception {
         return userRepository.count();

@@ -19,6 +19,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public UserDto selectUser(Integer userId) throws Exception{
+        return session.selectOne(namespace + "selectUser", userId);
+    }
+    @Override
     public int count() throws Exception {
         return session.selectOne(namespace+"count");
     }
