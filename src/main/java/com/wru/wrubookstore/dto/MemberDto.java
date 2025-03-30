@@ -50,7 +50,7 @@ public class MemberDto {
 
     @NotNull(message = "성별을 선택해주세요.")
     private char gender;          // 회원 성별
-    private int mileage;            // 회원 보유 마일리지
+    private Integer mileage;            // 회원 보유 마일리지
     private int lastMonthAmount;    // 회원 전월 구매 금액
     private String image;           // 회원 이미지
 

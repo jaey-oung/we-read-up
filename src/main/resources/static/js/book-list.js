@@ -9,8 +9,10 @@ function buyNow(button) {
     const userId = document.getElementById("userId").value;
 
     if (!userId || userId === '0') {
-        alert("로그인 해주세요.");
-        return;
+        if (confirm('로그인이 필요합니다. 로그인 페이지로 이동할까요?')) {
+            window.location.href = '/login/login';
+        }
+        return false;
     }
 
     const quantity = button.dataset.quantity;
