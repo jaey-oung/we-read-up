@@ -28,7 +28,7 @@ Java Spring을 기반으로 MyBatis를 활용하여 개발되었습니다.
 ```properties
 spring.application.name=we-read-up
 
-spring.datasource.url=jdbc:mysql://localhost:3306/book_store?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/book_store?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
 spring.datasource.username=
 spring.datasource.password=
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
