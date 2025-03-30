@@ -49,13 +49,13 @@
         <form id="form" class="frm" action="" method="post">
             <input type="hidden" name="noticeId" th:value="${noticeDto != null ? noticeDto.noticeId : '0'}">
 
-            <input name="title" type="text" th:value="${noticeDto != null ? noticeDto.title : '제목을 입력해 주세요.'}"
+            <input name="title" type="text" th:value="${noticeDto != null ? noticeDto.title : ''}"
                    placeholder="제목을 입력해 주세요." class="title"
                    th:readonly="${mode != 'new'}"><br>
 
             <textarea name="content" class="content" placeholder="내용을 입력해 주세요."
                       th:readonly="${mode != 'new'}"
-                      th:text="${noticeDto != null ? noticeDto.content : '내용을 입력해 주세요.'}">
+                      th:text="${noticeDto != null ? noticeDto.content : ''}">
 
             </textarea><br>
 
