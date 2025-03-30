@@ -256,11 +256,16 @@
 
     // 수정 버튼 클릭
     $(document).on('click', '.modBtn', function() {
+        let $li = $(this).closest('li');
         let commentId = $(this).closest('li').data('commentid'); // 댓글의 ID 추출
         let content = $(this).closest('li').find('.content').text(); // 댓글 내용 추출
 
         $("textarea[name=commentContent]").val(content); // 댓글 내용 textarea에 설정
         $("#sendBtn").text("수정").attr("data-commentId", commentId); // 수정버튼 변경
+
+        // 선택된 댓글의 수정/삭제 버튼 숨기기
+        $li.find('.delBtn').hide();
+        $li.find('.modBtn').hide();
     });
 
 

@@ -50,8 +50,8 @@ public class InquiryController {
             } else if (memberId != null) {
                 currentUserId = memberId.toString();  // 회원이면 memberId 사용
             } else {
-                m.addAttribute("msg", "LOGIN_REQUIRED"); // 로그인 필요 메시지 추가
-                return "board/inquiry-list"; // 로그인 필요 메시지를 화면에 표시
+                m.addAttribute("msg", "MEMBER_ONLY"); // 회원만 접근 가능 메시지 추가
+                return "board/inquiry-list"; // 회원만 접근 가능 메시지를 화면에 표시
             }
 
             System.out.println("Controller_currentUserId = " + currentUserId);
