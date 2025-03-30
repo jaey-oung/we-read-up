@@ -1018,6 +1018,7 @@
 
                 response.data.forEach(function(item){
                     $('.category-medium').remove();
+                    $('.category-small').remove();
                     console.log(item);
                     let categoryItem = $('<ul class="category-list"><li class="category-medium"></li></ul>')
                         .find('li')
