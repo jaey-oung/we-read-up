@@ -261,7 +261,6 @@
 <script>
     $(document).ready(function () {
         var contentElement = $('.tableOfCon');
-        let reviewId = $(this).closest('.review').find('#reviewId').val();
         let bookId = $('#bookId').val();
 
         if (contentElement[0].scrollHeight > 300) {
@@ -336,8 +335,10 @@
         $(document).on('click', '#delBtn', function() {
             if($(this).html()==='삭제'){
                 var result = confirm("정말로 삭제하시겠습니까?");
+                let reviewId = $(this).closest('.review').find('#reviewId').val();
 
                 console.log(reviewId);
+                console.log(bookId);
                 if (result) {
                     axios.post('/reviewDelete', {reviewId, memberId, bookId}, {
                         headers: { "content-type": "application/json" }
