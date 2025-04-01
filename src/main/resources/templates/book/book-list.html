@@ -77,7 +77,7 @@
                 <div class="hover-buttons">
                     <!-- 장바구니 추가 -->
                     <button class="add-cart-btn"
-                        th:attr="data-book-id=${item.bookId},
+                            th:attr="data-book-id=${item.bookId},
                         data-price=${item.salePrice}">
                         장바구니
                     </button>
@@ -88,17 +88,19 @@
                         구매
                     </button>
                 </div>
-                <p class="product-name" style="font-size:17px; margin-bottom:-2px; font-weight: bold " th:text="${item.name}"></p>
+                <p class="product-name" style="font-size:17px; margin-bottom:-2px; font-weight: bold " th:text="${item.name.length() > 24 ? item.name.substring(0,24).concat('...') : item.name}"></p>
                 <p style="color:#888888; margin-top:10px;margin-bottom:2px;font-size:14px">
                     <th:block th:each="i : ${writerListResponse}" style="display:inline-block;">
                         <th:block th:each="writer, stat : ${i}">
                             <th:block th:if="${item.bookId == writer.bookId}">
-                                <span th:text="${writer.name}"></span>
-                                <th:block th:if="${stat.count < stat.size}">
-                                    <span th:text="','" style="margin-left:-5px;margin-right:-5px"></span>
+                                <th:block th:if="${stat.count == 1}">
+                                    <span th:text="${writer.name}"></span>
+                                </th:block>
+                                <th:block th:if="${stat.count == stat.size && stat.count > 1}">
+                                    <span th:text="' 외'" style="margin-left:0px;margin-right:0px"></span>
                                 </th:block>
                                 <th:block th:if="${stat.count == stat.size}">
-                                    <span th:text="'지음 | '" style="margin-left:-3px;margin-right:-2px"></span>
+                                    <span th:text="' 지음 | '" style="margin-left:-3px;margin-right:-2px"></span>
                                 </th:block>
                             </th:block>
                         </th:block>
@@ -153,16 +155,16 @@
 <script src="/js/book-list.js"></script>
 <script>
     $(document).ready(function(){
-       $('#sort-book').on('change', function(){
-           let option = $('#option').val();
-           let keyword = $('#keyword').val();
-           if(option || keyword){
-               window.location.href = '/search?sort=' + $(this).val() + '&category='+$('#category').val()+'&option='+$('#option').val()+'&keyword='+$('#keyword').val();
-           } else{
-               window.location.href = '/bookList?sort=' + $(this).val() + '&category='+$('#category').val();
-           }
+        $('#sort-book').on('change', function(){
+            let option = $('#option').val();
+            let keyword = $('#keyword').val();
+            if(option || keyword){
+                window.location.href = '/search?sort=' + $(this).val() + '&category='+$('#category').val()+'&option='+$('#option').val()+'&keyword='+$('#keyword').val();
+            } else{
+                window.location.href = '/bookList?sort=' + $(this).val() + '&category='+$('#category').val();
+            }
 
-       });
+        });
     });
 </script>
 </body>
